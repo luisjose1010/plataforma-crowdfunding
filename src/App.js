@@ -3,11 +3,10 @@ import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom";
-import styled from 'styled-components';
 import Container from 'react-bootstrap/Container';
 
+import LandingPage from './components/pages/LandingPage';
 
-import LandingPage from './components/LandingPage';
 
 const router = createBrowserRouter([
   {

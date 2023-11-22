@@ -1,6 +1,6 @@
 import styled from 'styled-components';
-import Banner from './../layouts/Banner';
-import NavBar from './../hooks/NavBar.js';
+import Banner from '../../layouts/Banner/index.js';
+import NavBar from '../../hooks/NavBar.js';
 
 
 function LandingPage() {

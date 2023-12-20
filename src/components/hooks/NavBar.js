@@ -4,7 +4,7 @@ import Nav from 'react-bootstrap/Nav';
 import { Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import searchIcon from './../../img/svg/searchIcon.svg';
+import searchIcon from './../../img/searchIcon.svg';
 
 
 function NavBar() {
@@ -37,7 +37,7 @@ function NavBar() {
               <ContactUsButton><b>Contáctanos</b></ContactUsButton>
             </Nav.Link>
             <Nav.Link eventKey={2} href="#buscar" className='my-auto'>
-              <SearchIcon src={searchIcon} alt="" srcset="" />
+              <SearchIcon src={searchIcon} alt="" />
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>

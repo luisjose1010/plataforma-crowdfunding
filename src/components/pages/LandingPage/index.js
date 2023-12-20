@@ -1,11 +1,12 @@
 import styled from 'styled-components';
 import Banner from '../../layouts/Banner/index.js';
 import NavBar from '../../hooks/NavBar.js';
+import BannerImg from './../../../img/banner.svg';
 
 
 function LandingPage() {
   return (
-    <Banner>
+    <Banner img={BannerImg}>
       <header>
         <NavBar />
       </header>

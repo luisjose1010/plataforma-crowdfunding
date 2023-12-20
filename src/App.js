@@ -6,6 +6,7 @@ import {
 import Container from 'react-bootstrap/Container';
 
 import LandingPage from './components/pages/LandingPage';
+import ProjectsPage from './components/pages/ProjectsPage';
 
 
 const router = createBrowserRouter([
@@ -15,7 +16,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/proyectos-sociales/:category?",
-    element: <LandingPage></LandingPage>,
+    element: <ProjectsPage></ProjectsPage>,
   },
 ]);
 

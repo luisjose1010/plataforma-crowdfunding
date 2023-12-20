@@ -1,13 +1,13 @@
 import styled from 'styled-components';
-import BannerImg from './../../../img/banner.png';
+import BannerImg from './../../../img/banner.svg';
 
 
-function Banner(props) {
+function Banner({img, children}) {
   return (
     <BannerContainer>
-      <BannerBackground src={BannerImg}></BannerBackground>
+      <BannerBackground src={img}></BannerBackground>
       <BannerContent>
-        {props.children}
+        {children}
       </BannerContent>
     </BannerContainer>
   );

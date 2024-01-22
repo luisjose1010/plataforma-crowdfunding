@@ -2,19 +2,27 @@ import styled from 'styled-components';
 import Banner from '../../layouts/Banner/index.js';
 import NavBar from '../../hooks/NavBar.js';
 import BannerImg from './../../../img/banner-small.svg';
+import ProjectsList from './ProjectsList.js';
+import { useParams } from 'react-router-dom';
 
 
 function ProjectsPage() {
-  return (
-    <Banner img={BannerImg}>
-      <header>
-        <NavBar />
-      </header>
+  let { category } = useParams();
 
-      <BannerText>
-        Nuestros Proyectos
-      </BannerText>
-    </Banner>
+  return (
+    <>
+      <Banner img={BannerImg}>
+        <header>
+          <NavBar />
+        </header>
+
+        <BannerText>
+          Nuestros Proyectos
+        </BannerText>
+      </Banner>
+
+      <ProjectsList categoryUrl={category} />
+    </>
   );
 }
 

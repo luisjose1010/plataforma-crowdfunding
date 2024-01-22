@@ -15,7 +15,11 @@ const router = createBrowserRouter([
     element: <LandingPage></LandingPage>,
   },
   {
-    path: "/proyectos-sociales/:category?",
+    path: "/proyectos-sociales/categorias/:category",
+    element: <ProjectsPage></ProjectsPage>,
+  },
+  {
+    path: "/proyectos-sociales/:id?",
     element: <ProjectsPage></ProjectsPage>,
   },
 ]);

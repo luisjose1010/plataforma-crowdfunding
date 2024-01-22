@@ -22,9 +22,9 @@ function NavBar() {
                 Todos
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item as={Link} to="/proyectos-sociales/categoria-1">Categoría 1</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/proyectos-sociales/categoria-2">Categoría 2</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/proyectos-sociales/categoria-3">Categoría 3</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/proyectos-sociales/categorias/categoria-1">Categoría 1</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/proyectos-sociales/categorias/categoria-2">Categoría 2</NavDropdown.Item>
+              <NavDropdown.Item as={Link} to="/proyectos-sociales/categorias/categoria-3">Categoría 3</NavDropdown.Item>
               <NavDropdown.Divider />
               <NavDropdown.Item as={Link} to="/proyectos-sociales/buscar">
                 Buscar

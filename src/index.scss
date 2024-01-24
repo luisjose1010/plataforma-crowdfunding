@@ -7,13 +7,24 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
 
+    font-weight: 700;
+
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 h2 {
   font-family: Playfair Display;
-  font-size: 39px;
+  font-size: 2.438rem;
+  font-weight: 700;
+  line-height: 50px;
+  letter-spacing: 0em;
+  text-align: left;
+}
+
+h3 {
+  font-family: Playfair Display;
+  font-size: 1.563rem;
   font-weight: 700;
   line-height: 50px;
   letter-spacing: 0em;

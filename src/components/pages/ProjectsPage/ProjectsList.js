@@ -4,12 +4,6 @@ import ProjectCard from './ProjectCard';
 import styled from 'styled-components';
 
 
-
-
-
-let category = null;
-
-
 function ProjectsList({ categoryUrl }) {
 
     // Datos hardcode de prueba

@@ -7,6 +7,7 @@ import Container from 'react-bootstrap/Container';
 
 import LandingPage from './components/pages/LandingPage';
 import ProjectsPage from './components/pages/ProjectsPage';
+import ProjectPage from './components/pages/ProjectPage';
 
 
 const router = createBrowserRouter([
@@ -19,8 +20,12 @@ const router = createBrowserRouter([
     element: <ProjectsPage></ProjectsPage>,
   },
   {
-    path: "/proyectos-sociales/:id?",
+    path: "/proyectos-sociales/",
     element: <ProjectsPage></ProjectsPage>,
+  },
+  {
+    path: "/proyectos-sociales/:id",
+    element: <ProjectPage></ProjectPage>,
   },
 ]);
 

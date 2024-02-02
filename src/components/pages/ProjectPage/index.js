@@ -8,6 +8,7 @@ import Banner from '../../layouts/Banner/index.js';
 import NavBar from '../../hooks/NavBar.js';
 import BannerImg from './../../../img/banner-small.svg';
 import exampleCard from '../../../img/exampleCard.jpg';
+import Footer from '../../hooks/Footer.js';
 
 
 function ProjectPage() {
@@ -89,6 +90,8 @@ function ProjectPage() {
                     </Col>
                 </Row>
             </Container>
+
+            <Footer />
         </>
     );
 }

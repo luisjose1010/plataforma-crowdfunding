@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import searchIcon from './../../img/searchIcon.svg';
+import { Button } from './theme.js';
 
 
 function NavBar() {
@@ -16,7 +17,7 @@ function NavBar() {
         <Navbar.Collapse id="responsive-navbar-nav">
           <NavStyled className="mx-auto">
             <Nav.Link as={Link} to="/" className="mx-4">Inicio</Nav.Link>
-            <Nav.Link as={Link} to="#sobre-nosotros" className="mx-4">Sobre nosotros</Nav.Link>
+            <Nav.Link as={Link} to="/sobre-nosotros" className="mx-4">Sobre nosotros</Nav.Link>
             <NavDropdown title="Proyectos sociales" id="basic-nav-dropdown" className="mx-4">
               <NavDropdown.Item as={Link} to="/proyectos-sociales">
                 Todos
@@ -34,7 +35,7 @@ function NavBar() {
 
           <Nav>
             <Nav.Link eventKey={1} href="#contactanos" className='text-white my-auto'>
-              <ContactUsButton><b>Contáctanos</b></ContactUsButton>
+              <Button><b>Contáctanos</b></Button>
             </Nav.Link>
             <Nav.Link eventKey={2} href="#buscar" className='my-auto'>
               <SearchIcon src={searchIcon} alt="" />
@@ -54,11 +55,6 @@ const NavStyled = styled(Nav)`
   font-style: normal;
   font-weight: 800;
   line-height: 1.6875rem; /* 168.75% */
-`
-
-const ContactUsButton = styled.span`
-  background-color: #219D80;
-  padding: 0.75rem 1.5rem;
 `
 
 const SearchIcon = styled.img`

@@ -4,6 +4,7 @@ import NavBar from '../../hooks/NavBar.js';
 import BannerImg from './../../../img/banner-small.svg';
 import ProjectsList from './ProjectsList.js';
 import { useParams } from 'react-router-dom';
+import Footer from '../../hooks/Footer.js';
 
 
 function ProjectsPage() {
@@ -22,6 +23,8 @@ function ProjectsPage() {
       </Banner>
 
       <ProjectsList categoryUrl={category} />
+
+      <Footer />
     </>
   );
 }

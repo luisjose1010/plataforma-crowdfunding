@@ -4,9 +4,8 @@ import Nav from 'react-bootstrap/Nav';
 import { Link } from 'react-router-dom';
 import Navbar from 'react-bootstrap/Navbar';
 import NavDropdown from 'react-bootstrap/NavDropdown';
-import searchIcon from './../../img/searchIcon.svg';
-import { Button } from './theme.js';
-
+import searchIcon from '../../img/searchIcon.svg';
+import { Button } from './theme';
 
 function NavBar() {
   return (
@@ -34,10 +33,10 @@ function NavBar() {
           </NavStyled>
 
           <Nav>
-            <Nav.Link eventKey={1} href="#contactanos" className='text-white my-auto'>
+            <Nav.Link eventKey={1} href="#contactanos" className="text-white my-auto">
               <Button><b>Contáctanos</b></Button>
             </Nav.Link>
-            <Nav.Link eventKey={2} href="#buscar" className='my-auto'>
+            <Nav.Link eventKey={2} href="#buscar" className="my-auto">
               <SearchIcon src={searchIcon} alt="" />
             </Nav.Link>
           </Nav>
@@ -47,7 +46,6 @@ function NavBar() {
   );
 }
 
-
 const NavStyled = styled(Nav)`
   text-align: center;
   font-family: Montserrat;
@@ -55,11 +53,11 @@ const NavStyled = styled(Nav)`
   font-style: normal;
   font-weight: 800;
   line-height: 1.6875rem; /* 168.75% */
-`
+`;
 
 const SearchIcon = styled.img`
   width: 2.7rem;
   height: 2.7rem;
-`
+`;
 
 export default NavBar;

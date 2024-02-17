@@ -1,11 +1,12 @@
 import styled from 'styled-components';
-import Banner from '../../layouts/Banner/index.js';
-import NavBar from '../../hooks/NavBar.js';
-import BannerImg from './../../../img/banner-small.svg';
-import { Container, Row, Col, Image } from 'react-bootstrap';
+import {
+  Container, Row, Col, Image,
+} from 'react-bootstrap';
+import Banner from '../../layouts/Banner/index';
+import NavBar from '../../hooks/NavBar';
+import BannerImg from '../../../img/banner-small.svg';
 import exampleCard from '../../../img/exampleCard.jpg';
-import Footer from '../../hooks/Footer.js';
-
+import Footer from '../../hooks/Footer';
 
 function AboutUs() {
   return (
@@ -20,7 +21,7 @@ function AboutUs() {
         </BannerText>
       </Banner>
 
-      <Container className='mt-5'>
+      <Container className="mt-5">
         <Row>
           <Col>
             <Image src={exampleCard} />
@@ -42,7 +43,6 @@ function AboutUs() {
   );
 }
 
-
 const BannerText = styled.span`
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
 
@@ -59,6 +59,6 @@ const BannerText = styled.span`
   top: 35%;
   width: 70%;
   left: 15%;
-`
+`;
 
 export default AboutUs;

@@ -1,8 +1,7 @@
 import styled from 'styled-components';
-import Banner from '../../layouts/Banner/index.js';
-import NavBar from '../../hooks/NavBar.js';
-import BannerImg from './../../../img/banner.svg';
-
+import Banner from '../../layouts/Banner/index';
+import NavBar from '../../hooks/NavBar';
+import BannerImg from '../../../img/banner.svg';
 
 function LandingPage() {
   return (
@@ -20,13 +19,13 @@ function LandingPage() {
         Podemos Hacer Un Mundo Mejor
         <br />
         <BannerSmall>
-          Buscamos respaldar el camino hacia una mejor venezuela, promocionando a creadores de diferencias y proyectos en todo el país.
+          Buscamos respaldar el camino hacia una mejor venezuela, promocionando a creadores de
+          diferencias y proyectos en todo el país.
         </BannerSmall>
       </BannerText>
     </Banner>
   );
 }
-
 
 const BannerText = styled.span`
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
@@ -44,7 +43,7 @@ const BannerText = styled.span`
   top: 35%;
   width: 70%;
   left: 15%;
-`
+`;
 
 const BannerSubtitle = styled.h2`
   color: rgb(255, 255, 255);
@@ -62,7 +61,7 @@ const BannerSubtitle = styled.h2`
   top: 30%;
   width: 70%;
   left: 15%;
-`
+`;
 
 const BannerSmall = styled.h3`
   color: rgb(255, 255, 255);
@@ -76,6 +75,6 @@ const BannerSmall = styled.h3`
   letter-spacing: 0em;
   text-align: center;
   left: 15%;
-`
+`;
 
 export default LandingPage;

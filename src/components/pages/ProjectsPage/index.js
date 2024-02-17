@@ -1,14 +1,13 @@
 import styled from 'styled-components';
-import Banner from '../../layouts/Banner/index.js';
-import NavBar from '../../hooks/NavBar.js';
-import BannerImg from './../../../img/banner-small.svg';
-import ProjectsList from './ProjectsList.js';
 import { useParams } from 'react-router-dom';
-import Footer from '../../hooks/Footer.js';
-
+import Banner from '../../layouts/Banner/index';
+import NavBar from '../../hooks/NavBar';
+import BannerImg from '../../../img/banner-small.svg';
+import ProjectsList from './ProjectsList';
+import Footer from '../../hooks/Footer';
 
 function ProjectsPage() {
-  let { category } = useParams();
+  const { category } = useParams();
 
   return (
     <>
@@ -29,7 +28,6 @@ function ProjectsPage() {
   );
 }
 
-
 const BannerText = styled.span`
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
 
@@ -46,6 +44,6 @@ const BannerText = styled.span`
   top: 35%;
   width: 70%;
   left: 15%;
-`
+`;
 
 export default ProjectsPage;

@@ -1,11 +1,10 @@
 import styled from 'styled-components';
-import BannerImg from './../../../img/banner.svg';
+import PropTypes from 'prop-types';
 
-
-function Banner({img, children}) {
+function Banner({ img, children }) {
   return (
     <BannerContainer>
-      <BannerBackground src={img}></BannerBackground>
+      <BannerBackground src={img} />
       <BannerContent>
         {children}
       </BannerContent>
@@ -13,16 +12,21 @@ function Banner({img, children}) {
   );
 }
 
+Banner.propTypes = {
+  img: PropTypes.string.isRequired,
+  children: PropTypes.string.isRequired,
+};
+
 const BannerContainer = styled.div`
   position: relative;
-`
+`;
 
 const BannerContent = styled.div`
   width: 100%;
-`
+`;
 
 const BannerBackground = styled.img`
   width: 100%;
-`
+`;
 
 export default Banner;

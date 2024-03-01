@@ -15,7 +15,7 @@ function Donatone({ goal, donated }) {
           %
         </span>
       </div>
-      <ProgressBar now={60} variant="success" className="m-1" />
+      <ProgressBar now={progress} variant="success" className="m-1" />
       <div className="d-flex justify-content-between">
         <span>
           Donado:
@@ -26,6 +26,7 @@ function Donatone({ goal, donated }) {
         </span>
         <span>
           Meta:
+          {' '}
           {goal}
           {' '}
           Bs.

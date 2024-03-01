@@ -11,45 +11,25 @@ import NavBar from '../../hooks/NavBar';
 import BannerImg from '../../../img/banner-small.svg';
 import exampleCard from '../../../img/exampleCard.jpg';
 import Footer from '../../hooks/Footer';
+import api from '../../../api';
 
 function ProjectPage() {
-  // Datos hardcode de prueba
-  const [projectsData] = useState([
-    {
-      id: 1,
-      title: 'Beneficio a favor de Maria Laura Rosales',
-      description: 'Maria Laura tiene una enfermedad y necesita dinero para poder vivir un día más, ayudanos.',
-      process: '50%',
-      donated: 2000,
-      goal: 4000,
-      categoryId: 0,
-    },
-    {
-      id: 2,
-      title: 'Ayuda a la comunidad Sagrada Familia',
-      description: 'La comunidad está pasando por un momento de necesidad en el cuál se les imposibilita el acceso a agua limpia y necesitamos tu valiosa ayuda.',
-      process: '72.5%',
-      donated: 1450,
-      goal: 2000,
-      categoryId: 1,
-    },
-    {
-      id: 3,
-      title: 'Actividad en favor de los niños de bajo recursos',
-      description: 'Ayudanos a ofrecerles un momento de felicidad a estos niños que día a día sufren de la precariedad y el abandono, para poder dar un paso más en poner una pequeña sonrisa en sus rostros.',
-      process: '60%',
-      donated: 3000,
-      goal: 5000,
-      categoryId: 2,
-    },
-  ]);
-
   const [project, setProject] = useState({});
   const { id } = useParams();
 
+  function fetchProject() {
+    api.get(`/projects/${id}`)
+      .then((response) => {
+        setProject(response.data);
+      })
+      .catch(() => {
+
+      });
+  }
+
   useEffect(() => {
-    setProject(projectsData.find((item) => item.id === parseInt(id, 10)));
-  }, []);
+    fetchProject();
+  }, [id]);
 
   return (
     <>

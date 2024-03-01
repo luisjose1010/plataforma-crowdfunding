@@ -1,29 +1,25 @@
+import { useState, useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-
-// Datos hardcode de prueba
-const categories = [
-  {
-    id: 0,
-    name: 'Categoría 1',
-    url: 'categoria-1',
-    total: 1,
-  },
-  {
-    id: 1,
-    name: 'Categoría 2',
-    url: 'categoria-2',
-    total: 1,
-  },
-  {
-    id: 2,
-    name: 'Categoría 3',
-    url: 'categoria-3',
-    total: 1,
-  },
-];
+import api from '../../api';
 
 function Categories() {
+  const [categories, setCategories] = useState([]);
+
+  function fetchCategory() {
+    api.get('/categories/')
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch(() => {
+
+      });
+  }
+
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+
   return (
     <>
       <h3>Category</h3>
@@ -37,7 +33,7 @@ function Categories() {
                         <span>{category.name}</span>
                         <span className="float-right">
                           (
-                          {category.total}
+                          {category.projects_count}
                           )
                         </span>
                       </ListGroup.Item>

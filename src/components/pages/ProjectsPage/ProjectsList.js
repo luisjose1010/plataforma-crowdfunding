@@ -2,82 +2,55 @@ import { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import api from '../../../api';
 import ProjectCard from './ProjectCard';
 
 function ProjectsList({ categoryUrl }) {
-  // Datos hardcode de prueba
-  const [projectsData] = useState([
-    {
-      id: 1,
-      title: 'Beneficio a favor de Maria Laura Rosales',
-      description: 'Maria Laura tiene una enfermedad y necesita dinero para poder vivir un día más, ayudanos.',
-      process: '50%',
-      donated: '2000 Bs.',
-      goal: '4000 Bs.',
-      categoryId: 0,
-    },
-    {
-      id: 2,
-      title: 'Ayuda a la comunidad Sagrada Familia',
-      description: 'La comunidad está pasando por un momento de necesidad en el cuál se les imposibilita el acceso a agua limpia y necesitamos tu valiosa ayuda.',
-      process: '72.5%',
-      donated: '1450 Bs.',
-      goal: '2000 Bs.',
-      categoryId: 1,
-    },
-    {
-      id: 3,
-      title: 'Actividad en favor de los niños de bajo recursos',
-      description: 'Ayudanos a ofrecerles un momento de felicidad a estos niños que día a día sufren de la precariedad y el abandono, para poder dar un paso más en poner una pequeña sonrisa en sus rostros.',
-      process: '60%',
-      donated: '3000 Bs.',
-      goal: '5000 Bs.',
-      categoryId: 2,
-    },
-  ]);
-
-  const categories = [
-    {
-      id: 0,
-      name: 'Categoría 1',
-      url: 'categoria-1',
-    },
-    {
-      id: 1,
-      name: 'Categoría 2',
-      url: 'categoria-2',
-    },
-    {
-      id: 2,
-      name: 'Categoría 3',
-      url: 'categoria-3',
-    },
-  ];
-
   const [projects, setProjects] = useState([]);
   const [category, setCategory] = useState(null);
 
-  useEffect(() => {
-    if (categoryUrl) {
-      setCategory(categories.find((item) => item.url === categoryUrl));
-    } else {
-      setCategory(null);
+  function fetchProjects(categoryId) {
+    let endpoint = '/projects/';
+
+    if (categoryId) {
+      endpoint += `?category_id=${categoryId}`;
     }
-  }, [categoryUrl]);
+
+    api.get(endpoint)
+      .then((response) => {
+        setProjects(response.data);
+      })
+      .catch(() => {
+
+      });
+  }
+
+  function fetchCategory() {
+    api.get(`/categories/?url=${categoryUrl}`)
+      .then((response) => {
+        const categoryData = response.data[0];
+        setCategory(categoryData);
+        fetchProjects(categoryData.id);
+      })
+      .catch(() => {
+
+      });
+  }
 
   useEffect(() => {
-    if (category) {
-      setProjects(projectsData.filter((project) => project.categoryId === category.id));
+    if (categoryUrl) {
+      fetchCategory();
     } else {
-      setProjects(projectsData);
+      setCategory(null);
+      fetchProjects();
     }
-  }, [category]);
+  }, [categoryUrl]);
 
   return (
     <Container>
       <TextSmall className="mt-5">
         <span>
-          {category === null ? 'Todos los proyectos' : category.name}
+          {!category ? 'Todos los proyectos' : category.name}
         </span>
       </TextSmall>
 

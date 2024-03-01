@@ -1,13 +1,30 @@
+import { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
 import { Link } from 'react-router-dom';
-import Navbar from 'react-bootstrap/Navbar';
-import NavDropdown from 'react-bootstrap/NavDropdown';
+import {
+  Container, Nav, Navbar, NavDropdown,
+} from 'react-bootstrap';
 import searchIcon from '../../img/searchIcon.svg';
 import { Button } from './theme';
+import api from '../../api';
 
 function NavBar() {
+  const [categories, setCategories] = useState([]);
+
+  function fetchCategory() {
+    api.get('/categories/')
+      .then((response) => {
+        setCategories(response.data);
+      })
+      .catch(() => {
+
+      });
+  }
+
+  useEffect(() => {
+    fetchCategory();
+  }, []);
+
   return (
     <Navbar fixed="top" expand="lg" className="navbar-dark shadow-5-strong justify-content-between">
       <Container>
@@ -22,9 +39,13 @@ function NavBar() {
                 Todos
               </NavDropdown.Item>
               <NavDropdown.Divider />
-              <NavDropdown.Item as={Link} to="/proyectos-sociales/categorias/categoria-1">Categoría 1</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/proyectos-sociales/categorias/categoria-2">Categoría 2</NavDropdown.Item>
-              <NavDropdown.Item as={Link} to="/proyectos-sociales/categorias/categoria-3">Categoría 3</NavDropdown.Item>
+              {
+                    categories.map((category) => (
+                      <NavDropdown.Item as={Link} to={`/proyectos-sociales/categorias/${category.url}`}>
+                        {category.name}
+                      </NavDropdown.Item>
+                    ))
+                }
               <NavDropdown.Divider />
               <NavDropdown.Item as={Link} to="/proyectos-sociales/buscar">
                 Buscar

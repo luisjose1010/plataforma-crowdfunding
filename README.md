@@ -1,10 +1,10 @@
-# Platarforma Crowdfunding
+# Plataforma Crowdfunding
 
 ## Table of Contents
 
-1. [Descripción](#Descripción)
-2. [Guías de estilos](#Guía-de-estilos)
-3. [Tecnologías](#Tecnologías)
+1. [Descripción](#descripción)
+2. [Guías de estilos](#guía-de-estilos)
+3. [Tecnologías](#tecnologías)
 4. [Scripts](#scripts)
 
 ## Descripción
@@ -103,32 +103,21 @@ them.
 
 ### Features
 
-- React
-- React Router
+- [JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript "JavaScript")
+- [NodeJS](https://nodejs.org/en "NodeJS")
+- [Create React App](https://github.com/facebook/create-react-app)
+- [React](https://es.react.dev/)
+- [React Router]("https://reactrouter.com/en/main" "React Router")
 - [Axios](https://axios-http.com/docs/intro "Axios")
+- [Styled Components]( "Styled Components")
 
-#### API objetivo
+El proyecto utiliza [NodeJS](https://nodejs.org/es/ "NodeJS") para gestionar las tecnologías y dependencias de los paquetes utilizados, implementado en el lenguaje [JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript "JavaScript"), creado a partir de la herramienta [Create React App](https://github.com/facebook/create-react-app), como una forma inciar y mantener un nuevo proyecto [React](https://es.react.dev/). Se utiliza la bibliteca proporcionada por el ecosistema React, [React Router]("https://reactrouter.com/en/main" "React Router"), para gestionar las rutas necesarias de la App. Así mismo, para la comunicación de los datos con la API objetivo, se requiere la biblioteca [Axios](https://axios-http.com/docs/intro "Axios"), instaladas en las dependencias del proyecto. También se proporciona la biblioteca [Styled Components]( "Styled Components") para poder deasarrollar componentes estilizados dacilmente dentro de los componentes React, de forma que se cree un codigo más ordenado y limpio.
 
-- Python
-- FastAPI
-- SQLAlchemy
-- Alembic
+La carpeta donde se encuentra la mayoría de los archivos necesarios para desarrollar sobre NodeJS es "src", la aplicación utiliza una API para poder realizar sus funciones. Se puede obtener la documentación autogenerada de la API según la especificación OpenAPI, sirviendo como una guia estructurada para la parte del cliente, incluyendo sus endpoints, parametros, solicitudes y respuestas, en la ruta `/redoc` del servidor donde se esté ejecutando la API o bien, el último redoc de documentación autogenerado por la API en forma de archivo HTML en la respectiva carpeta de documentación `/documentation/redoc`.
 
-El proyecto utiliza [NodeJS](https://nodejs.org/es/ "NodeJS") para gestionar las tecnologías y dependencias de las bibliotecas utilizadas. En el apartado superior se enlistan las principales tecnologías a utilizar en el proyecto.
+### Configuración inicial del proyecto
 
-Realiza la instalacion de las dependencia del proyecto y compilar los archivos mediante NodeJS, los cuales se pueden encontrar las intrucciones en la documentación oficial indicada en el inicio del documento, así como en el siguiente apartado de configuración inicial del proyecto en el archivo actual.
-
-La carpeta donde se encuentra la mayoría de los archivos necesarios para desarrollar sobre NodeJS es "src", la aplicación utiliza una API para poder realizar sus funciones en un framework llamado [FastApi](https://fastapi.tiangolo.com/ "FastApi"), implementado en el lenguaje [Python](https://www.python.org/ "[Python]"), mediante otras herramientas necesarias para el desarrollo como [SQLAlchemy](https://docs.sqlalchemy.org/) y [Alembic](https://alembic.sqlalchemy.org/en/latest/).
-
-Se puede obtener la documentación autogenerada de la API para la parte del cliente, incluyendo sus endpoints, parametros, solicitudes y respuestas, en la ruta `/redoc` del servidor donde se esté ejecutandose la API.
-
-## Configuración inicial del proyecto
-
-Para comenzar a utilizar el proyecto, puede ejecutar los comandos indicados en los siguientes apartados.  
-
-### Configuración inicial de NodeJS
-
-Para configurar NodeJS se necesita un archivo `.env.local` en la raiz del proyecto con las variables de entorno necesarias, incluyendo el "Host" y la "URL" de la API. El archivo `.env.local.example` se puede encontrar como un ejemplo de archivo `.env.local`.
+Para comenzar a utilizar el proyecto se debe realizar la instalacion de las dependencia del proyecto y compilar los archivos mediante NodeJS, los cuales se pueden encontrar las intrucciones en la documentación oficial indicada en el inicio del documento o mediante los siguientes scripts. Para configurar NodeJS se necesita un archivo `.env.local` en la raiz del proyecto con las variables de entorno necesarias, incluyendo el "Host" y la "URL" de la API. El archivo `.env.local.example` se puede encontrar como un ejemplo de archivo `.env.local`.
 
 ```bash
 npm install

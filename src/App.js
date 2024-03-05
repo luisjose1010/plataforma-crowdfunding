@@ -9,11 +9,21 @@ import LandingPage from './components/pages/LandingPage';
 import ProjectsPage from './components/pages/ProjectsPage';
 import ProjectPage from './components/pages/ProjectPage';
 import AboutUs from './components/pages/AboutUs';
+import LoginPage from './components/pages/LoginPage';
+import UserManagerPage from './components/pages/UserManagerPage';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <LandingPage />,
+  },
+  {
+    path: '/login',
+    element: <LoginPage />,
+  },
+  {
+    path: '/usuario',
+    element: <UserManagerPage />,
   },
   {
     path: '/proyectos-sociales/categorias/:category',

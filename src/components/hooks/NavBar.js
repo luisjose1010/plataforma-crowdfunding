@@ -7,9 +7,28 @@ import {
 import searchIcon from '../../img/searchIcon.svg';
 import { Button } from './theme';
 import api from '../../api';
+import localAPI from '../../api/localAPI';
 
 function NavBar() {
+  const [user, setUser] = useState(null);
   const [categories, setCategories] = useState([]);
+  const [scrolled, setScrolled] = useState(false);
+
+  function fetchUser() {
+    const tokenData = localAPI.getTokenData();
+
+    if (tokenData) {
+      const userId = tokenData.sub;
+
+      api.get(`/users/${userId}`)
+        .then((response) => {
+          setUser(response.data);
+        })
+        .catch(() => {
+
+        });
+    }
+  }
 
   function fetchCategory() {
     api.get('/categories/')
@@ -21,58 +40,93 @@ function NavBar() {
       });
   }
 
+  function handleScroll() {
+    const position = window.scrollY;
+
+    if (position >= 100) {
+      setScrolled(true);
+    } else {
+      setScrolled(false);
+    }
+  }
+
   useEffect(() => {
+    fetchUser();
     fetchCategory();
   }, []);
 
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <Navbar fixed="top" expand="lg" className="navbar-dark shadow-5-strong justify-content-between">
-      <Container>
-        <Navbar.Brand as={Link} to="/">Plataforma Crowdfunding</Navbar.Brand>
-        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-        <Navbar.Collapse id="responsive-navbar-nav">
-          <NavStyled className="mx-auto">
-            <Nav.Link as={Link} to="/" className="mx-4">Inicio</Nav.Link>
-            <Nav.Link as={Link} to="/sobre-nosotros" className="mx-4">Sobre nosotros</Nav.Link>
-            <NavDropdown title="Proyectos sociales" id="basic-nav-dropdown" className="mx-4">
-              <NavDropdown.Item as={Link} to="/proyectos-sociales">
-                Todos
-              </NavDropdown.Item>
-              <NavDropdown.Divider />
-              {
+    <Styled>
+      <Navbar fixed="top" expand="lg" className={`navbar-dark shadow-5-strong justify-content-between ${scrolled ? 'scrolled' : ''}`}>
+        <Container>
+          <Navbar.Brand as={Link} to="/">Plataforma Crowdfunding</Navbar.Brand>
+          <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+          <Navbar.Collapse id="responsive-navbar-nav">
+            <NavStyled className="mx-auto">
+              <Nav.Link as={Link} to="/" className="mx-4">Inicio</Nav.Link>
+              <Nav.Link as={Link} to="/sobre-nosotros" className="mx-4">Sobre nosotros</Nav.Link>
+              <NavDropdown title="Proyectos sociales" id="basic-nav-dropdown" className="mx-4">
+                <NavDropdown.Item as={Link} to="/proyectos-sociales" className="fw-bold">
+                  Todos
+                </NavDropdown.Item>
+                <NavDropdown.Divider />
+                {
                     categories.map((category) => (
-                      <NavDropdown.Item as={Link} to={`/proyectos-sociales/categorias/${category.url}`}>
+                      <NavDropdown.Item as={Link} to={`/proyectos-sociales/categorias/${category.url}`} className="fw-bold">
                         {category.name}
                       </NavDropdown.Item>
                     ))
                 }
-              <NavDropdown.Divider />
-              <NavDropdown.Item as={Link} to="/proyectos-sociales/buscar">
-                Buscar
-              </NavDropdown.Item>
-            </NavDropdown>
-          </NavStyled>
+                <NavDropdown.Divider />
+                <NavDropdown.Item as={Link} to="/proyectos-sociales/buscar" className="fw-bold">
+                  Buscar
+                </NavDropdown.Item>
+              </NavDropdown>
+            </NavStyled>
 
-          <Nav>
-            <Nav.Link eventKey={1} href="#contactanos" className="text-white my-auto">
-              <Button><b>Contáctanos</b></Button>
-            </Nav.Link>
-            <Nav.Link eventKey={2} href="#buscar" className="my-auto">
-              <SearchIcon src={searchIcon} alt="" />
-            </Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
-      </Container>
-    </Navbar>
+            <Nav>
+              <Nav.Link eventKey={1} as={Link} to={(user ? '/usuario' : '/login')} className="text-white my-auto">
+                <Button><b>{ user ? user.name : 'Iniciar Sesión' }</b></Button>
+              </Nav.Link>
+              <Nav.Link eventKey={2} href="#buscar" className="my-auto">
+                <SearchIcon src={searchIcon} alt="" />
+              </Nav.Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
+    </Styled>
   );
 }
 
+const Styled = styled.div`
+  .scrolled {
+    background-color: rgba(0, 0, 0, 0.5);
+    -moz-transition: all .2s ease-in;
+    -o-transition: all .2s ease-in;
+    -webkit-transition: all .2s ease-in;
+    transition: all .2s ease-in;
+  }
+
+  font-family: Montserrat, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+
+  font-weight: 800;
+`;
+
 const NavStyled = styled(Nav)`
   text-align: center;
-  font-family: Montserrat;
   font-size: 1rem;
   font-style: normal;
-  font-weight: 800;
   line-height: 1.6875rem; /* 168.75% */
 `;
 

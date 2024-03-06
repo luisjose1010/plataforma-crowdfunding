@@ -9,7 +9,7 @@ function Donatone({ goal, donated }) {
   return (
     <Container>
       <div className="d-flex justify-content-between">
-        <span>Donaciones</span>
+        <h4>Donaciones</h4>
         <span>
           {progress}
           %
@@ -37,8 +37,13 @@ function Donatone({ goal, donated }) {
 }
 
 Donatone.propTypes = {
-  goal: PropTypes.number.isRequired,
-  donated: PropTypes.number.isRequired,
+  goal: PropTypes.number,
+  donated: PropTypes.number,
+};
+
+Donatone.defaultProps = {
+  goal: 0,
+  donated: 0,
 };
 
 export default Donatone;

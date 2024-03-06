@@ -14,7 +14,7 @@ function Banner({ img, children }) {
 
 Banner.propTypes = {
   img: PropTypes.string.isRequired,
-  children: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 const BannerContainer = styled.div`

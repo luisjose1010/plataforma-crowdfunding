@@ -1,7 +1,9 @@
-import styled from 'styled-components';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Row, Col } from 'react-bootstrap';
+import { FiAtSign } from 'react-icons/fi';
+import styled from 'styled-components';
+import { FaLock, FaUser } from 'react-icons/fa';
 import api from '../../../api';
 import localAPI from '../../../api/localAPI';
 
@@ -80,17 +82,37 @@ function LoginPage() {
                     <div className="section text-center">
                       <h4 className="mb-4 pb-3">Iniciar sesión</h4>
                       <div className="form-group">
-                        <input type="email" name="email" onChange={handleChangeLogin} className="form-style" placeholder="Correo electrónico" id="email-login" autoComplete="off" />
-                        <i className="input-icon uil uil-at" />
+                        <input
+                          type="email"
+                          name="email"
+                          onChange={handleChangeLogin}
+                          className="form-style"
+                          placeholder="Correo electrónico"
+                          id="email-login"
+                          autoComplete="on"
+                        />
+                        <FiAtSign className="input-icon" />
                       </div>
                       <div className="form-group mt-2">
-                        <input type="password" name="password" onChange={handleChangeLogin} className="form-style" placeholder="Contraseña" id="logpass" autoComplete="off" />
-                        <i className="input-icon uil uil-lock-alt" />
+                        <input
+                          type="password"
+                          name="password"
+                          onChange={handleChangeLogin}
+                          className="form-style"
+                          placeholder="Contraseña"
+                          id="logpass"
+                          autoComplete="on"
+                        />
+                        <FaLock className="input-icon" />
                       </div>
                       <button type="button" className="btn mt-4" onClick={login}>
                         Ingresar
                       </button>
-                      <p className="mb-0 mt-4 text-center"><a href="#0" className="link">¿Olvidaste tu contraseña?</a></p>
+                      <p className="mb-0 mt-4 text-center">
+                        <a href="#0" className="link">
+                          ¿Olvidaste tu contraseña?
+                        </a>
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -99,20 +121,54 @@ function LoginPage() {
                     <div className="section text-center">
                       <h4 className="mb-4 pb-3">Registrarse</h4>
                       <div className="form-group">
-                        <input type="text" name="id_card" onChange={handleChangeRegister} className="form-style" placeholder="Cédula" id="id_card" autoComplete="off" />
+                        <input
+                          type="text"
+                          name="id_card"
+                          onChange={handleChangeRegister}
+                          className="form-style"
+                          placeholder="Cédula"
+                          id="id-card"
+                          autoComplete="on"
+                        />
                         <i className="input-icon uil uil-user" />
+                        <FaUser className="input-icon" />
                       </div>
                       <div className="form-group mt-2">
-                        <input type="text" name="name" onChange={handleChangeRegister} className="form-style" placeholder="Nombre y apellido" id="username" autoComplete="off" />
+                        <input
+                          type="text"
+                          name="name"
+                          onChange={handleChangeRegister}
+                          className="form-style"
+                          placeholder="Nombre y apellido"
+                          id="username"
+                          autoComplete="on"
+                        />
                         <i className="input-icon uil uil-user" />
+                        <FaUser className="input-icon" />
                       </div>
                       <div className="form-group mt-2">
-                        <input type="email" name="email" onChange={handleChangeRegister} className="form-style" placeholder="Correo electrónico" id="email-register" autoComplete="off" />
-                        <i className="input-icon uil uil-at" />
+                        <input
+                          type="email"
+                          name="email"
+                          onChange={handleChangeRegister}
+                          className="form-style"
+                          placeholder="Correo electrónico"
+                          id="email-register"
+                          autoComplete="on"
+                        />
+                        <FiAtSign className="input-icon" />
                       </div>
                       <div className="form-group mt-2">
-                        <input type="password" name="password" onChange={handleChangeRegister} className="form-style" placeholder="Contraseña" id="password" autoComplete="off" />
-                        <i className="input-icon uil uil-lock-alt" />
+                        <input
+                          type="password"
+                          name="password"
+                          onChange={handleChangeRegister}
+                          className="form-style"
+                          placeholder="Contraseña"
+                          id="password"
+                          autoComplete="new-password"
+                        />
+                        <FaLock className="input-icon" />
                       </div>
                       <button type="button" className="btn mt-4" onClick={registerUser}>
                         Enviar
@@ -130,11 +186,6 @@ function LoginPage() {
 }
 
 const ContainerStyled = styled.div`
-/* Please ❤ this if you like it! */
-
-
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700,800,900');
-
 font-family: 'Poppins', sans-serif;
 font-weight: 300;
 font-size: 15px;
@@ -142,7 +193,6 @@ line-height: 1.7;
 color: #c4c3ca;
 background-color: #1f2029;
 overflow-x: hidden;
-
 
 .button-back {
   position: absolute;
@@ -152,7 +202,6 @@ overflow-x: hidden;
   color: whitesmoke;
   font-weight: 800;
 }
-
 
 
 a {

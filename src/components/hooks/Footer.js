@@ -40,7 +40,7 @@ function Footer() {
             <br />
             <Form>
               <ButtonGroup>
-                <SearchControlStyled type="email" placeholder="Ingresa tu Email" />
+                <SearchControlStyled id="email" type="email" name="email" placeholder="Ingresa tu Email" autoComplete="on" />
                 <Button padding="0.75rem 1.25rem">Suscribirse</Button>
               </ButtonGroup>
             </Form>

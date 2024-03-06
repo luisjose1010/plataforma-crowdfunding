@@ -80,7 +80,13 @@ function NavBar() {
                 <NavDropdown.Divider />
                 {
                     categories.map((category) => (
-                      <NavDropdown.Item as={Link} to={`/proyectos-sociales/categorias/${category.url}`} className="fw-bold">
+                      <NavDropdown.Item
+                        key={category.id}
+                        as={Link}
+                        to={`/proyectos-sociales/categorias/${category.url}`}
+                        title={category.description}
+                        className="fw-bold"
+                      >
                         {category.name}
                       </NavDropdown.Item>
                     ))
@@ -109,7 +115,7 @@ function NavBar() {
 
 const Styled = styled.div`
   .scrolled {
-    background-color: rgba(0, 0, 0, 0.5);
+    background-color: rgba(0, 0, 0, 0.7);
     -moz-transition: all .2s ease-in;
     -o-transition: all .2s ease-in;
     -webkit-transition: all .2s ease-in;

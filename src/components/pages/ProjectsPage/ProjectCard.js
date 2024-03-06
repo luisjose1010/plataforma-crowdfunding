@@ -6,20 +6,20 @@ import img from '../../../img/exampleCard.jpg';
 
 function ProjectCard({ project }) {
   return (
-    <Card className="mb-2 m-2">
+    <CardStyled className="mb-2 m-2">
       <Card.Img variant="top" src={img} />
       <Card.Body>
-        <Card.Title style={{ fontSize: '1.25rem', fontWeight: 700 }}>
+        <Card.Title>
           {project.title}
         </Card.Title>
-        <CardTextTruncated>
-          <TextTruncated>
+        <Card.Text className="container-text-truncated">
+          <span className="text-truncated">
             {project.description}
-          </TextTruncated>
-        </CardTextTruncated>
+          </span>
+        </Card.Text>
         <Button variant="primary" as={Link} to={`/proyectos-sociales/${project.id}`}>Ir al proyecto</Button>
       </Card.Body>
-    </Card>
+    </CardStyled>
   );
 }
 
@@ -31,24 +31,24 @@ ProjectCard.propTypes = {
   }).isRequired,
 };
 
-const CardTextTruncated = styled(Card.Text)`
+const CardStyled = styled(Card)`
+  .container-text-truncated {
+    .text-truncated {
+      font-family: Montserrat;
+      font-size: 0.875rem;
+      font-weight: 700;
+      line-height: 22px;
+      letter-spacing: 0em;
+      text-align: left;
+      text-overflow: ellipsis;
+    }
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -moz-box-orient: vertical;
     -ms-box-orient: vertical;
     -webkit-line-clamp: 3;
     overflow: hidden;
-`;
-
-const TextTruncated = styled.span`
-    font-family: Montserrat;
-    font-size: 0.875rem;
-    font-weight: 700;
-    line-height: 22px;
-    letter-spacing: 0em;
-    text-align: left;
-
-    text-overflow: ellipsis;
+  }
 `;
 
 export default ProjectCard;

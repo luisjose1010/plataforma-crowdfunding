@@ -29,8 +29,6 @@ function ProjectsPage() {
 }
 
 const BannerText = styled.span`
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
-
   color: rgb(255, 255, 255);
   padding: 0 1rem;
   position: absolute;

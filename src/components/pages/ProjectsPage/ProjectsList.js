@@ -55,27 +55,30 @@ function ProjectsList({ categoryUrl }) {
       </TextSmall>
 
       <h2>
-        ¡Encuentra Tu Proyecto Favorito
-        <br />
-        {' '}
-        Y Apóyalo!
+        {
+        !category ? '¡Encuentra Tu Proyecto Favorito!' : category.description
+        }
       </h2>
 
       <Row xs={2} md={4} className="g-4 mt-5">
         {
-                    projects.map((project) => (
-                      <Col>
-                        <ProjectCard project={project} />
-                      </Col>
-                    ))
-                }
+          projects.map((project) => (
+            <Col key={project.id}>
+              <ProjectCard project={project} />
+            </Col>
+          ))
+        }
       </Row>
     </Container>
   );
 }
 
 ProjectsList.propTypes = {
-  categoryUrl: PropTypes.string.isRequired,
+  categoryUrl: PropTypes.string,
+};
+
+ProjectsList.defaultProps = {
+  categoryUrl: null,
 };
 
 const TextSmall = styled.p`

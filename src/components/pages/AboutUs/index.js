@@ -1,12 +1,12 @@
-import styled from 'styled-components';
 import {
   Container, Row, Col, Image,
 } from 'react-bootstrap';
-import Banner from '../../layouts/Banner/index';
 import NavBar from '../../hooks/NavBar';
+import Footer from '../../hooks/Footer';
+import { BannerText } from '../../hooks/theme';
+import Banner from '../../layouts/Banner';
 import BannerImg from '../../../img/banner-small.svg';
 import exampleCard from '../../../img/exampleCard.jpg';
-import Footer from '../../hooks/Footer';
 
 function AboutUs() {
   return (
@@ -42,23 +42,5 @@ function AboutUs() {
     </>
   );
 }
-
-const BannerText = styled.span`
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
-
-  color: rgb(255, 255, 255);
-  padding: 0 1rem;
-  position: absolute;
-
-  font-family: Playfair Display;
-  font-size: 3.5rem;
-  font-weight: 700;
-  line-height: 90px;
-  letter-spacing: 0em;
-  text-align: center;
-  top: 35%;
-  width: 70%;
-  left: 15%;
-`;
 
 export default AboutUs;

@@ -1,11 +1,14 @@
 import { useState, useEffect } from 'react';
 import {
-  Container, Row, Col, Card, Badge, Nav, NavItem, Form, FormGroup, FormControl, FormLabel,
+  Container, Row, Col, Card, Badge, Nav, NavItem, Form, FormGroup, FormControl, FormLabel, NavLink,
 } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import {
+  FaCamera, FaChartBar, FaCog, FaSignOutAlt, FaTh,
+} from 'react-icons/fa';
 import styled from 'styled-components';
-import Banner from '../../layouts/Banner/index';
 import NavBar from '../../hooks/NavBar';
+import Banner from '../../layouts/Banner';
 import BannerImg from '../../../img/banner-small.svg';
 import api from '../../../api';
 import localAPI from '../../../api/localAPI';
@@ -19,7 +22,7 @@ function UserManagerPage() {
     email: '',
     is_admin: '',
     created_at: '',
-    updared_at: '',
+    updated_at: '',
   });
 
   function fetchUser() {
@@ -61,32 +64,35 @@ function UserManagerPage() {
 
       <Container className="mt-4">
         <Row className="flex-lg-nowrap">
-          <div className="col-12 col-lg-auto mb-3" style={{ width: '200px' }}>
-            <div className="card p-3">
+          <Col xs={12} lg="auto" className="mb-3" style={{ width: '200px' }}>
+            <Card className="p-3">
               <div className="e-navlist e-navlist--active-bg">
-                <ul className="nav">
-                  <li className="nav-item">
-                    <a className="nav-link px-2 active" href="#a">
-                      <i className="fa fa-fw fa-bar-chart mr-1" />
+                <Nav>
+                  <NavItem>
+                    <NavLink className="px-2 active" href="#a">
+                      <FaChartBar />
+                      {' '}
                       <span>Overview</span>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link px-2" href="https://www.bootdey.com/snippets/view/bs4-crud-users" target="__blank">
-                      <i className="fa fa-fw fa-th mr-1" />
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink className="px-2" href="https://www.bootdey.com/snippets/view/bs4-crud-users" target="__blank">
+                      <FaTh />
+                      {' '}
                       <span>CRUD</span>
-                    </a>
-                  </li>
-                  <li className="nav-item">
-                    <a className="nav-link px-2" href="https://www.bootdey.com/snippets/view/bs4-edit-profile-page" target="__blank">
-                      <i className="fa fa-fw fa-cog mr-1" />
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink className="px-2" href="https://www.bootdey.com/snippets/view/bs4-edit-profile-page" target="__blank">
+                      <FaCog />
+                      {' '}
                       <span>Settings</span>
-                    </a>
-                  </li>
-                </ul>
+                    </NavLink>
+                  </NavItem>
+                </Nav>
               </div>
-            </div>
-          </div>
+            </Card>
+          </Col>
 
           <Col>
             <Row>
@@ -115,7 +121,8 @@ function UserManagerPage() {
                             </div>
                             <div className="mt-2">
                               <button className="btn btn-primary" type="button">
-                                <i className="fa fa-fw fa-camera" />
+                                <FaCamera />
+                                {' '}
                                 <span>Change Photo</span>
                               </button>
                             </div>
@@ -143,22 +150,46 @@ function UserManagerPage() {
                                 <Row>
                                   <Col>
                                     <FormGroup>
-                                      <FormLabel>Nombre</FormLabel>
-                                      <FormControl type="text" name="name" placeholder="Nombre" value={user.name} />
+                                      <FormLabel htmlFor="name">Nombre</FormLabel>
+                                      <FormControl
+                                        id="name"
+                                        type="text"
+                                        name="name"
+                                        placeholder="Nombre"
+                                        value={user.name}
+                                        autoComplete="on"
+                                        readOnly
+                                      />
                                     </FormGroup>
                                   </Col>
                                   <Col>
                                     <FormGroup>
-                                      <FormLabel>Cédula</FormLabel>
-                                      <FormControl type="text" name="id_card" placeholder="Cédula" value={user.id_card} />
+                                      <FormLabel htmlFor="id-card">Cédula</FormLabel>
+                                      <FormControl
+                                        id="id-card"
+                                        type="text"
+                                        name="id_card"
+                                        placeholder="Cédula"
+                                        value={user.id_card}
+                                        autoComplete="on"
+                                        readOnly
+                                      />
                                     </FormGroup>
                                   </Col>
                                 </Row>
                                 <Row>
                                   <Col>
                                     <FormGroup className="mb-3">
-                                      <FormLabel>Email</FormLabel>
-                                      <FormControl type="text" placeholder="example@email.com" value={user.email} />
+                                      <FormLabel htmlFor="email">Email</FormLabel>
+                                      <FormControl
+                                        id="email"
+                                        type="text"
+                                        name="email"
+                                        placeholder="example@email.com"
+                                        value={user.email}
+                                        autoComplete="on"
+                                        readOnly
+                                      />
                                     </FormGroup>
                                   </Col>
                                 </Row>
@@ -170,26 +201,42 @@ function UserManagerPage() {
                                 <Row>
                                   <Col>
                                     <FormGroup>
-                                      <FormLabel>Contraseña actual</FormLabel>
-                                      <FormControl type="password" placeholder="••••••" />
+                                      <FormLabel htmlFor="password">Contraseña actual</FormLabel>
+                                      <FormControl
+                                        id="password"
+                                        type="password"
+                                        name="password"
+                                        placeholder="••••••"
+                                        autoComplete="current-password"
+                                      />
                                     </FormGroup>
                                   </Col>
                                 </Row>
                                 <Row>
                                   <Col>
                                     <FormGroup>
-                                      <FormLabel>Nueva contraseña</FormLabel>
-                                      <FormControl type="password" placeholder="••••••" />
+                                      <FormLabel htmlFor="new-password">Nueva contraseña</FormLabel>
+                                      <FormControl
+                                        id="new-password"
+                                        type="password"
+                                        name="new_password"
+                                        placeholder="••••••"
+                                        autoComplete="new-password"
+                                      />
                                     </FormGroup>
                                   </Col>
                                 </Row>
                                 <Row>
                                   <Col>
                                     <FormGroup>
-                                      <FormLabel>
-                                        Confirmar contraseña
-                                      </FormLabel>
-                                      <FormControl type="password" placeholder="••••••" />
+                                      <FormLabel htmlFor="confirm-password">Confirmar contraseña</FormLabel>
+                                      <FormControl
+                                        id="confirm-password"
+                                        type="password"
+                                        name="confirm_password"
+                                        placeholder="••••••"
+                                        autoComplete="new-password"
+                                      />
                                     </FormGroup>
                                   </Col>
                                 </Row>
@@ -214,7 +261,8 @@ function UserManagerPage() {
                   <Card.Body>
                     <div className="px-xl-3">
                       <button type="button" onClick={logout} className="btn btn-block btn-secondary">
-                        <i className="fa fa-sign-out" />
+                        <FaSignOutAlt />
+                        {' '}
                         <span>Cerrar sesión</span>
                       </button>
                     </div>
@@ -238,8 +286,6 @@ function UserManagerPage() {
 }
 
 const BannerText = styled.span`
-  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
-
   color: rgb(255, 255, 255);
   padding: 0 1rem;
   position: absolute;

@@ -28,17 +28,22 @@ function Categories() {
 
       <ListGroup variant="flush">
         {
-                    categories.map((category) => (
-                      <ListGroup.Item as={Link} to={`/proyectos-sociales/categorias/${category.url}`} className="d-flex justify-content-between">
-                        <span>{category.name}</span>
-                        <span className="float-right">
-                          (
-                          {category.projects_count}
-                          )
-                        </span>
-                      </ListGroup.Item>
-                    ))
-                }
+          categories.map((category) => (
+            <ListGroup.Item
+              key={category.id}
+              as={Link}
+              to={`/proyectos-sociales/categorias/${category.url}`}
+              className="d-flex justify-content-between"
+            >
+              <span>{category.name}</span>
+              <span className="float-right">
+                (
+                {category.projects_count}
+                )
+              </span>
+            </ListGroup.Item>
+          ))
+        }
       </ListGroup>
     </>
   );

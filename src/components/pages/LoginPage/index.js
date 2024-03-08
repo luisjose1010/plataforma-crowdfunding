@@ -4,16 +4,50 @@ import { Row, Col } from 'react-bootstrap';
 import { FiAtSign } from 'react-icons/fi';
 import styled from 'styled-components';
 import { FaLock, FaUser } from 'react-icons/fa';
+import ErrorModal from '../../hooks/ErrorModal';
+import InfoModal from '../../hooks/InfoModal';
 import api from '../../../api';
 import localAPI from '../../../api/localAPI';
 
 function LoginPage() {
-  const [loginData, setLoginData] = useState({});
-  const [userData, setUserData] = useState({});
+  const [loginData, setLoginData] = useState({
+    email: '',
+    password: '',
+  });
+  const [userData, setUserData] = useState({
+    id_card: '',
+    name: '',
+    email: '',
+    password: '',
+  });
   const navigate = useNavigate();
 
-  function goBack() {
-    navigate(-1);
+  const [loginErrors, setLoginErrors] = useState([
+    'email',
+    'password',
+  ]);
+  const [registerErrors, setRegisterErrors] = useState([
+    'id_card',
+    'name',
+    'email',
+    'password',
+  ]);
+
+  const [errorShow, setErrorShow] = useState(false);
+  const [errorTitle, setErrorTitle] = useState(null);
+  const [errorDescription, setErrorDescription] = useState(null);
+  function handleCloseError() {
+    setErrorShow(false);
+    setErrorTitle(null);
+    setErrorDescription(null);
+  }
+
+  const [infoShow, setInfoShow] = useState(false);
+  const [infoTitle, setInfoTitle] = useState(null);
+  const [infoDescription, setInfoDescription] = useState(null);
+
+  function goHome() {
+    navigate('/');
   }
 
   function fetchToken(username, password) {
@@ -24,10 +58,19 @@ function LoginPage() {
     api.post('/token', bodyFormData, { headers: { 'Content-Type': 'multipart/form-data' } })
       .then((response) => {
         localAPI.setToken(response.data.access_token);
-        goBack();
+        goHome();
       })
-      .catch(() => {
-
+      .catch((error) => {
+        switch (error.response.status) {
+          case 401:
+            setErrorTitle('Datos incorrectos');
+            setErrorDescription('Usuario o contraseña son incorrectos.');
+            setErrorShow(true);
+            break;
+          default:
+            setErrorShow(true);
+            break;
+        }
       });
   }
 
@@ -38,23 +81,64 @@ function LoginPage() {
   function registerUser() {
     api.post('/users/', userData)
       .then(() => {
-        fetchToken(userData.email, userData.password);
+        setInfoTitle('Usuario registrado');
+        setInfoDescription('¡Usuario registrado correctamente, gracias por unirte!');
+        setInfoShow(true);
       })
-      .catch(() => {
+      .catch((error) => {
+        const { data, status } = error.response;
 
+        switch (status) {
+          case 422:
+            if (data.detail.value !== null) {
+              setErrorTitle('Error');
+              setErrorDescription(`El valor '${data.detail.value}' no se encuentra disponible.`);
+              setErrorShow(true);
+            } else {
+              setErrorTitle('Error');
+              setErrorDescription(data.detail);
+              setErrorShow(true);
+            }
+            break;
+          default:
+            setErrorShow(true);
+            break;
+        }
       });
+  }
+
+  function validateField(event, errors) {
+    let errorsModified = [...errors];
+
+    if (!event.target.validity.valid) {
+      if (errors.indexOf(event.target.name) < 0) {
+        errorsModified.push(event.target.name);
+      }
+    } else {
+      errorsModified = errorsModified.filter((item) => item !== event.target.name);
+    }
+    return errorsModified;
+  }
+
+  function handleCloseInfo() {
+    setInfoShow(false);
+    setInfoTitle(null);
+    setInfoDescription(null);
+    fetchToken(userData.email, userData.password);
   }
 
   function handleChangeLogin(event) {
     const loginDataModified = { ...loginData };
     loginDataModified[event.target.name] = event.target.value;
     setLoginData(loginDataModified);
+    setLoginErrors(validateField(event, loginErrors));
   }
 
   function handleChangeRegister(event) {
     const userDataModified = { ...userData };
     userDataModified[event.target.name] = event.target.value;
     setUserData(userDataModified);
+    setRegisterErrors(validateField(event, registerErrors));
   }
 
   return (
@@ -62,7 +146,7 @@ function LoginPage() {
       <Row className="full-height justify-content-center">
         <Col xs={12} className="text-center align-self-center py-5">
           <div className="section pb-5 pt-5 pt-sm-2">
-            <button type="button" onClick={goBack} className="btn mt-4 button-back">
+            <button type="button" onClick={goHome} className="btn mt-4 button-back">
               <h6>
                 Regresar
               </h6>
@@ -90,6 +174,7 @@ function LoginPage() {
                           placeholder="Correo electrónico"
                           id="email-login"
                           autoComplete="on"
+                          required
                         />
                         <FiAtSign className="input-icon" />
                       </div>
@@ -102,10 +187,11 @@ function LoginPage() {
                           placeholder="Contraseña"
                           id="logpass"
                           autoComplete="on"
+                          required
                         />
                         <FaLock className="input-icon" />
                       </div>
-                      <button type="button" className="btn mt-4" onClick={login}>
+                      <button type="submit" className="btn mt-4" onClick={login} disabled={loginErrors.length > 0}>
                         Ingresar
                       </button>
                       <p className="mb-0 mt-4 text-center">
@@ -129,6 +215,7 @@ function LoginPage() {
                           placeholder="Cédula"
                           id="id-card"
                           autoComplete="on"
+                          required
                         />
                         <i className="input-icon uil uil-user" />
                         <FaUser className="input-icon" />
@@ -142,6 +229,7 @@ function LoginPage() {
                           placeholder="Nombre y apellido"
                           id="username"
                           autoComplete="on"
+                          required
                         />
                         <i className="input-icon uil uil-user" />
                         <FaUser className="input-icon" />
@@ -155,6 +243,7 @@ function LoginPage() {
                           placeholder="Correo electrónico"
                           id="email-register"
                           autoComplete="on"
+                          required
                         />
                         <FiAtSign className="input-icon" />
                       </div>
@@ -167,10 +256,11 @@ function LoginPage() {
                           placeholder="Contraseña"
                           id="password"
                           autoComplete="new-password"
+                          required
                         />
                         <FaLock className="input-icon" />
                       </div>
-                      <button type="button" className="btn mt-4" onClick={registerUser}>
+                      <button type="button" className="btn mt-4" onClick={registerUser} disabled={registerErrors.length > 0}>
                         Enviar
                       </button>
                     </div>
@@ -181,6 +271,20 @@ function LoginPage() {
           </div>
         </Col>
       </Row>
+
+      <ErrorModal
+        show={errorShow}
+        title={errorTitle}
+        description={errorDescription}
+        onHide={handleCloseError}
+      />
+
+      <InfoModal
+        show={infoShow}
+        title={infoTitle}
+        description={infoDescription}
+        acceptHandler={handleCloseInfo}
+      />
     </ContainerStyled>
   );
 }
@@ -201,6 +305,17 @@ overflow-x: hidden;
   text-decoration: none;
   color: whitesmoke;
   font-weight: 800;
+}
+
+.form-style:invalid:required {
+  border: none;
+  outline: none;
+  border: 2px solid red;
+}
+.form-style:valid:required {
+  border: none;
+  outline: none;
+  border: none;
 }
 
 

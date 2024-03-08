@@ -60,13 +60,26 @@ function ProjectsList({ categoryUrl }) {
         }
       </h2>
 
-      <Row xs={2} md={4} className="g-4 mt-5">
+      <Row className="g-4 mt-5">
         {
           projects.map((project) => (
-            <Col key={project.id}>
+            <Col xs={2} md={3} key={project.id}>
               <ProjectCard project={project} />
             </Col>
           ))
+        }
+
+        {
+          projects.length < 1
+            ? (
+              <Col>
+                <hr />
+                ¡Ups! Esta categoría no tiene proyectos aún,
+                {' '}
+                <a href="/usuario">¿crear uno?</a>
+              </Col>
+            )
+            : ''
         }
       </Row>
     </Container>

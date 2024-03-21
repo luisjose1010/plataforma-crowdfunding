@@ -1,13 +1,43 @@
+import { useState, useEffect } from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import img from '../../../img/exampleCard.jpg';
+import api from '../../../api';
 
 function ProjectCard({ project }) {
+  const [image, setImage] = useState(null);
+
+  function fetchImages() {
+    api.get(`/images/projects/${project.id}`, {
+      responseType: 'arraybuffer',
+    }).then((response) => {
+      const base64 = btoa(
+        new Uint8Array(response.data).reduce(
+          (data, byte) => data + String.fromCharCode(byte),
+          '',
+        ),
+      );
+      setImage(base64);
+    }).catch(() => {
+
+    });
+  }
+
+  useEffect(() => {
+    if (project.id > 0) {
+      fetchImages();
+    }
+  }, [project]);
+
   return (
     <CardStyled className="mb-2 m-2">
-      <Card.Img variant="top" src={img} />
+      {
+        image
+          ? (<Card.Img variant="top" src={`data:;base64,${image}`} />)
+          : (<Card.Img src={img} />)
+      }
       <Card.Body>
         <Card.Title>
           {project.title}

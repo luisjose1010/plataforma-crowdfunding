@@ -36,6 +36,7 @@ function ProjectManagerPage() {
     updated_at: '',
     category_id: 1,
   });
+  const [imageForm, setImageForm] = useState('');
   const [categories, setCategories] = useState([]);
 
   const [editModes] = useState({
@@ -45,6 +46,8 @@ function ProjectManagerPage() {
   });
 
   const [deleteShow, setDeleteShow] = useState(false);
+
+  const [changeImagesShow, setChangeImagesShow] = useState(false);
 
   const [errorShow, setErrorShow] = useState(false);
   const [errorTitle, setErrorTitle] = useState(null);
@@ -227,6 +230,38 @@ function ProjectManagerPage() {
       });
   }
 
+  function uploadImages() {
+    const data = new FormData();
+    data.append('file', imageForm.files[0]);
+
+    api.post(`/images/projects/${user.id}`, data, {
+      headers: {
+        accept: 'application/json',
+        'Accept-Language': 'en-US,en;q=0.8',
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then(() => {
+        setChangeImagesShow(false);
+
+        setInfoTitle('Galería actualizada');
+        setInfoDescription('Las imagenes del proyecto han sido actualizadas con éxito.');
+        setInfoShow(true);
+      }).catch((error) => {
+        const { status } = error.response;
+        switch (status) {
+          case 403:
+            setErrorTitle('Usuario no autorizado');
+            setErrorDescription('El usuario no está autorizado.');
+            setErrorShow(true);
+            break;
+          default:
+            setErrorShow(true);
+            break;
+        }
+      });
+  }
+
   function logout() {
     localAPI.deleteToken();
     navigate('/');
@@ -249,6 +284,10 @@ function ProjectManagerPage() {
   function handleDelete() {
     setDeleteShow(false);
     deleteProject();
+  }
+
+  function handleChangeImages(event) {
+    setImageForm(event.target);
   }
 
   useEffect(() => {
@@ -345,15 +384,18 @@ function ProjectManagerPage() {
                                 {String(project.updated_at).split('T')[0]}
                               </small>
                             </div>
-                            <div className="mt-2">
-                              <Button className="btn-primary">
+                            <div hidden={editMode !== editModes.edit && editMode} className="mt-2">
+                              <Button onClick={() => setChangeImagesShow(true)} className="btn-primary">
                                 <FaCamera />
                                 {' '}
-                                {
-                                  editMode === editModes.create || !editMode
-                                    ? 'Ver fotos'
-                                    : 'Editar fotos'
-                                }
+                                Cambiar portada
+                              </Button>
+                            </div>
+                            <div hidden={editMode !== editModes.create && editMode} className="mt-2">
+                              <Button onClick={() => setChangeImagesShow(true)} className="btn-primary">
+                                <FaCamera />
+                                {' '}
+                                Agregar portada
                               </Button>
                             </div>
                           </div>
@@ -563,6 +605,28 @@ function ProjectManagerPage() {
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setDeleteShow(false)}>Cancelar</Button>
           <Button variant="danger" onClick={handleDelete}>Aceptar</Button>
+        </Modal.Footer>
+      </Modal>
+
+      <Modal
+        show={changeImagesShow}
+        size="lg"
+        centered
+      >
+        <Modal.Header>
+          <Modal.Title>
+            Galería del proyecto
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group controlId="formFile" className="mb-3">
+            <Form.Label>Imagenes del proyecto</Form.Label>
+            <Form.Control name="avatar" onChange={handleChangeImages} type="file" multiple />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setChangeImagesShow(false)}>Cancelar</Button>
+          <Button onClick={uploadImages}>Aceptar</Button>
         </Modal.Footer>
       </Modal>
 

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import {
   Container, Row, Col, Card, Badge, Nav, NavItem, Form,
-  FormGroup, FormControl, FormLabel, NavLink, Tab, ListGroup, Button,
+  FormGroup, FormControl, FormLabel, NavLink, Tab, ListGroup,
+  Button, Modal, Image,
 } from 'react-bootstrap';
 import { useNavigate, Link } from 'react-router-dom';
 import {
@@ -33,6 +34,8 @@ function UserManagerPage() {
 
     projects: [],
   });
+  const [avatar, setAvatar] = useState('');
+  const [avatarForm, setAvatarForm] = useState('');
 
   const [editModes] = useState({
     overview: 'overview',
@@ -40,6 +43,8 @@ function UserManagerPage() {
     projects: 'projects',
   });
   const [editMode, setEditMode] = useState(editModes.overview);
+
+  const [changeAvatarShow, setChangeAvatarShow] = useState(false);
 
   const [errorShow, setErrorShow] = useState(false);
   const [errorTitle, setErrorTitle] = useState(null);
@@ -113,6 +118,53 @@ function UserManagerPage() {
       });
   }
 
+  function fetchAvatar() {
+    api.get(`/images/users/${user.id}`, {
+      responseType: 'arraybuffer',
+    }).then((response) => {
+      const base64 = btoa(
+        new Uint8Array(response.data).reduce(
+          (data, byte) => data + String.fromCharCode(byte),
+          '',
+        ),
+      );
+      setAvatar(base64);
+    });
+  }
+  function uploadAvatar() {
+    const data = new FormData();
+    data.append('file', avatarForm.files[0]);
+
+    api.post(`/images/users/${user.id}`, data, {
+      headers: {
+        accept: 'application/json',
+        'Accept-Language': 'en-US,en;q=0.8',
+        // eslint-disable-next-line no-underscore-dangle
+        'Content-Type': 'multipart/form-data',
+      },
+    })
+      .then(() => {
+        fetchAvatar();
+        setChangeAvatarShow(false);
+
+        setInfoTitle('Avatar actualizado');
+        setInfoDescription('El avatar del usuario ha sido actualizado con éxito.');
+        setInfoShow(true);
+      }).catch((error) => {
+        const { status } = error.response;
+        switch (status) {
+          case 403:
+            setErrorTitle('Usuario no autorizado');
+            setErrorDescription('El usuario no está autorizado.');
+            setErrorShow(true);
+            break;
+          default:
+            setErrorShow(true);
+            break;
+        }
+      });
+  }
+
   function logout() {
     localAPI.deleteToken();
     navigate('/');
@@ -124,9 +176,19 @@ function UserManagerPage() {
     setUser(userModified);
   }
 
+  function handleChangeAvatar(event) {
+    setAvatarForm(event.target);
+  }
+
   useEffect(() => {
     fetchUser();
   }, [editMode]);
+
+  useEffect(() => {
+    if (user.id) {
+      fetchAvatar();
+    }
+  }, [user]);
 
   return (
     <>
@@ -188,8 +250,8 @@ function UserManagerPage() {
                       <Row>
                         <Col className="col-12 col-sm-auto mb-3">
                           <div className="mx-auto" style={{ width: '140px' }}>
-                            <div className="d-flex justify-content-center align-items-center rounded" style={{ height: '140px', backgroundColor: 'rgb(233, 236, 239)' }}>
-                              <span style={{ color: 'rgb(166, 168, 170)', font: 'bold 8pt Arial' }}>140x140</span>
+                            <div className="d-flex justify-content-center align-items-center rounded" style={{ height: '140px' }}>
+                              <Image src={`data:;base64,${avatar}`} alt="avatar" style={{ height: '140px', width: '140px' }} fluid />
                             </div>
                           </div>
                         </Col>
@@ -205,7 +267,7 @@ function UserManagerPage() {
                               </small>
                             </div>
                             <div className="mt-2">
-                              <Button className="btn-primary">
+                              <Button onClick={() => setChangeAvatarShow(true)} className="btn-primary">
                                 <FaCamera />
                                 {' '}
                                 <span>Cambiar foto</span>
@@ -460,6 +522,28 @@ function UserManagerPage() {
       </Container>
 
       <Footer />
+
+      <Modal
+        show={changeAvatarShow}
+        size="lg"
+        centered
+      >
+        <Modal.Header>
+          <Modal.Title id="contained-modal-title-vcenter">
+            Cambiar avatar
+          </Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <Form.Group controlId="formFile" className="mb-3">
+            <Form.Label>Avatar</Form.Label>
+            <Form.Control name="avatar" onChange={handleChangeAvatar} type="file" />
+          </Form.Group>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setChangeAvatarShow(false)}>Cancelar</Button>
+          <Button onClick={uploadAvatar}>Aceptar</Button>
+        </Modal.Footer>
+      </Modal>
 
       <ErrorModal
         show={errorShow}

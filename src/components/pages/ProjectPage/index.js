@@ -23,6 +23,7 @@ function ProjectPage() {
   const [project, setProject] = useState({
     id: -1,
   });
+  const [image, setImage] = useState(null);
   const [user, setUser] = useState({
     id: null,
     is_superuser: false,
@@ -96,10 +97,32 @@ function ProjectPage() {
     }
   }
 
+  function fetchImages() {
+    api.get(`/images/projects/${project.id}`, {
+      responseType: 'arraybuffer',
+    }).then((response) => {
+      const base64 = btoa(
+        new Uint8Array(response.data).reduce(
+          (data, byte) => data + String.fromCharCode(byte),
+          '',
+        ),
+      );
+      setImage(base64);
+    }).catch(() => {
+
+    });
+  }
+
   useEffect(() => {
     fetchProject();
     fetchUser();
   }, [id]);
+
+  useEffect(() => {
+    if (project.id > 0) {
+      fetchImages();
+    }
+  }, [project]);
 
   return (
     <>
@@ -118,7 +141,11 @@ function ProjectPage() {
 
         <Row className="mt-5">
           <Col sm="12" md="8">
-            <Image src={exampleCard} />
+            {
+              image
+                ? (<Image src={`data:;base64,${image}`} />)
+                : (<Image src={exampleCard} />)
+            }
             <hr />
             <Donatone goal={project.goal} donated={project.donated} />
           </Col>

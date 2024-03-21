@@ -65,7 +65,7 @@ function NavBar() {
 
   return (
     <Styled>
-      <Navbar fixed="top" expand="lg" className={`navbar-dark shadow-5-strong justify-content-between ${scrolled ? 'scrolled' : ''}`}>
+      <Navbar fixed="top" expand="xl" className={`navbar-dark shadow-5-strong justify-content-between ${scrolled ? 'scrolled' : ''}`}>
         <Container>
           <Navbar.Brand as={Link} to="/">Plataforma Crowdfunding</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -91,18 +91,18 @@ function NavBar() {
                       </NavDropdown.Item>
                     ))
                 }
-                <NavDropdown.Divider />
-                <NavDropdown.Item as={Link} to="/proyectos-sociales/buscar" className="fw-bold">
+                <NavDropdown.Divider hidden />
+                <NavDropdown.Item as={Link} to="/proyectos-sociales/buscar" hidden className="fw-bold">
                   Buscar
                 </NavDropdown.Item>
               </NavDropdown>
             </NavStyled>
 
             <Nav>
-              <Nav.Link eventKey={1} as={Link} to={(user ? '/usuario' : '/login')} className="text-white my-auto">
+              <Nav.Link eventKey={1} as={Link} to={(user ? '/usuario' : '/login')} className="py-3 text-white my-auto">
                 <Button><b>{ user ? user.name : 'Iniciar Sesión' }</b></Button>
               </Nav.Link>
-              <Nav.Link eventKey={2} href="#buscar" className="my-auto">
+              <Nav.Link eventKey={2} href="#buscar" hidden className="my-auto">
                 <SearchIcon src={searchIcon} alt="" />
               </Nav.Link>
             </Nav>

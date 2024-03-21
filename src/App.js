@@ -11,6 +11,8 @@ import ProjectPage from './components/pages/ProjectPage';
 import AboutUs from './components/pages/AboutUs';
 import LoginPage from './components/pages/LoginPage';
 import UserManagerPage from './components/pages/UserManagerPage';
+import ProjectManagerPage from './components/pages/ProjectManagerPage';
+import AdminManagerPage from './components/pages/AdminManagerPage';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +26,18 @@ const router = createBrowserRouter([
   {
     path: '/usuario',
     element: <UserManagerPage />,
+  },
+  {
+    path: '/administrador/:editMode',
+    element: <AdminManagerPage />,
+  },
+  {
+    path: '/proyectos/:id/:editMode?',
+    element: <ProjectManagerPage />,
+  },
+  {
+    path: '/proyectos/crear',
+    element: <ProjectManagerPage />,
   },
   {
     path: '/proyectos-sociales/categorias/:category',

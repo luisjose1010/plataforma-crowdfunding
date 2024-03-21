@@ -194,11 +194,6 @@ function LoginPage() {
                       <button type="submit" className="btn mt-4" onClick={login} disabled={loginErrors.length > 0}>
                         Ingresar
                       </button>
-                      <p className="mb-0 mt-4 text-center">
-                        <a href="#0" className="link">
-                          ¿Olvidaste tu contraseña?
-                        </a>
-                      </p>
                     </div>
                   </div>
                 </div>

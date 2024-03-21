@@ -2,7 +2,7 @@ import { Modal, Button } from 'react-bootstrap/';
 import PropTypes from 'prop-types';
 
 function InfoModal({
-  show, title, description, acceptHandler, cancelHandler,
+  show, title, description, acceptHandler, cancelHandler, children,
 }) {
   return (
     <Modal
@@ -14,11 +14,12 @@ function InfoModal({
     >
       <Modal.Header closeButton>
         <Modal.Title id="contained-modal-title-center">
-          { !title ? 'Acción completada' : title }
+          {!title ? 'Acción completada' : title}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        { !description ? 'Solicitud realizada con éxito.' : description }
+        {description}
+        {children}
       </Modal.Body>
       <Modal.Footer>
         <Button variant="danger" onClick={cancelHandler} hidden={!cancelHandler}>
@@ -38,11 +39,13 @@ InfoModal.propTypes = {
   description: PropTypes.string,
   acceptHandler: PropTypes.func.isRequired,
   cancelHandler: PropTypes.func,
+  children: PropTypes.node,
 };
 InfoModal.defaultProps = {
   title: '',
   description: '',
   cancelHandler: null,
+  children: null,
 };
 
 export default InfoModal;

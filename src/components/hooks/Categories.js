@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import { ListGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import api from '../../api';
 
-function Categories() {
+function Categories({ active }) {
   const [categories, setCategories] = useState([]);
 
   function fetchCategory() {
@@ -35,8 +36,8 @@ function Categories() {
               to={`/proyectos-sociales/categorias/${category.url}`}
               className="d-flex justify-content-between"
             >
-              <span>{category.name}</span>
-              <span className="float-right">
+              <span className={`${category.id === active ? 'fw-bold' : ''}`}>{category.name}</span>
+              <span className={`float-right ${category.id === active ? 'fw-bold' : ''}`}>
                 (
                 {category.projects_count}
                 )
@@ -48,5 +49,9 @@ function Categories() {
     </>
   );
 }
+
+Categories.propTypes = {
+  active: PropTypes.number.isRequired,
+};
 
 export default Categories;

@@ -1,14 +1,16 @@
 import { useState, useEffect } from 'react';
 import {
   Container, Row, Col, Card, Badge, Nav, NavItem, Form,
-  FormGroup, FormControl, FormLabel, NavLink, Tab,
+  FormGroup, FormControl, FormLabel, NavLink, Tab, ListGroup, Button,
 } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import {
   FaCamera, FaChartBar, FaCog, FaSignOutAlt, FaTh,
 } from 'react-icons/fa';
 import { BannerText } from '../../hooks/theme';
 import NavBar from '../../hooks/NavBar';
+import Donatone from '../../hooks/Donatone';
+import Footer from '../../hooks/Footer';
 import ErrorModal from '../../hooks/ErrorModal';
 import InfoModal from '../../hooks/InfoModal';
 import Banner from '../../layouts/Banner';
@@ -19,15 +21,17 @@ import localAPI from '../../../api/localAPI';
 function UserManagerPage() {
   const navigate = useNavigate();
   const [user, setUser] = useState({
-    id: null,
-    id_card: null,
-    name: null,
-    email: null,
-    password: null,
-    new_password: null,
-    is_admin: null,
-    created_at: null,
-    updated_at: null,
+    id: '',
+    id_card: '',
+    name: '',
+    email: '',
+    password: '',
+    new_password: '',
+    is_superuser: '',
+    created_at: '',
+    updated_at: '',
+
+    projects: [],
   });
 
   const [editModes] = useState({
@@ -61,7 +65,7 @@ function UserManagerPage() {
     if (tokenData) {
       const userId = tokenData.sub;
 
-      api.get(`/users/${userId}`)
+      api.get(`/users/${userId}/projects/`)
         .then((response) => {
           setUser(response.data);
         })
@@ -75,7 +79,8 @@ function UserManagerPage() {
   function updateUser() {
     api.put(`/users/${user.id}`, user)
       .then((response) => {
-        setUser(response.data);
+        setUser({ ...response.data, projects: [] }); // Evitar errores por projects vacio
+        fetchUser();
 
         setInfoTitle('Usuario actualizado');
         setInfoDescription('El usuario ha sido actualizado con éxito.');
@@ -121,7 +126,7 @@ function UserManagerPage() {
 
   useEffect(() => {
     fetchUser();
-  }, []);
+  }, [editMode]);
 
   return (
     <>
@@ -138,7 +143,7 @@ function UserManagerPage() {
       <Container className="mt-4">
         <Row className="flex-lg-nowrap">
           <Col xs={12} lg="auto" className="mb-3" style={{ width: '200px' }}>
-            <Card className="p-3">
+            <Card className="p-3 mb-3">
               <div className="e-navlist e-navlist--active-bg">
                 <Nav>
                   <NavItem>
@@ -165,6 +170,13 @@ function UserManagerPage() {
                 </Nav>
               </div>
             </Card>
+            <Card hidden={!user.is_superuser}>
+              <Card.Body>
+                <h6 className="card-title font-weight-bold">Administrador</h6>
+                <p className="card-text">Accede al panel de administrador.</p>
+                <Button onClick={() => navigate('/administrador/proyectos')}>Panel de administrador</Button>
+              </Card.Body>
+            </Card>
           </Col>
 
           <Col>
@@ -181,7 +193,7 @@ function UserManagerPage() {
                             </div>
                           </div>
                         </Col>
-                        <Col className="col d-flex flex-column flex-sm-row justify-content-between mb-3">
+                        <Col className="d-flex flex-column flex-sm-row justify-content-between mb-3">
                           <div className="text-center text-sm-left mb-2 mb-sm-0">
                             <h4 className="pt-sm-2 pb-1 mb-0 text-nowrap">{user.name}</h4>
                             <p className="mb-0">{user.email}</p>
@@ -193,15 +205,19 @@ function UserManagerPage() {
                               </small>
                             </div>
                             <div className="mt-2">
-                              <button className="btn btn-primary" type="button">
+                              <Button className="btn-primary">
                                 <FaCamera />
                                 {' '}
                                 <span>Cambiar foto</span>
-                              </button>
+                              </Button>
                             </div>
                           </div>
                           <div className="text-center text-sm-right">
-                            { Boolean(user.is_superuser) === true ? (<Badge bg="secondary">administrator</Badge>) : null}
+                            {
+                              user.is_superuser
+                                ? (<Badge as={Button} pill onClick={() => navigate('/administrador/proyectos')}>Administrador</Badge>)
+                                : null
+                            }
                             <div className="text-muted">
                               <small>
                                 Unido el
@@ -217,34 +233,31 @@ function UserManagerPage() {
                           id="overview"
                           onClick={() => setEditMode(editModes.overview)}
                         >
-                          <a
-                            href="#overview"
-                            className={`nav-link ${editMode === editModes.overview ? 'active' : ''}`}
+                          <NavLink
+                            className={`${editMode === editModes.overview ? 'active' : ''}`}
                           >
                             Ver
-                          </a>
+                          </NavLink>
                         </NavItem>
                         <NavItem
                           id="edit"
                           onClick={() => setEditMode(editModes.edit)}
                         >
-                          <a
-                            href="#edit"
-                            className={`nav-link ${editMode === editModes.edit ? 'active' : ''}`}
+                          <NavLink
+                            className={`${editMode === editModes.edit ? 'active' : ''}`}
                           >
                             Editar
-                          </a>
+                          </NavLink>
                         </NavItem>
                         <NavItem
                           id="projects"
                           onClick={() => setEditMode(editModes.projects)}
                         >
-                          <a
-                            href="#projects"
-                            className={`nav-link ${editMode === editModes.projects ? 'active' : ''}`}
+                          <NavLink
+                            className={`${editMode === editModes.projects ? 'active' : ''}`}
                           >
                             Ver proyectos
-                          </a>
+                          </NavLink>
                         </NavItem>
                       </Nav>
                       <Tab.Content className="tab-content pt-3">
@@ -287,9 +300,9 @@ function UserManagerPage() {
                                 <Row>
                                   <Col>
                                     <FormGroup className="mb-3">
-                                      <FormLabel htmlFor="email">Email</FormLabel>
+                                      <FormLabel htmlFor="email2">Email</FormLabel>
                                       <FormControl
-                                        id="email"
+                                        id="email2"
                                         type="text"
                                         name="email"
                                         placeholder="example@email.com"
@@ -356,14 +369,61 @@ function UserManagerPage() {
                             </Row>
                             <Row hidden={editMode !== editModes.edit}>
                               <Col className="d-flex justify-content-end">
-                                <button className="btn btn-primary" type="button" onClick={updateUser}>Guardar cambios</button>
+                                <Button className="btn btn-danger mx-2" onClick={fetchUser}>Cancelar cambios</Button>
+                                <Button className="btn btn-primary mx-2" onClick={updateUser}>Guardar cambios</Button>
                               </Col>
                             </Row>
                           </Form>
 
                           <Row hidden={editMode !== editModes.projects}>
                             <Col>
-                              <h3>Proyectos</h3>
+                              <Row>
+                                <Col>
+                                  <h3>Proyectos</h3>
+                                </Col>
+                              </Row>
+
+                              <Row>
+                                <Col>
+                                  <ListGroup>
+                                    {
+                                      user.projects
+                                        ? user.projects.map((project) => (
+                                          (
+                                            <ListGroup.Item action as={Link} to={`/proyectos/${project.id}/ver`}>
+                                              <Row className="p-2">
+                                                <Col xs="12" md="6" className="my-1">
+                                                  {project.title}
+                                                  {' - '}
+                                                  {String(project.created_at).split('T')[0]}
+                                                </Col>
+                                                <Col xs="12" md="6" className="my-1">
+                                                  <Donatone
+                                                    donated={project.donated}
+                                                    goal={project.goal}
+                                                    mini
+                                                  />
+                                                </Col>
+                                              </Row>
+                                            </ListGroup.Item>
+                                          )
+                                        ))
+                                        : ''
+                                    }
+                                    {
+                                      user.projects.length < 1
+                                        ? (
+                                          <ListGroup.Item action as={Link} to="/proyectos/crear" className="p-3">
+                                            ¡Ups! Este usuario no tiene proyectos aún,
+                                            {' '}
+                                            <Link to="/proyectos/crear">¿crear uno?</Link>
+                                          </ListGroup.Item>
+                                        )
+                                        : ''
+                                    }
+                                  </ListGroup>
+                                </Col>
+                              </Row>
                             </Col>
                           </Row>
                         </div>
@@ -377,11 +437,11 @@ function UserManagerPage() {
                 <Card className="mb-3">
                   <Card.Body>
                     <div className="px-xl-3">
-                      <button type="button" onClick={logout} className="btn btn-block btn-secondary">
+                      <Button onClick={logout} className="btn-block btn-secondary">
                         <FaSignOutAlt />
                         {' '}
                         <span>Cerrar sesión</span>
-                      </button>
+                      </Button>
                     </div>
                   </Card.Body>
                 </Card>
@@ -389,7 +449,7 @@ function UserManagerPage() {
                   <Card.Body>
                     <h6 className="card-title font-weight-bold">Crear proyecto</h6>
                     <p className="card-text">Todos en algún momento necesitamos ayuda.</p>
-                    <button type="button" className="btn btn-primary">Nuevo proyecto</button>
+                    <Button as={Link} to="/proyectos/crear">Nuevo proyecto</Button>
                   </Card.Body>
                 </Card>
               </Col>
@@ -398,6 +458,8 @@ function UserManagerPage() {
           </Col>
         </Row>
       </Container>
+
+      <Footer />
 
       <ErrorModal
         show={errorShow}

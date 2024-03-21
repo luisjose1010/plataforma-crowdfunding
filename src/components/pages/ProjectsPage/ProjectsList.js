@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Container, Row, Col } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import api from '../../../api';
@@ -10,10 +11,10 @@ function ProjectsList({ categoryUrl }) {
   const [category, setCategory] = useState(null);
 
   function fetchProjects(categoryId) {
-    let endpoint = '/projects/';
+    let endpoint = '/projects/?is_verified=true';
 
     if (categoryId) {
-      endpoint += `?category_id=${categoryId}`;
+      endpoint += `&category_id=${categoryId}`;
     }
 
     api.get(endpoint)
@@ -56,14 +57,14 @@ function ProjectsList({ categoryUrl }) {
 
       <h2>
         {
-        !category ? '¡Encuentra Tu Proyecto Favorito!' : category.description
+          !category ? '¡Encuentra Tu Proyecto Favorito!' : category.description
         }
       </h2>
 
       <Row className="g-4 mt-5">
         {
           projects.map((project) => (
-            <Col xs={2} md={3} key={project.id}>
+            <Col xs={12} sm={6} md={3} key={project.id}>
               <ProjectCard project={project} />
             </Col>
           ))
@@ -76,7 +77,7 @@ function ProjectsList({ categoryUrl }) {
                 <hr />
                 ¡Ups! Esta categoría no tiene proyectos aún,
                 {' '}
-                <a href="/usuario">¿crear uno?</a>
+                <Link to="/proyectos/crear">¿crear uno?</Link>
               </Col>
             )
             : ''

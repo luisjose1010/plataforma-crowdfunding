@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import {
-  Container, Row, Col, Image, Button, Modal,
+  Container, Row, Col, Image, Button, Modal, Badge,
 } from 'react-bootstrap';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { BannerText } from '../../hooks/theme';
+import { BannerContent, BannerTitle } from '../../hooks/theme';
 import Categories from '../../hooks/Categories';
 import Donatone from '../../hooks/Donatone';
 import Banner from '../../layouts/Banner/index';
@@ -16,12 +16,12 @@ import Footer from '../../hooks/Footer';
 import DonationForm from './DonationForm';
 import api from '../../../api';
 import localAPI from '../../../api/localAPI';
-import TableC2PPDF from '../../../pdf/c2p-table.pdf';
 
 function ProjectPage() {
   const navigate = useNavigate();
   const [project, setProject] = useState({
     id: -1,
+    is_verified: true, // Avoid render danger badge
   });
   const [image, setImage] = useState(null);
   const [user, setUser] = useState({
@@ -72,7 +72,7 @@ function ProjectPage() {
           setUser(response.data);
         })
         .catch(() => {
-          navigate('/login');
+
         });
     }
   }
@@ -107,7 +107,7 @@ function ProjectPage() {
           '',
         ),
       );
-      setImage(base64);
+      setImage(`data:;base64,${base64}`);
     }).catch(() => {
 
     });
@@ -131,9 +131,11 @@ function ProjectPage() {
           <NavBar />
         </header>
 
-        <BannerText>
-          {project ? project.title : ''}
-        </BannerText>
+        <BannerContent>
+          <BannerTitle>
+            {project ? project.title : ''}
+          </BannerTitle>
+        </BannerContent>
       </Banner>
 
       <Container className="mt-5 mb-5">
@@ -143,8 +145,8 @@ function ProjectPage() {
           <Col sm="12" md="8">
             {
               image
-                ? (<Image src={`data:;base64,${image}`} />)
-                : (<Image src={exampleCard} />)
+                ? (<Image fluid src={image} onError={() => setImage(exampleCard)} />)
+                : (<Image fluid src={exampleCard} />)
             }
             <hr />
             <Donatone goal={project.goal} donated={project.donated} />
@@ -157,7 +159,11 @@ function ProjectPage() {
 
         <Row className="mt-5">
           <Col sm="12" md="8">
-            <h3>{project ? project.title : ''}</h3>
+            <h3>
+              {project ? project.title : ''}
+              {' '}
+              {!project.is_verified && (<Badge bg="danger" className="mx-2">No publicado</Badge>)}
+            </h3>
 
             <p>{project ? project.description : ''}</p>
           </Col>
@@ -165,7 +171,7 @@ function ProjectPage() {
         <Button onClick={handleDonateClick} hidden={!project.is_verified} className="mt-2 mx-2 btn-success">
           ¡Dona a este proyecto!
         </Button>
-        <Button as={Link} to={`/proyectos/${id}/ver`} hidden={!user.is_superuser && project.user_id !== user.id} className="mt-2 mx-2">
+        <Button as={Link} to={`/proyectos/${id}/editar`} hidden={!user.is_superuser && project.user_id !== user.id} className="mt-2 mx-2">
           Editar proyecto
         </Button>
       </Container>
@@ -214,11 +220,6 @@ function ProjectPage() {
             <b>Paypal:</b>
             <br />
             pagos@plataformacrowdfunding.com
-          </p>
-          <p>
-            <b>Ver tablas C2P</b>
-            <br />
-            <Button as={Link} to={TableC2PPDF} target="_blank">Abrir</Button>
           </p>
         </Modal.Body>
         <Modal.Footer>

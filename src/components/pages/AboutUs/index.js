@@ -3,7 +3,7 @@ import {
 } from 'react-bootstrap';
 import NavBar from '../../hooks/NavBar';
 import Footer from '../../hooks/Footer';
-import { BannerText } from '../../hooks/theme';
+import { BannerContent, BannerTitle } from '../../hooks/theme';
 import Banner from '../../layouts/Banner';
 import BannerImg from '../../../img/banner-small.svg';
 import exampleCard from '../../../img/exampleCard.jpg';
@@ -16,9 +16,11 @@ function AboutUs() {
           <NavBar />
         </header>
 
-        <BannerText>
-          Sobre Nosotros
-        </BannerText>
+        <BannerContent>
+          <BannerTitle>
+            Sobre Nosotros
+          </BannerTitle>
+        </BannerContent>
       </Banner>
 
       <Container className="mt-5">

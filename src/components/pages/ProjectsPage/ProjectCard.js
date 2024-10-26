@@ -3,7 +3,7 @@ import { Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import img from '../../../img/exampleCard.jpg';
+import exampleCard from '../../../img/exampleCard.jpg';
 import api from '../../../api';
 
 function ProjectCard({ project }) {
@@ -19,7 +19,7 @@ function ProjectCard({ project }) {
           '',
         ),
       );
-      setImage(base64);
+      setImage(`data:;base64,${base64}`);
     }).catch(() => {
 
     });
@@ -35,8 +35,8 @@ function ProjectCard({ project }) {
     <CardStyled className="mb-2 m-2">
       {
         image
-          ? (<Card.Img variant="top" src={`data:;base64,${image}`} />)
-          : (<Card.Img src={img} />)
+          ? (<Card.Img variant="top" src={image} onError={() => setImage(exampleCard)} />)
+          : (<Card.Img variant="top" src={exampleCard} />)
       }
       <Card.Body>
         <Card.Title>

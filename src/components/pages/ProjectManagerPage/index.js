@@ -7,7 +7,7 @@ import { useNavigate, useParams, Link } from 'react-router-dom';
 import {
   FaCamera, FaChartBar, FaCog, FaSignOutAlt, FaTh,
 } from 'react-icons/fa';
-import { BannerText } from '../../hooks/theme';
+import { BannerContent, BannerTitle } from '../../hooks/theme';
 import NavBar from '../../hooks/NavBar';
 import Donatone from '../../hooks/Donatone';
 import Footer from '../../hooks/Footer';
@@ -318,14 +318,16 @@ function ProjectManagerPage() {
           <NavBar />
         </header>
 
-        <BannerText>
-          Proyecto
-        </BannerText>
+        <BannerContent>
+          <BannerTitle>
+            Proyecto
+          </BannerTitle>
+        </BannerContent>
       </Banner>
 
       <Container className="mt-4">
-        <Row className="flex-lg-nowrap">
-          <Col xs={12} lg="auto" className="mb-3" style={{ width: '200px' }}>
+        <Row className="flex-lg-nowrap justify-content-center gap-3">
+          <Col xs={12} lg={2}>
             <Card className="p-3 mb-3">
               <div className="e-navlist e-navlist--active-bg">
                 <Nav>
@@ -363,226 +365,217 @@ function ProjectManagerPage() {
             </Card>
           </Col>
 
-          <Col>
-            <Row>
-              <Col className="mb-3">
-                <Card>
-                  <Card.Body>
-                    <div className="e-profile">
-                      <Row className="d-flex flex-column flex-sm-row justify-content-center mb-3">
-                        <Col xs={12} md={7}>
-                          <div className="text-center text-sm-left mb-2 mb-sm-0">
-                            <div className="container-text-truncated">
-                              <h4 className="pt-sm-2 pb-1 mb-0 text-truncated">
-                                {editMode === editModes.create || !editMode ? 'Nuevo proyecto' : project.title}
-                              </h4>
-                            </div>
-                            <div hidden={editMode === editModes.create || !editMode} className="text-muted text-nowrap">
-                              <small>
-                                Creado el
-                                {' '}
-                                {String(project.updated_at).split('T')[0]}
-                              </small>
-                            </div>
-                            <div hidden={editMode !== editModes.edit && editMode} className="mt-2">
-                              <Button onClick={() => setChangeImagesShow(true)} className="btn-primary">
-                                <FaCamera />
-                                {' '}
-                                Cambiar portada
-                              </Button>
-                            </div>
-                            <div hidden={editMode !== editModes.create && editMode} className="mt-2">
-                              <Button onClick={() => setChangeImagesShow(true)} className="btn-primary">
-                                <FaCamera />
-                                {' '}
-                                Agregar portada
-                              </Button>
-                            </div>
-                          </div>
-                          <div className="text-center text-sm-right mt-1">
-                            {project.is_verified ? (<Badge bg="success">Aprobado</Badge>) : null}
-                          </div>
-                        </Col>
-                        <Col>
-                          <FormLabel htmlFor="category">Categoría</FormLabel>
-                          <Form.Select
-                            id="category"
-                            name="category_id"
-                            value={project.category_id}
-                            onChange={handleChange}
-                            disabled={editMode === editModes.overview}
-                          >
-                            {
-                              categories.map((category) => (
-                                <option value={category.id} key={category.id}>
-                                  {category.name}
-                                </option>
-                              ))
-                            }
-                          </Form.Select>
+          <Col xs={12} lg={8}>
+            <Card>
+              <Card.Body>
+                <div className="e-profile">
+                  <Row className="d-flex flex-column flex-sm-row justify-content-center mb-3">
+                    <Col xs={12} md={7}>
+                      <div className="text-center text-sm-left mb-2 mb-sm-0">
+                        <div className="container-text-truncated">
+                          <h4 className="pt-sm-2 pb-1 mb-0 text-truncated">
+                            {editMode === editModes.create || !editMode ? 'Nuevo proyecto' : project.title}
+                          </h4>
+                        </div>
+                        <div hidden={editMode === editModes.create || !editMode} className="text-muted text-nowrap">
+                          <small>
+                            Creado el
+                            {' '}
+                            {String(project.updated_at).split('T')[0]}
+                          </small>
+                        </div>
+                        <div hidden={editMode !== editModes.edit && editMode} className="mt-2">
+                          <Button onClick={() => setChangeImagesShow(true)} className="btn-primary">
+                            <FaCamera />
+                            {' '}
+                            Cambiar portada
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="text-center text-sm-right mt-1">
+                        {
+                          project.is_verified
+                            ? <Badge bg="success">Aprobado</Badge>
+                            : <Badge bg="danger">No publicado</Badge>
+                        }
+                      </div>
+                    </Col>
+                    <Col>
+                      <FormLabel htmlFor="category">Categoría</FormLabel>
+                      <Form.Select
+                        id="category"
+                        name="category_id"
+                        value={project.category_id}
+                        onChange={handleChange}
+                        disabled={editMode === editModes.overview}
+                      >
+                        {
+                          categories.map((category) => (
+                            <option value={category.id} key={category.id}>
+                              {category.name}
+                            </option>
+                          ))
+                        }
+                      </Form.Select>
 
-                          <FormGroup hidden={!user.is_superuser || editMode !== editModes.edit}>
-                            <FormLabel htmlFor="category" className="mt-2">Aprobado</FormLabel>
-                            <Form.Switch
-                              id="is-verified"
-                              name="is_verified"
-                              checked={project.is_verified}
-                              onChange={handleToggle}
-                            />
-                          </FormGroup>
-                        </Col>
-                      </Row>
+                      <FormGroup hidden={!user.is_superuser || editMode !== editModes.edit}>
+                        <FormLabel htmlFor="category" className="mt-2">Aprobado</FormLabel>
+                        <Form.Switch
+                          id="is-verified"
+                          name="is_verified"
+                          checked={project.is_verified}
+                          onChange={handleToggle}
+                        />
+                      </FormGroup>
+                    </Col>
+                  </Row>
 
-                      <Donatone
-                        donated={project.donated}
-                        goal={project.goal}
-                        hidden={editMode === editModes.create || !editMode}
-                        className="my-4"
-                      />
+                  <Donatone
+                    donated={project.donated}
+                    goal={project.goal}
+                    hidden={editMode === editModes.create || !editMode}
+                    className="my-4"
+                  />
 
-                      <Nav className="nav-tabs">
-                        <NavItem id="overview">
-                          <NavLink
-                            as={Link}
-                            to={`/proyectos/${id}/ver`}
-                            disabled={!id}
-                            className={`${editMode === editModes.overview ? 'active' : ''}`}
-                          >
-                            Ver
-                          </NavLink>
-                        </NavItem>
-                        <NavItem id="edit">
-                          <NavLink
-                            as={Link}
-                            to={`/proyectos/${id}/editar`}
-                            disabled={!id}
-                            className={`${(editMode === editModes.edit) ? 'active' : ''}`}
-                          >
-                            Editar
-                          </NavLink>
-                        </NavItem>
-                        <NavItem id="projects">
-                          <NavLink
-                            as={Link}
-                            to={`/proyectos/${id}/crear`}
-                            disabled={!id}
-                            className={`${editMode === editModes.create || !editMode ? 'active' : ''}`}
-                          >
-                            Crear nuevo
-                          </NavLink>
-                        </NavItem>
-                      </Nav>
-                      <Tab.Content className="tab-content pt-3">
-                        <div className="tab-pane active">
-                          <Form noValidate="">
-                            <Row id="overview">
+                  <Nav className="nav-tabs">
+                    <NavItem id="overview">
+                      <NavLink
+                        as={Link}
+                        to={`/proyectos/${id}/ver`}
+                        disabled={!id}
+                        className={`${editMode === editModes.overview ? 'active' : ''}`}
+                      >
+                        Ver
+                      </NavLink>
+                    </NavItem>
+                    <NavItem id="edit">
+                      <NavLink
+                        as={Link}
+                        to={`/proyectos/${id}/editar`}
+                        disabled={!id}
+                        className={`${(editMode === editModes.edit) ? 'active' : ''}`}
+                      >
+                        Editar
+                      </NavLink>
+                    </NavItem>
+                    <NavItem id="projects">
+                      <NavLink
+                        as={Link}
+                        to={`/proyectos/${id}/crear`}
+                        disabled={!id}
+                        className={`${editMode === editModes.create || !editMode ? 'active' : ''}`}
+                      >
+                        Crear nuevo
+                      </NavLink>
+                    </NavItem>
+                  </Nav>
+                  <Tab.Content className="tab-content pt-3">
+                    <div className="tab-pane active">
+                      <Form noValidate="">
+                        <Row id="overview">
+                          <Col>
+                            <Row>
                               <Col>
-                                <Row>
-                                  <Col>
-                                    <FormGroup>
-                                      <FormLabel htmlFor="title">Título</FormLabel>
-                                      <FormControl
-                                        id="title"
-                                        type="text"
-                                        name="title"
-                                        placeholder="Título"
-                                        value={project.title}
-                                        onChange={handleChange}
-                                        autoComplete="on"
-                                        readOnly={editMode === editModes.overview}
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>
-                                    <FormGroup className="mb-3">
-                                      <FormLabel htmlFor="description">Descripción</FormLabel>
-                                      <Form.Control
-                                        id="description"
-                                        type="text"
-                                        name="description"
-                                        as="textarea"
-                                        rows={3}
-                                        placeholder="Descripción"
-                                        value={project.description}
-                                        onChange={handleChange}
-                                        autoComplete="on"
-                                        readOnly={editMode === editModes.overview}
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                </Row>
-                                <Row hidden={editMode !== editModes.create && editMode}>
-                                  <Col>
-                                    <FormGroup>
-                                      <Form.Label>Objetivo (Bs. )</Form.Label>
-                                      <Form.Range
-                                        name="goal"
-                                        value={project.goal / 500}
-                                        onChange={(event) => {
-                                          setProject({
-                                            ...project,
-                                            goal: Number(event.target.value) * 500,
-                                          });
-                                        }}
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                  <Col xs={3}>
-                                    <Form.Control
-                                      type="number"
-                                      name="goal"
-                                      placeholder="Meta"
-                                      value={project.goal}
-                                      onChange={handleChange}
-                                      autoComplete="off"
-                                    />
-                                  </Col>
-                                </Row>
+                                <FormGroup>
+                                  <FormLabel htmlFor="title">Título</FormLabel>
+                                  <FormControl
+                                    id="title"
+                                    type="text"
+                                    name="title"
+                                    placeholder="Título"
+                                    value={project.title}
+                                    onChange={handleChange}
+                                    autoComplete="on"
+                                    readOnly={editMode === editModes.overview}
+                                  />
+                                </FormGroup>
                               </Col>
                             </Row>
-                            <Row hidden={editMode !== editModes.edit}>
-                              <Col className="d-flex justify-content-end">
-                                <Button className="btn-danger m-2" onClick={fetchProject}>Cancelar cambios</Button>
-                                <Button className="btn-primary m-2" onClick={updateProject}>Guardar cambios</Button>
+                            <Row>
+                              <Col>
+                                <FormGroup className="mb-3">
+                                  <FormLabel htmlFor="description">Descripción</FormLabel>
+                                  <Form.Control
+                                    id="description"
+                                    type="text"
+                                    name="description"
+                                    as="textarea"
+                                    rows={3}
+                                    placeholder="Descripción"
+                                    value={project.description}
+                                    onChange={handleChange}
+                                    autoComplete="on"
+                                    readOnly={editMode === editModes.overview}
+                                  />
+                                </FormGroup>
                               </Col>
                             </Row>
                             <Row hidden={editMode !== editModes.create && editMode}>
-                              <Col className="d-flex justify-content-end">
-                                <Button className="btn-primary" onClick={createProject}>Crear proyecto</Button>
+                              <Col>
+                                <FormGroup>
+                                  <Form.Label>Objetivo (Bs. )</Form.Label>
+                                  <Form.Range
+                                    name="goal"
+                                    value={project.goal / 500}
+                                    onChange={(event) => {
+                                      setProject({
+                                        ...project,
+                                        goal: Number(event.target.value) * 500,
+                                      });
+                                    }}
+                                  />
+                                </FormGroup>
+                              </Col>
+                              <Col xs={3}>
+                                <Form.Control
+                                  type="number"
+                                  name="goal"
+                                  placeholder="Meta"
+                                  value={project.goal}
+                                  onChange={handleChange}
+                                  autoComplete="off"
+                                />
                               </Col>
                             </Row>
-                          </Form>
-                        </div>
-                      </Tab.Content>
+                          </Col>
+                        </Row>
+                        <Row hidden={editMode !== editModes.edit}>
+                          <Col className="d-flex justify-content-end">
+                            <Button className="btn-danger m-2" onClick={fetchProject}>Cancelar cambios</Button>
+                            <Button className="btn-primary m-2" onClick={updateProject}>Guardar cambios</Button>
+                          </Col>
+                        </Row>
+                        <Row hidden={editMode !== editModes.create && editMode}>
+                          <Col className="d-flex justify-content-end">
+                            <Button className="btn-primary" onClick={createProject}>Crear proyecto</Button>
+                          </Col>
+                        </Row>
+                      </Form>
                     </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-
-              <Col xs={12} md={3} className="mb-3">
-                <Card className="mb-3">
-                  <Card.Body>
-                    <div className="px-xl-3">
-                      <Button onClick={logout} className="btn-block btn-secondary">
-                        <FaSignOutAlt />
-                        {' '}
-                        <span>Cerrar sesión</span>
-                      </Button>
-                    </div>
-                  </Card.Body>
-                </Card>
-                <Card hidden={editMode === editModes.create || !editMode}>
-                  <Card.Body>
-                    <h6 className="card-title fw-bolder text-danger">Eliminar proyecto</h6>
-                    <p className="card-text">Eliminar definitivamente el proyecto actual.</p>
-                    <Button onClick={() => setDeleteShow(true)} className="btn-danger">Eliminar</Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
-
+                  </Tab.Content>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+          <Col xs={12} lg={2}>
+            <Card className="mb-3">
+              <Card.Body>
+                <div className="px-xl-3">
+                  <Button onClick={logout} className="btn-block btn-secondary">
+                    <FaSignOutAlt />
+                    {' '}
+                    <span>Cerrar sesión</span>
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
+            <Card hidden={editMode === editModes.create || !editMode}>
+              <Card.Body>
+                <h6 className="card-title fw-bolder text-danger">Eliminar proyecto</h6>
+                <p className="card-text">Eliminar definitivamente el proyecto actual.</p>
+                <Button onClick={() => setDeleteShow(true)} className="btn-danger">Eliminar</Button>
+              </Card.Body>
+            </Card>
           </Col>
         </Row>
       </Container>

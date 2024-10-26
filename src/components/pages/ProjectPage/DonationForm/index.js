@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import {
   Form, FormGroup, FormLabel, FormControl, Button, InputGroup,
 } from 'react-bootstrap';
@@ -11,7 +11,7 @@ import localAPI from '../../../../api/localAPI';
 function DonationForm({
   projectId, acceptHandler, errorHandler, infoHandler,
 }) {
-  const paymentSystems = ['Binance', 'Paypal', 'C2P'];
+  const paymentSystems = ['Binance', 'PayPal'];
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
   const [transaction, setTransaction] = useState({
@@ -22,18 +22,14 @@ function DonationForm({
     project_id: null,
   });
 
-  function createTransaction(C2PTransaction) {
+  function createTransaction() {
     const tokenData = localAPI.getTokenData();
 
     if (tokenData) {
       const transactionModified = { ...transaction, user_id: tokenData.sub, project_id: projectId };
+      const exchangeRate = process.env.REACT_APP_EXCHANGE_RATE;
 
-      if (C2PTransaction) {
-        transactionModified.reference_number = C2PTransaction.reference_number;
-      } else {
-        const exchangeRate = process.env.REACT_APP_EXCHANGE_RATE;
-        transactionModified.amount *= parseFloat(exchangeRate);
-      }
+      transactionModified.amount *= parseFloat(exchangeRate);
 
       api.post('/transactions', transactionModified)
         .then((response) => {
@@ -50,24 +46,13 @@ function DonationForm({
               navigate('/login');
               break;
             default:
-              infoHandler('Error inesperado', 'Ha ocurrido un error inesperado');
+              errorHandler('Error inesperado', 'Ha ocurrido un error inesperado');
               break;
           }
         });
     } else {
       navigate('/login');
     }
-  }
-
-  function createC2P() {
-    // eslint-disable-next-line no-undef
-    payWithPuntoYa(transaction.amount, (response) => {
-      if (response.ok) {
-        createTransaction({ reference_number: response.transactionId });
-      } else {
-        errorHandler('Error en el pago C2P', response.description);
-      }
-    });
   }
 
   function handleChange(event) {
@@ -83,28 +68,13 @@ function DonationForm({
     event.stopPropagation();
 
     if (form.checkValidity()) {
-      if (transaction.payment_system === paymentSystems[2]) {
-        createC2P();
-      } else {
-        createTransaction();
-      }
+      createTransaction();
       acceptHandler();
     }
     setValidated(true);
   }
 
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://puntoyapos.com.ve/pos/assets/scripts/py-script.js';
-    script.async = true;
-    document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
   return (
-
     <Form noValidate validated={validated} onSubmit={handleSubmit}>
       <FormGroup className="my-1">
         <FormLabel htmlFor="payment-system">Plataforma de pago</FormLabel>
@@ -123,17 +93,16 @@ function DonationForm({
           }
         </Form.Select>
       </FormGroup>
-      <FormGroup hidden={transaction.payment_system === paymentSystems[2]} className="my-1">
+      <FormGroup className="my-1">
         <FormLabel htmlFor="reference-number">Número de referencia</FormLabel>
         <FormControl
           id="reference-number"
           type="text"
           name="reference_number"
           placeholder=""
-          value={transaction.reference_number}
           onChange={handleChange}
-          autoComplete="on"
-          required={transaction.payment_system !== paymentSystems[2]}
+          autoComplete="off"
+          required
         />
       </FormGroup>
 
@@ -153,7 +122,7 @@ function DonationForm({
             value={transaction.amount}
             onChange={handleChange}
             required
-            autoComplete="on"
+            autoComplete="off"
           />
         </InputGroup>
       </FormGroup>

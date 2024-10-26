@@ -26,50 +26,72 @@ export const Button = styled(ButtonWrapper)`
   color: white
 `;
 
-export const BannerText = styled.span`
-  color: rgb(255, 255, 255);
-  padding: 0 1rem;
+export const BannerContent = styled.span`
   position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  inset: 0;
+  padding: 0 1rem;
+  color: rgb(255, 255, 255);
+`;
 
+export const BannerTitle = styled.h2`
   font-family: Playfair Display;
-  font-size: 3.5rem;
+  text-align: center;
   font-weight: 700;
-  line-height: 90px;
   letter-spacing: 0em;
-  text-align: center;
-  top: 35%;
-  width: 70%;
-  left: 15%;
+
+  font-size: 1.8rem;
+  line-height: 32px;
+
+  @media (min-width: 576px) {
+    font-size: 2rem;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 2.5rem;
+    line-height: 40px;
+  }
+
+  @media (min-width: 992px) {
+    font-size: 2.8rem;
+    line-height: 64px;
+  }
+
+  @media (min-width: 1200px) {
+    font-size: 3.5rem;
+    line-height: 90px;
+  }
 `;
 
-export const BannerSubtitle = styled.h2`
-  color: rgb(255, 255, 255);
-  padding: 0 1rem;
-  justify-self: center;
-  position: absolute;
-
-  font-family: Montserrat;
-  font-size: 1.25rem;
-  font-weight: 600;
-  line-height: 28px;
-  letter-spacing: 0em;
-  text-align: center;
-
-  top: 30%;
-  width: 70%;
-  left: 15%;
-`;
-
-export const BannerSmall = styled.h3`
-  color: rgb(255, 255, 255);
-  position: relative;
+export const BannerSubtitle = styled.h3`
   width: 70%;
 
   font-family: Montserrat;
-  font-size: 1.25rem;
   font-weight: 600;
-  line-height: 28px;
-  letter-spacing: 0em;
   text-align: center;
-  left: 15%;
+  letter-spacing: 0em;
+
+  font-size: 1.12rem;
+  line-height: 20px;
+
+  @media (min-width: 576px) {
+    font-size: 1.16rem;
+  }
+
+  @media (min-width: 768px) {
+    font-size: 1.16rem;
+  }
+
+  @media (min-width: 992px) {
+    font-size: 1.20rem;
+    line-height: 24px;
+  }
+
+  @media (min-width: 1200px) {
+    font-size: 1.25rem;
+    line-height: 28px;
+  }
 `;

@@ -143,16 +143,17 @@ function LoginPage() {
 
   return (
     <ContainerStyled>
-      <Row className="full-height justify-content-center">
-        <Col xs={12} className="text-center align-self-center py-5">
+      <Row className="full-height flex-column align-items-center justify-content-center mt-4">
+        <Col md={2} className="text-center">
+          <button type="button" onClick={goHome} className="btn button-back">
+            <h6>
+              Regresar
+            </h6>
+          </button>
+        </Col>
+        <Col md={10} className="text-center py-5">
           <div className="section pb-5 pt-5 pt-sm-2">
-            <button type="button" onClick={goHome} className="btn mt-4 button-back">
-              <h6>
-                Regresar
-              </h6>
-            </button>
-
-            <h6 className="mb-0 pb-3 text-center">
+            <h6 className="mb-0 pb-2 text-center">
               <span>Iniciar sesión</span>
               <span>Registrarse</span>
             </h6>
@@ -164,7 +165,7 @@ function LoginPage() {
                 <div className="card-front">
                   <div className="center-wrap">
                     <div className="section text-center">
-                      <h4 className="mb-4 pb-3">Iniciar sesión</h4>
+                      <h4 className="mb-3 pb-3">Iniciar sesión</h4>
                       <div className="form-group">
                         <input
                           type="email"
@@ -200,7 +201,7 @@ function LoginPage() {
                 <div className="card-back">
                   <div className="center-wrap">
                     <div className="section text-center">
-                      <h4 className="mb-4 pb-3">Registrarse</h4>
+                      <h4 className="mb-3 pb-3">Registrarse</h4>
                       <div className="form-group">
                         <input
                           type="text"
@@ -392,13 +393,17 @@ h6 span{
 
 .card-3d-wrap {
   position: relative;
-  width: 440px;
+  width: 300px;
   max-width: 100%;
   height: 400px;
   -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
   perspective: 800px;
-  margin-top: 60px;
+  margin-top: 35px;
+
+  @media (min-width: 576px) {
+    width: 440px;
+  }
 }
 .card-3d-wrapper {
   width: 100%;

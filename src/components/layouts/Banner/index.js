@@ -5,9 +5,7 @@ function Banner({ img, children }) {
   return (
     <BannerContainer>
       <BannerBackground src={img} />
-      <BannerContent>
-        {children}
-      </BannerContent>
+      {children}
     </BannerContainer>
   );
 }
@@ -18,15 +16,24 @@ Banner.propTypes = {
 };
 
 const BannerContainer = styled.div`
+  overflow: hidden;
   position: relative;
-`;
-
-const BannerContent = styled.div`
-  width: 100%;
+  @media (max-width: 768px) {
+    margin-top: 56px; /* Navbar height */
+  }
 `;
 
 const BannerBackground = styled.img`
-  width: 100%;
+  background-size: cover;
+  background-position: 50% 50%;
+
+  @media (max-width: 575.8px) {
+    max-height: 70vh;
+  }
+
+  @media (min-width: 576px) {
+    width: 100%;
+  }
 `;
 
 export default Banner;

@@ -8,7 +8,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import {
   FaCamera, FaChartBar, FaCog, FaSignOutAlt, FaTh,
 } from 'react-icons/fa';
-import { BannerText } from '../../hooks/theme';
+import { BannerContent, BannerTitle } from '../../hooks/theme';
 import NavBar from '../../hooks/NavBar';
 import Donatone from '../../hooks/Donatone';
 import Footer from '../../hooks/Footer';
@@ -16,6 +16,7 @@ import ErrorModal from '../../hooks/ErrorModal';
 import InfoModal from '../../hooks/InfoModal';
 import Banner from '../../layouts/Banner';
 import BannerImg from '../../../img/banner-small.svg';
+import exampleCard from '../../../img/exampleCard.jpg';
 import api from '../../../api';
 import localAPI from '../../../api/localAPI';
 
@@ -128,7 +129,7 @@ function UserManagerPage() {
           '',
         ),
       );
-      setAvatar(base64);
+      setAvatar(`data:;base64,${base64}`);
     });
   }
   function uploadAvatar() {
@@ -197,14 +198,16 @@ function UserManagerPage() {
           <NavBar />
         </header>
 
-        <BannerText>
-          Usuario
-        </BannerText>
+        <BannerContent>
+          <BannerTitle>
+            Usuario
+          </BannerTitle>
+        </BannerContent>
       </Banner>
 
       <Container className="mt-4">
-        <Row className="flex-lg-nowrap">
-          <Col xs={12} lg="auto" className="mb-3" style={{ width: '200px' }}>
+        <Row className="flex-lg-nowrap justify-content-center gap-3">
+          <Col xs={12} lg={2}>
             <Card className="p-3 mb-3">
               <div className="e-navlist e-navlist--active-bg">
                 <Nav>
@@ -236,287 +239,294 @@ function UserManagerPage() {
               <Card.Body>
                 <h6 className="card-title font-weight-bold">Administrador</h6>
                 <p className="card-text">Accede al panel de administrador.</p>
-                <Button onClick={() => navigate('/administrador/proyectos')}>Panel de administrador</Button>
+                <Button onClick={() => navigate('/administrador/proyectos')}>Acceder</Button>
               </Card.Body>
             </Card>
           </Col>
 
-          <Col>
-            <Row>
-              <Col className="mb-3">
-                <Card>
-                  <Card.Body>
-                    <div className="e-profile">
-                      <Row>
-                        <Col className="col-12 col-sm-auto mb-3">
-                          <div className="mx-auto" style={{ width: '140px' }}>
-                            <div className="d-flex justify-content-center align-items-center rounded" style={{ height: '140px' }}>
-                              <Image src={`data:;base64,${avatar}`} alt="avatar" style={{ height: '140px', width: '140px' }} fluid />
-                            </div>
-                          </div>
-                        </Col>
-                        <Col className="d-flex flex-column flex-sm-row justify-content-between mb-3">
-                          <div className="text-center text-sm-left mb-2 mb-sm-0">
-                            <h4 className="pt-sm-2 pb-1 mb-0 text-nowrap">{user.name}</h4>
-                            <p className="mb-0">{user.email}</p>
-                            <div className="text-muted">
-                              <small>
-                                Modificado el
-                                {' '}
-                                {String(user.updated_at).split('T')[0]}
-                              </small>
-                            </div>
-                            <div className="mt-2">
-                              <Button onClick={() => setChangeAvatarShow(true)} className="btn-primary">
-                                <FaCamera />
-                                {' '}
-                                <span>Cambiar foto</span>
-                              </Button>
-                            </div>
-                          </div>
-                          <div className="text-center text-sm-right">
-                            {
-                              user.is_superuser
-                                ? (<Badge as={Button} pill onClick={() => navigate('/administrador/proyectos')}>Administrador</Badge>)
-                                : null
-                            }
-                            <div className="text-muted">
-                              <small>
-                                Unido el
-                                {' '}
-                                {String(user.created_at).split('T')[0]}
-                              </small>
-                            </div>
-                          </div>
-                        </Col>
-                      </Row>
-                      <Nav className="nav-tabs">
-                        <NavItem
-                          id="overview"
-                          onClick={() => setEditMode(editModes.overview)}
-                        >
-                          <NavLink
-                            className={`${editMode === editModes.overview ? 'active' : ''}`}
-                          >
-                            Ver
-                          </NavLink>
-                        </NavItem>
-                        <NavItem
-                          id="edit"
-                          onClick={() => setEditMode(editModes.edit)}
-                        >
-                          <NavLink
-                            className={`${editMode === editModes.edit ? 'active' : ''}`}
-                          >
-                            Editar
-                          </NavLink>
-                        </NavItem>
-                        <NavItem
-                          id="projects"
-                          onClick={() => setEditMode(editModes.projects)}
-                        >
-                          <NavLink
-                            className={`${editMode === editModes.projects ? 'active' : ''}`}
-                          >
-                            Ver proyectos
-                          </NavLink>
-                        </NavItem>
-                      </Nav>
-                      <Tab.Content className="tab-content pt-3">
-                        <div className="tab-pane active">
-                          <Form noValidate="">
-                            <Row id="overview" hidden={editMode !== editModes.overview && editMode !== editModes.edit}>
+          <Col xs={12} lg={8}>
+            <Card>
+              <Card.Body>
+                <div className="e-profile">
+                  <Row>
+                    <Col className="col-12 col-sm-auto mb-3">
+                      <div className="mx-auto" style={{ width: '140px' }}>
+                        <div className="d-flex justify-content-center align-items-center rounded" style={{ height: '140px' }}>
+                          {
+                            avatar
+                              ? (
+                                <Image
+                                  fluid
+                                  src={avatar}
+                                  alt="avatar"
+                                  onError={() => setAvatar(exampleCard)}
+                                  style={{ height: '140px', width: '140px' }}
+                                />
+                              )
+                              : <Image fluid src={exampleCard} alt="avatar" style={{ height: '140px', width: '140px' }} />
+                          }
+                        </div>
+                      </div>
+                    </Col>
+                    <Col className="d-flex flex-column flex-sm-row justify-content-between mb-3">
+                      <div className="text-center text-sm-left mb-2 mb-sm-0">
+                        <h4 className="pt-sm-2 pb-1 mb-0 text-nowrap">{user.name}</h4>
+                        <p className="mb-0">{user.email}</p>
+                        <div className="text-muted">
+                          <small>
+                            Modificado el
+                            {' '}
+                            {String(user.updated_at).split('T')[0]}
+                          </small>
+                        </div>
+                        <div className="mt-2">
+                          <Button onClick={() => setChangeAvatarShow(true)} className="btn-primary">
+                            <FaCamera />
+                            {' '}
+                            <span>Cambiar foto</span>
+                          </Button>
+                        </div>
+                      </div>
+                      <div className="text-center text-sm-right">
+                        {
+                          user.is_superuser
+                            ? (<Badge as={Button} pill onClick={() => navigate('/administrador/proyectos')}>Administrador</Badge>)
+                            : null
+                        }
+                        <div className="text-muted">
+                          <small>
+                            Unido el
+                            {' '}
+                            {String(user.created_at).split('T')[0]}
+                          </small>
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                  <Nav className="nav-tabs">
+                    <NavItem
+                      id="overview"
+                      onClick={() => setEditMode(editModes.overview)}
+                    >
+                      <NavLink
+                        className={`${editMode === editModes.overview ? 'active' : ''}`}
+                      >
+                        Ver
+                      </NavLink>
+                    </NavItem>
+                    <NavItem
+                      id="edit"
+                      onClick={() => setEditMode(editModes.edit)}
+                    >
+                      <NavLink
+                        className={`${editMode === editModes.edit ? 'active' : ''}`}
+                      >
+                        Editar
+                      </NavLink>
+                    </NavItem>
+                    <NavItem
+                      id="projects"
+                      onClick={() => setEditMode(editModes.projects)}
+                    >
+                      <NavLink
+                        className={`${editMode === editModes.projects ? 'active' : ''}`}
+                      >
+                        Ver proyectos
+                      </NavLink>
+                    </NavItem>
+                  </Nav>
+                  <Tab.Content className="tab-content pt-3">
+                    <div className="tab-pane active">
+                      <Form noValidate="">
+                        <Row id="overview" hidden={editMode !== editModes.overview && editMode !== editModes.edit}>
+                          <Col>
+                            <Row>
+                              <Col xs="12" md="6">
+                                <FormGroup>
+                                  <FormLabel htmlFor="name">Nombre</FormLabel>
+                                  <FormControl
+                                    id="name"
+                                    type="text"
+                                    name="name"
+                                    placeholder="Nombre"
+                                    value={user.name}
+                                    onChange={handleChange}
+                                    autoComplete="on"
+                                    readOnly={editMode !== editModes.edit}
+                                  />
+                                </FormGroup>
+                              </Col>
+                              <Col xs="12" md="6">
+                                <FormGroup>
+                                  <FormLabel htmlFor="id-card">Cédula</FormLabel>
+                                  <FormControl
+                                    id="id-card"
+                                    type="text"
+                                    name="id_card"
+                                    placeholder="Cédula"
+                                    value={user.id_card}
+                                    onChange={handleChange}
+                                    autoComplete="on"
+                                    readOnly={editMode !== editModes.edit}
+                                  />
+                                </FormGroup>
+                              </Col>
+                            </Row>
+                            <Row>
                               <Col>
-                                <Row>
-                                  <Col>
-                                    <FormGroup>
-                                      <FormLabel htmlFor="name">Nombre</FormLabel>
-                                      <FormControl
-                                        id="name"
-                                        type="text"
-                                        name="name"
-                                        placeholder="Nombre"
-                                        value={user.name}
-                                        onChange={handleChange}
-                                        autoComplete="on"
-                                        readOnly={editMode !== editModes.edit}
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                  <Col>
-                                    <FormGroup>
-                                      <FormLabel htmlFor="id-card">Cédula</FormLabel>
-                                      <FormControl
-                                        id="id-card"
-                                        type="text"
-                                        name="id_card"
-                                        placeholder="Cédula"
-                                        value={user.id_card}
-                                        onChange={handleChange}
-                                        autoComplete="on"
-                                        readOnly={editMode !== editModes.edit}
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>
-                                    <FormGroup className="mb-3">
-                                      <FormLabel htmlFor="email2">Email</FormLabel>
-                                      <FormControl
-                                        id="email2"
-                                        type="text"
-                                        name="email"
-                                        placeholder="example@email.com"
-                                        value={user.email}
-                                        onChange={handleChange}
-                                        autoComplete="on"
-                                        readOnly={editMode !== editModes.edit}
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                </Row>
+                                <FormGroup className="mb-3">
+                                  <FormLabel htmlFor="email2">Email</FormLabel>
+                                  <FormControl
+                                    id="email2"
+                                    type="text"
+                                    name="email"
+                                    placeholder="example@email.com"
+                                    value={user.email}
+                                    onChange={handleChange}
+                                    autoComplete="on"
+                                    readOnly={editMode !== editModes.edit}
+                                  />
+                                </FormGroup>
                               </Col>
                             </Row>
-                            <Row id="edit" className="mt-3" hidden={editMode !== editModes.edit}>
-                              <Col xs={12} sm={6} className="mb-3">
-                                <div className="mb-2"><b>Cambiar contraseña</b></div>
-                                <Row>
-                                  <Col>
-                                    <FormGroup>
-                                      <FormLabel htmlFor="password">Contraseña actual</FormLabel>
-                                      <FormControl
-                                        id="password"
-                                        type="password"
-                                        name="password"
-                                        placeholder="••••••"
-                                        value={user.password}
-                                        onChange={handleChange}
-                                        autoComplete="current-password"
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>
-                                    <FormGroup>
-                                      <FormLabel htmlFor="new-password">Nueva contraseña</FormLabel>
-                                      <FormControl
-                                        id="new-password"
-                                        type="password"
-                                        name="new_password"
-                                        placeholder="••••••"
-                                        value={user.new_password}
-                                        onChange={handleChange}
-                                        autoComplete="new-password"
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                </Row>
-                                <Row>
-                                  <Col>
-                                    <FormGroup>
-                                      <FormLabel htmlFor="confirm-password">Confirmar contraseña</FormLabel>
-                                      <FormControl
-                                        id="confirm-password"
-                                        type="password"
-                                        name="confirm_password"
-                                        placeholder="••••••"
-                                        autoComplete="new-password"
-                                      />
-                                    </FormGroup>
-                                  </Col>
-                                </Row>
+                          </Col>
+                        </Row>
+                        <Row id="edit" className="mt-3" hidden={editMode !== editModes.edit}>
+                          <Col xs={12} sm={6} className="mb-3">
+                            <div className="mb-2"><b>Cambiar contraseña</b></div>
+                            <Row>
+                              <Col>
+                                <FormGroup>
+                                  <FormLabel htmlFor="password">Contraseña actual</FormLabel>
+                                  <FormControl
+                                    id="password"
+                                    type="password"
+                                    name="password"
+                                    placeholder="••••••"
+                                    value={user.password}
+                                    onChange={handleChange}
+                                    autoComplete="current-password"
+                                  />
+                                </FormGroup>
                               </Col>
                             </Row>
-                            <Row hidden={editMode !== editModes.edit}>
-                              <Col className="d-flex justify-content-end">
-                                <Button className="btn btn-danger mx-2" onClick={fetchUser}>Cancelar cambios</Button>
-                                <Button className="btn btn-primary mx-2" onClick={updateUser}>Guardar cambios</Button>
+                            <Row>
+                              <Col>
+                                <FormGroup>
+                                  <FormLabel htmlFor="new-password">Nueva contraseña</FormLabel>
+                                  <FormControl
+                                    id="new-password"
+                                    type="password"
+                                    name="new_password"
+                                    placeholder="••••••"
+                                    value={user.new_password}
+                                    onChange={handleChange}
+                                    autoComplete="new-password"
+                                  />
+                                </FormGroup>
                               </Col>
                             </Row>
-                          </Form>
+                            <Row>
+                              <Col>
+                                <FormGroup>
+                                  <FormLabel htmlFor="confirm-password">Confirmar contraseña</FormLabel>
+                                  <FormControl
+                                    id="confirm-password"
+                                    type="password"
+                                    name="confirm_password"
+                                    placeholder="••••••"
+                                    autoComplete="new-password"
+                                  />
+                                </FormGroup>
+                              </Col>
+                            </Row>
+                          </Col>
+                        </Row>
+                        <Row hidden={editMode !== editModes.edit}>
+                          <Col className="d-flex justify-content-end">
+                            <Button className="btn btn-danger mx-2" onClick={fetchUser}>Cancelar cambios</Button>
+                            <Button className="btn btn-primary mx-2" onClick={updateUser}>Guardar cambios</Button>
+                          </Col>
+                        </Row>
+                      </Form>
 
-                          <Row hidden={editMode !== editModes.projects}>
+                      <Row hidden={editMode !== editModes.projects}>
+                        <Col>
+                          <Row>
                             <Col>
-                              <Row>
-                                <Col>
-                                  <h3>Proyectos</h3>
-                                </Col>
-                              </Row>
-
-                              <Row>
-                                <Col>
-                                  <ListGroup>
-                                    {
-                                      user.projects
-                                        ? user.projects.map((project) => (
-                                          (
-                                            <ListGroup.Item action as={Link} to={`/proyectos/${project.id}/ver`}>
-                                              <Row className="p-2">
-                                                <Col xs="12" md="6" className="my-1">
-                                                  {project.title}
-                                                  {' - '}
-                                                  {String(project.created_at).split('T')[0]}
-                                                </Col>
-                                                <Col xs="12" md="6" className="my-1">
-                                                  <Donatone
-                                                    donated={project.donated}
-                                                    goal={project.goal}
-                                                    mini
-                                                  />
-                                                </Col>
-                                              </Row>
-                                            </ListGroup.Item>
-                                          )
-                                        ))
-                                        : ''
-                                    }
-                                    {
-                                      user.projects.length < 1
-                                        ? (
-                                          <ListGroup.Item action as={Link} to="/proyectos/crear" className="p-3">
-                                            ¡Ups! Este usuario no tiene proyectos aún,
-                                            {' '}
-                                            <Link to="/proyectos/crear">¿crear uno?</Link>
-                                          </ListGroup.Item>
-                                        )
-                                        : ''
-                                    }
-                                  </ListGroup>
-                                </Col>
-                              </Row>
+                              <h3>Proyectos</h3>
                             </Col>
                           </Row>
-                        </div>
-                      </Tab.Content>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
 
-              <Col xs={12} md={3} className="mb-3">
-                <Card className="mb-3">
-                  <Card.Body>
-                    <div className="px-xl-3">
-                      <Button onClick={logout} className="btn-block btn-secondary">
-                        <FaSignOutAlt />
-                        {' '}
-                        <span>Cerrar sesión</span>
-                      </Button>
+                          <Row>
+                            <Col>
+                              <ListGroup>
+                                {
+                                  user.projects
+                                    ? user.projects.map((project) => (
+                                      (
+                                        <ListGroup.Item action as={Link} to={`/proyectos/${project.id}/ver`}>
+                                          <Row className="p-2">
+                                            <Col xs="12" md="6" className="my-1">
+                                              {project.title}
+                                              {' - '}
+                                              {String(project.created_at).split('T')[0]}
+                                            </Col>
+                                            <Col xs="12" md="6" className="my-1">
+                                              <Donatone
+                                                donated={project.donated}
+                                                goal={project.goal}
+                                                mini
+                                              />
+                                            </Col>
+                                          </Row>
+                                        </ListGroup.Item>
+                                      )
+                                    ))
+                                    : ''
+                                }
+                                {
+                                  user.projects.length < 1
+                                    ? (
+                                      <ListGroup.Item action as={Link} to="/proyectos/crear" className="p-3">
+                                        ¡Ups! Este usuario no tiene proyectos aún,
+                                        {' '}
+                                        <Link to="/proyectos/crear">¿crear uno?</Link>
+                                      </ListGroup.Item>
+                                    )
+                                    : ''
+                                }
+                              </ListGroup>
+                            </Col>
+                          </Row>
+                        </Col>
+                      </Row>
                     </div>
-                  </Card.Body>
-                </Card>
-                <Card>
-                  <Card.Body>
-                    <h6 className="card-title font-weight-bold">Crear proyecto</h6>
-                    <p className="card-text">Todos en algún momento necesitamos ayuda.</p>
-                    <Button as={Link} to="/proyectos/crear">Nuevo proyecto</Button>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
+                  </Tab.Content>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
 
+          <Col xs={12} lg={2}>
+            <Card className="mb-3">
+              <Card.Body>
+                <div className="px-xl-3">
+                  <Button onClick={logout} className="btn-block btn-secondary">
+                    <FaSignOutAlt />
+                    {' '}
+                    <span>Cerrar sesión</span>
+                  </Button>
+                </div>
+              </Card.Body>
+            </Card>
+            <Card>
+              <Card.Body>
+                <h6 className="card-title font-weight-bold">Crear proyecto</h6>
+                <p className="card-text">Todos en algún momento necesitamos ayuda.</p>
+                <Button as={Link} to="/proyectos/crear">Nuevo proyecto</Button>
+              </Card.Body>
+            </Card>
           </Col>
         </Row>
       </Container>

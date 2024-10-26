@@ -65,7 +65,7 @@ function NavBar() {
 
   return (
     <Styled>
-      <Navbar fixed="top" expand="xl" className={`navbar-dark shadow-5-strong justify-content-between ${scrolled ? 'scrolled' : ''}`}>
+      <Navbar fixed="top" expand="xl" className={`navbar-dark shadow-5-strong justify-content-between mobile-navbar ${scrolled ? 'scrolled' : ''}`}>
         <Container>
           <Navbar.Brand as={Link} to="/">Plataforma Crowdfunding</Navbar.Brand>
           <Navbar.Toggle aria-controls="responsive-navbar-nav" />
@@ -98,14 +98,14 @@ function NavBar() {
               </NavDropdown>
             </NavStyled>
 
-            <Nav>
+            <NavStyled>
               <Nav.Link eventKey={1} as={Link} to={(user ? '/usuario' : '/login')} className="py-3 text-white my-auto">
                 <Button><b>{ user ? user.name : 'Iniciar Sesión' }</b></Button>
               </Nav.Link>
               <Nav.Link eventKey={2} href="#buscar" hidden className="my-auto">
                 <SearchIcon src={searchIcon} alt="" />
               </Nav.Link>
-            </Nav>
+            </NavStyled>
           </Navbar.Collapse>
         </Container>
       </Navbar>
@@ -120,6 +120,12 @@ const Styled = styled.div`
     -o-transition: all .2s ease-in;
     -webkit-transition: all .2s ease-in;
     transition: all .2s ease-in;
+  }
+
+  @media (max-width: 1200px) {
+    .mobile-navbar {
+      background-color: rgba(0, 0, 0, 0.9);
+    }
   }
 
   font-family: Montserrat, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',

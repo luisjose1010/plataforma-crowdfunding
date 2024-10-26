@@ -1,4 +1,5 @@
 import axios from 'axios';
+import localAPI from './localAPI';
 
 const API_URL = process.env.REACT_APP_API_HOST + process.env.REACT_APP_API_URL;
 
@@ -16,5 +17,15 @@ api.interceptors.request.use((config) => {
 
   return configModified;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response.status === 401) {
+      localAPI.deleteToken();
+    }
+    return Promise.reject(error);
+  },
+);
 
 export default api;

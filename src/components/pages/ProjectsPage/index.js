@@ -1,7 +1,7 @@
-import styled from 'styled-components';
 import { useParams } from 'react-router-dom';
 import Banner from '../../layouts/Banner/index';
 import NavBar from '../../hooks/NavBar';
+import { BannerContent, BannerTitle } from '../../hooks/theme';
 import BannerImg from '../../../img/banner-small.svg';
 import ProjectsList from './ProjectsList';
 import Footer from '../../hooks/Footer';
@@ -16,9 +16,11 @@ function ProjectsPage() {
           <NavBar />
         </header>
 
-        <BannerText>
-          Nuestros Proyectos
-        </BannerText>
+        <BannerContent>
+          <BannerTitle>
+            Nuestros Proyectos
+          </BannerTitle>
+        </BannerContent>
       </Banner>
 
       <ProjectsList categoryUrl={category} />
@@ -27,21 +29,5 @@ function ProjectsPage() {
     </>
   );
 }
-
-const BannerText = styled.span`
-  color: rgb(255, 255, 255);
-  padding: 0 1rem;
-  position: absolute;
-
-  font-family: Playfair Display;
-  font-size: 3.5rem;
-  font-weight: 700;
-  line-height: 90px;
-  letter-spacing: 0em;
-  text-align: center;
-  top: 35%;
-  width: 70%;
-  left: 15%;
-`;
 
 export default ProjectsPage;

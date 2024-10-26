@@ -1,13 +1,13 @@
 import { useState, useEffect } from 'react';
 import {
   Container, Row, Col, Card, Nav, NavItem, Form,
-  NavLink, Tab,
+  NavLink, Tab, Button,
 } from 'react-bootstrap';
 import { useNavigate, useParams, Link } from 'react-router-dom';
 import {
   FaCoins, FaSignOutAlt, FaTh, FaUser,
 } from 'react-icons/fa';
-import { BannerText } from '../../hooks/theme';
+import { BannerContent, BannerTitle } from '../../hooks/theme';
 import ItemsManager from './ItemsManager';
 import UserSearch from './UserSearch';
 import NavBar from '../../hooks/NavBar';
@@ -117,26 +117,32 @@ function ProjectManagerPage() {
                 {itemModal.id}
               </p>
               <p>
-                <b>Plataforma: </b>
+                <b>Nombre: </b>
                 {itemModal.name}
               </p>
               <p>
-                <b>Número de referencia: </b>
+                <b>Descripción: </b>
                 {itemModal.description}
-              </p>
-              <p>
-                <b>Monto: </b>
-                {itemModal.amount}
               </p>
               <p>
                 <b>Creado: </b>
                 {itemModal.created_at}
               </p>
-              <Donatone
-                donated={itemModal.donated}
-                goal={itemModal.goal}
-                className="mt-3"
-              />
+              <Row>
+                <Col xs={12} md={6}>
+                  <Button as={Link} to={`/proyectos/${itemModal.id}/editar`}>
+                    Editar proyecto
+                  </Button>
+                </Col>
+                <Col xs={12} md={6}>
+                  <Donatone
+                    mini
+                    donated={itemModal.donated}
+                    goal={itemModal.goal}
+                    className="mt-3"
+                  />
+                </Col>
+              </Row>
             </>
           );
           break;
@@ -166,9 +172,15 @@ function ProjectManagerPage() {
                 {itemModal.created_at}
               </p>
               <hr />
-              <h3>Usuario</h3>
+              <h3>
+                {itemModal.project.title}
+                {' '}
+                <Button as={Link} to={`/proyectos-sociales/${itemModal.project.id}`} target="_blank" className="mx-2">
+                  Ver proyecto
+                </Button>
+              </h3>
               <p>
-                <b>Nombre: </b>
+                <b>Propietario: </b>
                 {itemModal.project.user.name}
               </p>
               <p>
@@ -222,14 +234,16 @@ function ProjectManagerPage() {
           <NavBar />
         </header>
 
-        <BannerText>
-          Panel de administrador
-        </BannerText>
+        <BannerContent>
+          <BannerTitle>
+            Panel de administrador
+          </BannerTitle>
+        </BannerContent>
       </Banner>
 
       <Container className="mt-4">
-        <Row className="flex-lg-nowrap">
-          <Col xs={12} lg="auto" className="mb-3" style={{ width: '200px' }}>
+        <Row className="flex-lg-nowrap justify-content-center gap-3">
+          <Col xs={12} lg={2}>
             <Card className="p-3">
               <div className="e-navlist e-navlist--active-bg">
                 <Nav>
@@ -259,92 +273,88 @@ function ProjectManagerPage() {
             </Card>
           </Col>
 
-          <Col>
-            <Row>
-              <Col className="mb-3">
-                <Card>
-                  <Card.Body>
-                    <div className="e-profile">
-                      <Row className="d-flex flex-column flex-sm-row justify-content-center mb-3">
-                        <Col xs={12} md={7}>
-                          <div className="text-center text-sm-left mb-2 mb-sm-0">
-                            <div className="container-text-truncated">
-                              <h4 className="pt-sm-2 pb-1 mb-0 text-truncated">
-                                Gestor de
-                                {' '}
-                                {editMode}
-                              </h4>
-                            </div>
-                          </div>
-                        </Col>
-                      </Row>
-
-                      <Nav className="nav-tabs">
-                        <NavItem id="overview">
-                          <NavLink
-                            as={Link}
-                            to="/administrador/proyectos"
-                            className={`${editMode === editModes.projects ? 'active' : ''}`}
-                          >
-                            Proyectos
-                          </NavLink>
-                        </NavItem>
-                        <NavItem id="edit">
-                          <NavLink
-                            as={Link}
-                            to="/administrador/pagos"
-                            className={`${editMode === editModes.transactions ? 'active' : ''}`}
-                          >
-                            Pagos
-                          </NavLink>
-                        </NavItem>
-                        <NavItem id="projects">
-                          <NavLink
-                            as={Link}
-                            to="/administrador/usuarios"
-                            className={`${editMode === editModes.users ? 'active' : ''}`}
-                          >
-                            Usuarios
-                          </NavLink>
-                        </NavItem>
-                      </Nav>
-                      <Tab.Content className="tab-content pt-3">
-                        <div className="tab-pane active">
-                          <Form noValidate="">
-                            <ItemsManager
-                              items={items[getKeyByValue(editModes, editMode)]}
-                              modalTitle={`Aprobar ${editMode} como administrador`}
-                              modalContent={itemsModalContent}
-                              hidden={editMode === editModes.users}
-                              handleChange={handleChange}
-                            />
-                          </Form>
-
-                          <UserSearch
-                            hidden={editMode !== editModes.users}
-                          />
+          <Col xs={12} lg={8}>
+            <Card>
+              <Card.Body>
+                <div className="e-profile">
+                  <Row className="d-flex flex-column flex-sm-row justify-content-center mb-3">
+                    <Col xs={12} md={7}>
+                      <div className="text-center text-sm-left mb-2 mb-sm-0">
+                        <div className="container-text-truncated">
+                          <h4 className="pt-sm-2 pb-1 mb-0 text-truncated">
+                            Gestor de
+                            {' '}
+                            {editMode}
+                          </h4>
                         </div>
-                      </Tab.Content>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
+                      </div>
+                    </Col>
+                  </Row>
 
-              <Col xs={12} md={3} className="mb-3">
-                <Card className="mb-3">
-                  <Card.Body>
-                    <div className="px-xl-3">
-                      <button type="button" onClick={logout} className="btn btn-block btn-secondary">
-                        <FaSignOutAlt />
-                        {' '}
-                        <span>Cerrar sesión</span>
-                      </button>
-                    </div>
-                  </Card.Body>
-                </Card>
-              </Col>
-            </Row>
+                  <Nav className="nav-tabs">
+                    <NavItem id="overview">
+                      <NavLink
+                        as={Link}
+                        to="/administrador/proyectos"
+                        className={`${editMode === editModes.projects ? 'active' : ''}`}
+                      >
+                        Proyectos
+                      </NavLink>
+                    </NavItem>
+                    <NavItem id="edit">
+                      <NavLink
+                        as={Link}
+                        to="/administrador/pagos"
+                        className={`${editMode === editModes.transactions ? 'active' : ''}`}
+                      >
+                        Pagos
+                      </NavLink>
+                    </NavItem>
+                    <NavItem id="projects">
+                      <NavLink
+                        as={Link}
+                        to="/administrador/usuarios"
+                        className={`${editMode === editModes.users ? 'active' : ''}`}
+                      >
+                        Usuarios
+                      </NavLink>
+                    </NavItem>
+                  </Nav>
+                  <Tab.Content className="tab-content pt-3">
+                    <div className="tab-pane active">
+                      <Form noValidate="">
+                        <ItemsManager
+                          items={items[getKeyByValue(editModes, editMode)]}
+                          modalTitle={`Aprobar ${editMode} como administrador`}
+                          modalContent={itemsModalContent}
+                          editButton={editMode === editModes.projects}
+                          hidden={editMode === editModes.users}
+                          handleChange={handleChange}
+                        />
+                      </Form>
 
+                      <UserSearch
+                        hidden={editMode !== editModes.users}
+                      />
+                    </div>
+                  </Tab.Content>
+                </div>
+              </Card.Body>
+            </Card>
+          </Col>
+
+          <Col xs={12} lg={2}>
+            <Card className="mb-3">
+              <Card.Body>
+                <div className="px-xl-3">
+                  <button type="button" onClick={logout} className="btn btn-block btn-secondary">
+                    <FaSignOutAlt />
+                    {' '}
+                    <span>Cerrar sesión</span>
+                  </button>
+                </div>
+              </Card.Body>
+            </Card>
           </Col>
         </Row>
       </Container>

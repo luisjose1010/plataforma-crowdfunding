@@ -64,7 +64,7 @@ function ProjectsList({ categoryUrl }) {
       <Row className="g-4 mt-5">
         {
           projects.map((project) => (
-            <Col xs={12} sm={6} md={3} key={project.id}>
+            <Col xs={12} sm={6} lg={3} key={project.id}>
               <ProjectCard project={project} />
             </Col>
           ))

@@ -22,21 +22,30 @@ function UserSearch({ ...attrs }) {
   function fetchUser() {
     api.get(`/users/?id_card=${idCard}`)
       .then((response) => {
-        const userData = response.data[0];
+        const [userData] = response.data;
+
+        if (!userData) {
+          setInfoShow(false);
+
+          setErrorTitle('Usuario no encontrado');
+          setErrorDescription('No se ha encontrado ningún usuario con la cédula indicada.');
+          setErrorShow(true);
+          return;
+        }
         setUser(userData);
 
+        let title = '';
         let message = '';
+        let description = '';
 
         if (userData.is_superuser) {
-          setInfoTitle('Anular permisos de administrador');
+          title = 'Anular permisos de administrador';
           message = '¿Desea eliminar los permisos de administrador de este usuario?';
-          setInfoShow(true);
         } else {
-          setInfoTitle('Permisos de administrador');
+          title = 'Permisos de administrador';
           message = '¿Desea otorgar permisos de administrador a este usuario?';
-          setInfoShow(true);
         }
-        setInfoDescription((
+        description = (
           <>
             {message}
             <hr />
@@ -69,7 +78,11 @@ function UserSearch({ ...attrs }) {
               {userData.is_superuser ? 'Si' : 'No'}
             </p>
           </>
-        ));
+        );
+
+        setInfoDescription(description);
+        setInfoTitle(title);
+        setInfoShow(true);
       })
       .catch(() => {
 
@@ -79,7 +92,13 @@ function UserSearch({ ...attrs }) {
   function updateUser() {
     api.put(`/users/${user.id}`, { is_superuser: !user.is_superuser })
       .then((response) => {
-        setUser(response.data[0]);
+        if (response.data.length > 0) {
+          setUser(response.data[0]);
+        } else {
+          setErrorTitle('Usuario no encontrado');
+          setErrorDescription('No se ha encontrado ningún usuario con la cédula indicada.');
+          setErrorShow(true);
+        }
       })
       .catch(() => {
 
@@ -108,6 +127,8 @@ function UserSearch({ ...attrs }) {
   function handleClick(event) {
     event.preventDefault();
     fetchUser();
+    setInfoTitle('Buscando usuario...');
+    setInfoDescription('Por favor espere mientras se busca el usuario.');
     setInfoShow(true);
   }
 

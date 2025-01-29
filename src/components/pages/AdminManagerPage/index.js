@@ -321,7 +321,7 @@ function ProjectManagerPage() {
                     </NavItem>
                   </Nav>
                   <Tab.Content className="tab-content pt-3">
-                    <div className="tab-pane active">
+                    <main className="tab-pane active">
                       <Form noValidate="">
                         <ItemsManager
                           items={items[getKeyByValue(editModes, editMode)]}
@@ -336,7 +336,7 @@ function ProjectManagerPage() {
                       <UserSearch
                         hidden={editMode !== editModes.users}
                       />
-                    </div>
+                    </main>
                   </Tab.Content>
                 </div>
               </Card.Body>

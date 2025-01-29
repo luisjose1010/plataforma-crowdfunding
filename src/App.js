@@ -60,11 +60,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <Container fluid className="p-0">
-      <main>
-        <React.StrictMode>
-          <RouterProvider router={router} />
-        </React.StrictMode>
-      </main>
+      <React.StrictMode>
+        <RouterProvider router={router} />
+      </React.StrictMode>
     </Container>
   );
 }

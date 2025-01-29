@@ -48,7 +48,7 @@ function ProjectsList({ categoryUrl }) {
   }, [categoryUrl]);
 
   return (
-    <Container>
+    <Container as="main">
       <TextSmall className="mt-5">
         <span>
           {!category ? 'Todos los proyectos' : category.name}

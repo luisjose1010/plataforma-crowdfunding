@@ -23,7 +23,7 @@ function AboutUs() {
         </BannerContent>
       </Banner>
 
-      <Container className="mt-5">
+      <Container as="main" className="mt-5">
         <Row>
           <Col>
             <Image src={exampleCard} />

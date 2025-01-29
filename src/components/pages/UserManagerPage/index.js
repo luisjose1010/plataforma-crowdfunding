@@ -336,7 +336,7 @@ function UserManagerPage() {
                     </NavItem>
                   </Nav>
                   <Tab.Content className="tab-content pt-3">
-                    <div className="tab-pane active">
+                    <main className="tab-pane active">
                       <Form noValidate="">
                         <Row id="overview" hidden={editMode !== editModes.overview && editMode !== editModes.edit}>
                           <Col>
@@ -501,7 +501,7 @@ function UserManagerPage() {
                           </Row>
                         </Col>
                       </Row>
-                    </div>
+                    </main>
                   </Tab.Content>
                 </div>
               </Card.Body>

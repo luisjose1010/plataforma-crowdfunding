@@ -470,7 +470,7 @@ function ProjectManagerPage() {
                     </NavItem>
                   </Nav>
                   <Tab.Content className="tab-content pt-3">
-                    <div className="tab-pane active">
+                    <main className="tab-pane active">
                       <Form noValidate="">
                         <Row id="overview">
                           <Col>
@@ -551,7 +551,7 @@ function ProjectManagerPage() {
                           </Col>
                         </Row>
                       </Form>
-                    </div>
+                    </main>
                   </Tab.Content>
                 </div>
               </Card.Body>

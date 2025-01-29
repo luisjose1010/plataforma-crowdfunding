@@ -138,7 +138,7 @@ function ProjectPage() {
         </BannerContent>
       </Banner>
 
-      <Container className="mt-5 mb-5">
+      <Container as="main" className="mt-5 mb-5">
         <h2>Dona a este proyecto social</h2>
 
         <Row className="mt-5">

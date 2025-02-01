@@ -5,10 +5,13 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import api from '../../../api';
 import ProjectCard from './ProjectCard';
+import { ProjectsLoader, ProjectsTitleLoader } from '../../hooks/Loaders';
 
 function ProjectsList({ categoryUrl }) {
   const [projects, setProjects] = useState([]);
   const [category, setCategory] = useState(null);
+  const [loadingProjects, setLoadingProjects] = useState(true);
+  const [loadingCategory, setLoadingCategory] = useState(true);
 
   function fetchProjects(categoryId) {
     let endpoint = '/projects/?is_verified=true';
@@ -23,6 +26,10 @@ function ProjectsList({ categoryUrl }) {
       })
       .catch(() => {
 
+      })
+      .finally(() => {
+        setLoadingProjects(false);
+        setLoadingCategory(false);
       });
   }
 
@@ -35,10 +42,16 @@ function ProjectsList({ categoryUrl }) {
       })
       .catch(() => {
 
+      })
+      .finally(() => {
+        setLoadingCategory(false);
       });
   }
 
   useEffect(() => {
+    setLoadingCategory(true);
+    setLoadingProjects(true);
+
     if (categoryUrl) {
       fetchCategory();
     } else {
@@ -49,29 +62,40 @@ function ProjectsList({ categoryUrl }) {
 
   return (
     <Container as="main">
-      <TextSmall className="mt-5">
-        <span>
-          {!category ? 'Todos los proyectos' : category.name}
-        </span>
-      </TextSmall>
+      {
+        !loadingCategory ? (
+          <>
+            <TextSmall className="mt-5">
+              <span>
+                {!category ? 'Todos los proyectos' : category.name}
+              </span>
+            </TextSmall>
 
-      <h2>
-        {
-          !category ? '¡Encuentra Tu Proyecto Favorito!' : category.description
-        }
-      </h2>
+            <h2>
+              {
+                !category ? '¡Encuentra Tu Proyecto Favorito!' : category.description
+              }
+            </h2>
+          </>
+        )
+          : (
+            <Row>
+              <ProjectsTitleLoader />
+            </Row>
+          )
+      }
 
-      <Row className="g-4 mt-5">
+      <Row className="g-4">
         {
-          projects.map((project) => (
-            <Col xs={12} sm={6} lg={3} key={project.id}>
+          !loadingProjects && projects.map((project) => (
+            <Col xs={12} sm={6} lg={3} key={project.id} className="mt-5">
               <ProjectCard project={project} />
             </Col>
           ))
         }
 
         {
-          projects.length < 1
+          !loadingProjects && projects.length < 1
             ? (
               <Col>
                 <hr />
@@ -81,6 +105,12 @@ function ProjectsList({ categoryUrl }) {
               </Col>
             )
             : ''
+        }
+
+        {
+          loadingProjects && (
+            <ProjectsLoader />
+          )
         }
       </Row>
     </Container>

@@ -8,11 +8,14 @@ import searchIcon from '../../img/searchIcon.svg';
 import { Button } from './theme';
 import api from '../../api';
 import localAPI from '../../api/localAPI';
+import { DotSpinner, Spinner } from './Loaders';
 
 function NavBar() {
   const [user, setUser] = useState(null);
   const [categories, setCategories] = useState([]);
   const [scrolled, setScrolled] = useState(false);
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [loadingUser, setLoadingUser] = useState(true);
 
   function fetchUser() {
     const tokenData = localAPI.getTokenData();
@@ -26,7 +29,12 @@ function NavBar() {
         })
         .catch(() => {
 
+        })
+        .finally(() => {
+          setLoadingUser(false);
         });
+    } else {
+      setLoadingUser(false);
     }
   }
 
@@ -37,6 +45,9 @@ function NavBar() {
       })
       .catch(() => {
 
+      })
+      .finally(() => {
+        setLoadingCategories(false);
       });
   }
 
@@ -79,6 +90,7 @@ function NavBar() {
                 </NavDropdown.Item>
                 <NavDropdown.Divider />
                 {
+                  !loadingCategories && categories.length > 0 ? (
                     categories.map((category) => (
                       <NavDropdown.Item
                         key={category.id}
@@ -90,6 +102,9 @@ function NavBar() {
                         {category.name}
                       </NavDropdown.Item>
                     ))
+                  ) : (
+                    <DotSpinner />
+                  )
                 }
                 <NavDropdown.Divider hidden />
                 <NavDropdown.Item as={Link} to="/proyectos-sociales/buscar" hidden className="fw-bold">
@@ -99,9 +114,15 @@ function NavBar() {
             </NavStyled>
 
             <NavStyled>
-              <Nav.Link eventKey={1} as={Link} to={(user ? '/usuario' : '/login')} className="py-3 text-white my-auto">
-                <Button><b>{ user ? user.name : 'Iniciar Sesión' }</b></Button>
-              </Nav.Link>
+              {
+                !loadingUser ? (
+                  <Nav.Link eventKey={1} as={Link} to={(user ? '/usuario' : '/login')} className="py-3 text-white my-auto">
+                    <Button><b>{user ? user.name : 'Iniciar Sesión'}</b></Button>
+                  </Nav.Link>
+                ) : (
+                  <Spinner className="py-3 my-auto" />
+                )
+              }
               <Nav.Link eventKey={2} href="#buscar" hidden className="my-auto">
                 <SearchIcon src={searchIcon} alt="" />
               </Nav.Link>

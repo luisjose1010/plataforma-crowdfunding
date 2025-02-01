@@ -16,6 +16,7 @@ import Footer from '../../hooks/Footer';
 import DonationForm from './DonationForm';
 import api from '../../../api';
 import localAPI from '../../../api/localAPI';
+import { ImageLoader, ProjectLoader } from '../../hooks/Loaders';
 
 function ProjectPage() {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ function ProjectPage() {
     is_superuser: false,
   });
   const { id } = useParams();
+  const [loading, setLoading] = useState(true);
 
   const [modalShow, setModalShow] = useState(false);
   const [accountsShow, setAccountsShow] = useState(false);
@@ -58,6 +60,9 @@ function ProjectPage() {
       })
       .catch(() => {
 
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }
 
@@ -141,39 +146,53 @@ function ProjectPage() {
       <Container as="main" className="mt-5 mb-5">
         <h2>Dona a este proyecto social</h2>
 
-        <Row className="mt-5">
-          <Col sm="12" md="8">
-            {
-              image
-                ? (<Image fluid src={image} onError={() => setImage(exampleCard)} />)
-                : (<Image fluid src={exampleCard} />)
-            }
-            <hr />
-            <Donatone goal={project.goal} donated={project.donated} />
-          </Col>
+        {
+          !loading ? (
+            <>
+              <Row className="mt-5">
+                <Col sm="12" md="8">
+                  {
+                    image
+                      ? (<Image fluid src={image} onError={() => setImage(exampleCard)} />)
+                      : (
+                        <Row>
+                          <ImageLoader />
+                        </Row>
+                      )
+                  }
+                  <hr />
+                  <Donatone goal={project.goal} donated={project.donated} />
+                </Col>
 
-          <Col sm="12" md="4">
-            <Categories active={project.category_id} />
-          </Col>
-        </Row>
+                <Col sm="12" md="4">
+                  <Categories active={project.category_id} />
+                </Col>
+              </Row>
 
-        <Row className="mt-5">
-          <Col sm="12" md="8">
-            <h3>
-              {project ? project.title : ''}
-              {' '}
-              {!project.is_verified && (<Badge bg="danger" className="mx-2">No publicado</Badge>)}
-            </h3>
+              <Row className="mt-5">
+                <Col sm="12" md="8">
+                  <h3>
+                    {project ? project.title : ''}
+                    {' '}
+                    {!project.is_verified && (<Badge bg="danger" className="mx-2">No publicado</Badge>)}
+                  </h3>
 
-            <p>{project ? project.description : ''}</p>
-          </Col>
-        </Row>
-        <Button onClick={handleDonateClick} hidden={!project.is_verified} className="mt-2 mx-2 btn-success">
-          ¡Dona a este proyecto!
-        </Button>
-        <Button as={Link} to={`/proyectos/${id}/editar`} hidden={!user.is_superuser && project.user_id !== user.id} className="mt-2 mx-2">
-          Editar proyecto
-        </Button>
+                  <p>{project ? project.description : ''}</p>
+                </Col>
+              </Row>
+              <Button onClick={handleDonateClick} hidden={!project.is_verified} className="mt-2 mx-2 btn-success">
+                ¡Dona a este proyecto!
+              </Button>
+              <Button as={Link} to={`/proyectos/${id}/editar`} hidden={!user.is_superuser && project.user_id !== user.id} className="mt-2 mx-2">
+                Editar proyecto
+              </Button>
+            </>
+          ) : (
+            <Row>
+              <ProjectLoader />
+            </Row>
+          )
+        }
       </Container>
 
       <Modal

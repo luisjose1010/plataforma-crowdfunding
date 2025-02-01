@@ -19,14 +19,15 @@ import Banner from '../../layouts/Banner';
 import BannerImg from '../../../img/banner-small.svg';
 import api from '../../../api';
 import localAPI from '../../../api/localAPI';
+import { Spinner } from '../../hooks/Loaders';
 
 function ProjectManagerPage() {
   const { editMode } = useParams();
 
   const navigate = useNavigate();
   const [items, setItems] = useState({
-    projects: [],
-    transactions: [],
+    projects: null,
+    transactions: null,
   });
 
   const [editModes] = useState({
@@ -323,14 +324,26 @@ function ProjectManagerPage() {
                   <Tab.Content className="tab-content pt-3">
                     <main className="tab-pane active">
                       <Form noValidate="">
-                        <ItemsManager
-                          items={items[getKeyByValue(editModes, editMode)]}
-                          modalTitle={`Aprobar ${editMode} como administrador`}
-                          modalContent={itemsModalContent}
-                          editButton={editMode === editModes.projects}
-                          hidden={editMode === editModes.users}
-                          handleChange={handleChange}
-                        />
+                        {
+                          items[getKeyByValue(editModes, editMode)] ? (
+                            <ItemsManager
+                              items={items[getKeyByValue(editModes, editMode)]}
+                              modalTitle={`Aprobar ${editMode} como administrador`}
+                              modalContent={itemsModalContent}
+                              editButton={editMode === editModes.projects}
+                              hidden={editMode === editModes.users}
+                              handleChange={handleChange}
+                            />
+                          ) : (
+                            <Spinner
+                              size={60}
+                              stroke={10}
+                              hidden={editMode === editModes.users}
+                              className="p-5"
+                            />
+                          )
+                        }
+
                       </Form>
 
                       <UserSearch

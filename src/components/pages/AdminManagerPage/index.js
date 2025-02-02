@@ -10,9 +10,7 @@ import {
 import { BannerContent, BannerTitle } from '../../hooks/theme';
 import ItemsManager from './ItemsManager';
 import UserSearch from './UserSearch';
-import NavBar from '../../hooks/NavBar';
 import Donatone from '../../hooks/Donatone';
-import Footer from '../../hooks/Footer';
 import ErrorModal from '../../hooks/ErrorModal';
 import InfoModal from '../../hooks/InfoModal';
 import Banner from '../../layouts/Banner';
@@ -231,10 +229,6 @@ function ProjectManagerPage() {
   return (
     <>
       <Banner img={BannerImg}>
-        <header>
-          <NavBar />
-        </header>
-
         <BannerContent>
           <BannerTitle>
             Panel de administrador
@@ -371,8 +365,6 @@ function ProjectManagerPage() {
           </Col>
         </Row>
       </Container>
-
-      <Footer />
 
       <ErrorModal
         show={errorShow}

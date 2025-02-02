@@ -9,9 +9,7 @@ import {
   FaCamera, FaChartBar, FaCog, FaSignOutAlt, FaTh,
 } from 'react-icons/fa';
 import { BannerContent, BannerTitle } from '../../hooks/theme';
-import NavBar from '../../hooks/NavBar';
 import Donatone from '../../hooks/Donatone';
-import Footer from '../../hooks/Footer';
 import ErrorModal from '../../hooks/ErrorModal';
 import InfoModal from '../../hooks/InfoModal';
 import Banner from '../../layouts/Banner';
@@ -202,10 +200,6 @@ function UserManagerPage() {
   return (
     <>
       <Banner img={BannerImg}>
-        <header>
-          <NavBar />
-        </header>
-
         <BannerContent>
           <BannerTitle>
             Usuario
@@ -546,8 +540,6 @@ function UserManagerPage() {
           </Col>
         </Row>
       </Container>
-
-      <Footer />
 
       <Modal
         show={changeAvatarShow}

@@ -1,8 +1,6 @@
 import {
   Container, Row, Col, Image,
 } from 'react-bootstrap';
-import NavBar from '../../hooks/NavBar';
-import Footer from '../../hooks/Footer';
 import { BannerContent, BannerTitle } from '../../hooks/theme';
 import Banner from '../../layouts/Banner';
 import BannerImg from '../../../img/banner-small.svg';
@@ -12,10 +10,6 @@ function AboutUs() {
   return (
     <>
       <Banner img={BannerImg}>
-        <header>
-          <NavBar />
-        </header>
-
         <BannerContent>
           <BannerTitle>
             Sobre Nosotros
@@ -39,8 +33,6 @@ function AboutUs() {
           </Col>
         </Row>
       </Container>
-
-      <Footer />
     </>
   );
 }

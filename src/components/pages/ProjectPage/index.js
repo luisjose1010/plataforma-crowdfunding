@@ -7,12 +7,10 @@ import { BannerContent, BannerTitle } from '../../hooks/theme';
 import Categories from '../../hooks/Categories';
 import Donatone from '../../hooks/Donatone';
 import Banner from '../../layouts/Banner/index';
-import NavBar from '../../hooks/NavBar';
 import ErrorModal from '../../hooks/ErrorModal';
 import InfoModal from '../../hooks/InfoModal';
 import BannerImg from '../../../img/banner-small.svg';
 import exampleCard from '../../../img/exampleCard.jpg';
-import Footer from '../../hooks/Footer';
 import DonationForm from './DonationForm';
 import api from '../../../api';
 import localAPI from '../../../api/localAPI';
@@ -132,10 +130,6 @@ function ProjectPage() {
   return (
     <>
       <Banner img={BannerImg}>
-        <header>
-          <NavBar />
-        </header>
-
         <BannerContent>
           <BannerTitle>
             {project ? project.title : ''}
@@ -245,8 +239,6 @@ function ProjectPage() {
           <Button onClick={() => setAccountsShow(false)}>Cerrar</Button>
         </Modal.Footer>
       </Modal>
-
-      <Footer />
 
       <ErrorModal
         show={errorShow}

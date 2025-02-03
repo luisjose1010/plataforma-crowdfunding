@@ -324,7 +324,6 @@ function ProjectManagerPage() {
                               items={items[getKeyByValue(editModes, editMode)]}
                               modalTitle={`Aprobar ${editMode} como administrador`}
                               modalContent={itemsModalContent}
-                              editButton={editMode === editModes.projects}
                               hidden={editMode === editModes.users}
                               handleChange={handleChange}
                             />

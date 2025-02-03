@@ -469,7 +469,7 @@ function UserManagerPage() {
                                       user.projects
                                         ? user.projects.map((project) => (
                                           (
-                                            <ListGroup.Item action as={Link} to={`/proyectos/${project.id}/ver`}>
+                                            <ListGroup.Item key={project.id} action as={Link} to={`/proyectos/${project.id}/ver`}>
                                               <Row className="p-2">
                                                 <Col xs="12" md="6" className="my-1">
                                                   {project.title}

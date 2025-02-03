@@ -9,15 +9,15 @@
 
 ## Descripción
 
-Aplicación de plataforma Crowdfunding creada a partir de la herramienta [Create React App](https://github.com/facebook/create-react-app) para así utilizar el framework [React](https://es.react.dev/), con la información oficial obtenida en [React](https://es.react.dev/learn). Este archivo resultó de complementar el archivo por defecto README.md generado por la herramienta de React (de ahí las partes en el idioma inglés).
+Aplicación de plataforma Crowdfunding creada a partir de la herramienta [Vite](https://vite.dev/), mediante el uso de la plantilla predeterminada `React + TypeScript + Vite`, para así utilizar el framework [React](https://es.react.dev/) en conjunto con [TypeScript]("https://www.typescriptlang.org/"), permitiendo aplicar la información oficial obtenida en [React](https://es.react.dev/learn). Este archivo resultó de complementar el archivo por defecto README.md generado por la herramienta de React (de ahí las partes en el idioma inglés).
 
 ## Guía de estilos
 
 ### Código JavaScript
 
-Se utiliza [ESLint](https://eslint.org/ "ESLint") para la cuidar la consistencia del código y el formato, mediante el seguimiento de las convenciones y guía de estilo correspondiente establecida para el proyecto paranpmmi desarrollar código en lenguaje JavaScript, la cuál sería la basada en la especificación de [Airbnb](https://github.com/airbnb/javascript "Airbnb"). Al utilizar el framework React, adicional se busca tomar en cuenta cualquier especificación oficial encontrada en su [página de documentación](https://reactjs.org/) y [página de documentación "legacy"](https://legacy.reactjs.org/docs/getting-started.html). En el archivo `.eslintrc.json` se encuentra el conjunto de reglas y configuraciones necesarias que extienden de el estándar de Airbnb y demás, con la modificación que permite utilizar en los archivos tanto el final de linea de windows, como el basado en unix.
+Se utiliza [ESLint](https://eslint.org/ "ESLint") para la cuidar la consistencia del código y el formato, mediante el seguimiento de las convenciones y guía de estilo correspondiente establecida para el proyecto al desarrollar código en lenguaje JavaScript, la cuál sería la basada en la especificación de [Airbnb](https://github.com/airbnb/javascript "Airbnb"). Al utilizar el framework React, adicional se busca tomar en cuenta cualquier especificación oficial encontrada en su [página de documentación](https://reactjs.org/) y [página de documentación "legacy"](https://legacy.reactjs.org/docs/getting-started.html). En el archivo `.eslintrc.json` se encuentra el conjunto de reglas y configuraciones necesarias que extienden de el estándar de Airbnb y demás, con la modificación que permite utilizar en los archivos tanto el final de linea de windows, como el basado en unix.
 
-#### Props de React
+#### Props de React (en proceso de ser reemplazado por TypeScript)
 
 Se utiliza la biblioteca de React [PropType](https://legacy.reactjs.org/docs/typechecking-with-proptypes.html) para validar de forma "estática" los tipos de los props de los componentes, según indica la especificación, para un mejor control del código.
 
@@ -27,7 +27,7 @@ Se sigue la siguiente convención:
 
 1. Un encabezado con el titulo o un resumen del commit, describiendo la razón del commit. Debe comenzar por un sustantivo o un imperativo. No debe tener más de 50 caracteres.
 
-2. Un cuerpo donde se describen todos los cambios realizados en el commit y su función. Se recomienda comenzar con un sustantivo o imperativo, pero es más flexible. Pueden haber varios parrafos de información, separados por lineas en blanco. Cada linea debe tener máximo 72 caracteres. Debe terminar en punto.
+2. Un cuerpo donde se describen todos los cambios realizados en el commit y su función. Se recomienda comenzar con un sustantivo o imperativo, pero es más flexible. Pueden haber varios párrafos de información, separados por lineas en blanco. Cada linea debe tener máximo 72 caracteres. Debe terminar en punto.
 
 3. Referencias a issues que se están resolviendo en el commit o que están relacionados (opcional).
 
@@ -111,85 +111,89 @@ them.
 - [Axios](https://axios-http.com/docs/intro "Axios")
 - [Styled Components]( "Styled Components")
 
-El proyecto utiliza [NodeJS](https://nodejs.org/es/ "NodeJS") para gestionar las tecnologías y dependencias de los paquetes utilizados, implementado en el lenguaje [JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript "JavaScript"), creado a partir de la herramienta [Create React App](https://github.com/facebook/create-react-app), como una forma inciar y mantener un nuevo proyecto [React](https://es.react.dev/). Se utiliza la bibliteca proporcionada por el ecosistema React, [React Router]("https://reactrouter.com/en/main" "React Router"), para gestionar las rutas necesarias de la App. Así mismo, para la comunicación de los datos con la API objetivo, se requiere la biblioteca [Axios](https://axios-http.com/docs/intro "Axios"), instaladas en las dependencias del proyecto. También se proporciona la biblioteca [Styled Components]( "Styled Components") para poder deasarrollar componentes estilizados dacilmente dentro de los componentes React, de forma que se cree un codigo más ordenado y limpio.
+El proyecto utiliza [NodeJS](https://nodejs.org/es/ "NodeJS") para gestionar las tecnologías y dependencias de los paquetes utilizados, implementado en el lenguaje [JavaScript](https://developer.mozilla.org/es/docs/Web/JavaScript "JavaScript"), creado a partir de la herramienta [Vite](https://vite.dev/), como una forma iniciar y mantener un nuevo proyecto [React](https://es.react.dev/). Se utiliza la biblioteca proporcionada por el ecosistema React, [React Router]("https://reactrouter.com/en/main" "React Router"), para gestionar las rutas necesarias de la App. Así mismo, para la comunicación de los datos con la API objetivo, se requiere la biblioteca [Axios](https://axios-http.com/docs/intro "Axios"), instaladas en las dependencias del proyecto. También se proporciona las bibliotecas de estilo [Styled Components]( "Styled Components") y [React Bootstrap]("https://react-bootstrap.netlify.app/"), para poder desarrollar componentes React fácilmente estilizados, de forma que se propicie un código más ordenado y limpio.
 
-La carpeta donde se encuentra la mayoría de los archivos necesarios para desarrollar sobre NodeJS es "src", la aplicación utiliza una API para poder realizar sus funciones. Se puede obtener la documentación autogenerada de la API según la especificación OpenAPI, sirviendo como una guia estructurada para la parte del cliente, incluyendo sus endpoints, parametros, solicitudes y respuestas, en la ruta `/redoc` del servidor donde se esté ejecutando la API o bien, el último redoc de documentación autogenerado por la API en forma de archivo HTML en la respectiva carpeta de documentación `/documentation/redoc`.
+La carpeta donde se encuentra la mayoría de los archivos necesarios para desarrollar sobre NodeJS es "src", la aplicación utiliza una API para poder realizar sus funciones. Se puede obtener la documentación autogenerada de la API según la especificación OpenAPI, sirviendo como una guía estructurada para la parte del cliente, incluyendo sus endpoints, parámetros, solicitudes y respuestas, en la ruta `/redoc` del servidor donde se esté ejecutando la API o bien, el último redoc de documentación autogenerado por la API en forma de archivo HTML en la respectiva carpeta de documentación `/documentation/redoc`.
 
 ### Configuración inicial del proyecto
 
-Para comenzar a utilizar el proyecto se debe realizar la instalacion de las dependencia del proyecto y compilar los archivos mediante NodeJS, los cuales se pueden encontrar las intrucciones en la documentación oficial indicada en el inicio del documento o mediante los siguientes scripts. Para configurar NodeJS se necesita un archivo `.env.local` en la raiz del proyecto con las variables de entorno necesarias, incluyendo el "Host" y la "URL" de la API. El archivo `.env.local.example` se puede encontrar como un ejemplo de archivo `.env.local`.
+Para comenzar a utilizar el proyecto se debe realizar la instalación de las dependencia del proyecto y compilar los archivos mediante NodeJS, los cuales se pueden encontrar las instrucciones en la documentación oficial indicada en el inicio del documento o mediante los siguientes scripts. Para configurar NodeJS se necesita un archivo `.env.local` en la raíz del proyecto con las variables de entorno necesarias, incluyendo el "Host" y la "URL" de la API. El archivo `.env.local.example` se puede encontrar como un ejemplo de archivo `.env.local`.
 
 ```bash
 npm install
 ```
 
 ```bash
-npm start
+npm run dev
 ```
 
 ## Scripts
 
 In the project directory, you can run:
 
-### `npm start`
+### `npm run dev`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+Open [http://localhost:5173/](http://localhost:5173/) to view it in your browser.
 
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
-### `npm test`
-
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
-
 ### `npm run build`
 
-Builds the app for production to the `build` folder.\
+Builds the app for production to the `dist` folder.\
 It correctly bundles React in production mode and optimizes the build for the best performance.
 
 The build is minified and the filenames include the hashes.\
 Your app is ready to be deployed!
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
 ## Learn More
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Currently, two official plugins are available:
 
-### Code Splitting
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+### Expanding the ESLint configuration
 
-### Analyzing the Bundle Size
+If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Configure the top-level `parserOptions` property like this:
 
-### Making a Progressive Web App
+```js
+export default tseslint.config({
+  languageOptions: {
+    // other options...
+    parserOptions: {
+      project: ['./tsconfig.node.json', './tsconfig.app.json'],
+      tsconfigRootDir: import.meta.dirname,
+    },
+  },
+})
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
+- Optionally add `...tseslint.configs.stylisticTypeChecked`
+- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
 
-### Advanced Configuration
+```js
+// eslint.config.js
+import react from 'eslint-plugin-react'
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+export default tseslint.config({
+  // Set the react version
+  settings: { react: { version: '18.3' } },
+  plugins: {
+    // Add the react plugin
+    react,
+  },
+  rules: {
+    // other rules...
+    // Enable its recommended rules
+    ...react.configs.recommended.rules,
+    ...react.configs['jsx-runtime'].rules,
+  },
+})
+```

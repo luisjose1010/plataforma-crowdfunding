@@ -1,18 +1,17 @@
-import './App.css';
+import AboutUsPage from '@/components/AboutUsPage';
+import AdminManagerPage from '@/components/AdminManagerPage';
+import LandingPage from '@/components/LandingPage';
+import RootLayout from '@/components/layouts/RootLayout';
+import LoginPage from '@/components/LoginPage';
+import ProjectManagerPage from '@/components/ProjectManagerPage';
+import ProjectPage from '@/components/ProjectPage';
+import ProjectsPage from '@/components/ProjectsPage';
+import UserManagerPage from '@/components/UserManagerPage';
 import {
   createBrowserRouter,
   RouterProvider,
 } from 'react-router-dom';
-
-import RootLayout from './components/layouts/RootLayout';
-import LandingPage from './components/pages/LandingPage';
-import ProjectsPage from './components/pages/ProjectsPage';
-import ProjectPage from './components/pages/ProjectPage';
-import AboutUs from './components/pages/AboutUs';
-import LoginPage from './components/pages/LoginPage';
-import UserManagerPage from './components/pages/UserManagerPage';
-import ProjectManagerPage from './components/pages/ProjectManagerPage';
-import AdminManagerPage from './components/pages/AdminManagerPage';
+import './App.css';
 
 const router = createBrowserRouter([
   {
@@ -56,7 +55,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/sobre-nosotros',
-        element: <AboutUs />,
+        element: <AboutUsPage />,
       },
     ],
   },

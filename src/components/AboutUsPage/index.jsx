@@ -4,7 +4,7 @@ import Banner from '@/components/layouts/Banner';
 import {
   Col, Container, Image, Row,
 } from 'react-bootstrap';
-import { BannerContent, BannerTitle } from '../ui/theme';
+import { BannerContent, BannerTitle } from '@/components/ui/theme';
 
 function AboutUsPage() {
   return (

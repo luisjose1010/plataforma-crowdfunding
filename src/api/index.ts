@@ -1,5 +1,5 @@
 import axios from 'axios';
-import localAPI from './localAPI';
+import localAPI from '@/api/localAPI';
 
 const API_URL = import.meta.env.VITE_API_HOST + import.meta.env.VITE_API_URL;
 

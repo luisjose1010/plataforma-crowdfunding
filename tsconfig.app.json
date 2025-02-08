@@ -22,6 +22,14 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
 
+    /* Paths */
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": [
+        "*"
+      ],
+    },
+
     "allowJs": true // TODO: Remove, only for migration purposes
   },
   "include": ["src"]

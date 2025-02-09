@@ -1,7 +1,13 @@
 import PropTypes from 'prop-types';
+import React from "react";
 import styled from 'styled-components';
 
-function Banner({ img, children }) {
+interface BannerProps {
+  img: string
+  children: React.ReactNode
+}
+
+function Banner({ img, children }: BannerProps) {
   return (
     <BannerContainer>
       <BannerBackground src={img} />

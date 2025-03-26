@@ -28,7 +28,7 @@ function DonationForm({
 
     if (tokenData) {
       const transactionModified = { ...transaction, user_id: tokenData.sub, project_id: projectId };
-      const exchangeRate = process.env.REACT_APP_EXCHANGE_RATE;
+      const exchangeRate = import.meta.env.VITE_EXCHANGE_RATE;
 
       transactionModified.amount *= parseFloat(exchangeRate);
 

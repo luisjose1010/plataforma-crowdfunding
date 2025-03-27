@@ -1,25 +1,36 @@
 import InfoModal from '@/components/InfoModal';
-import PropTypes from 'prop-types';
+import { Item } from "@/types";
 import { useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
 
+interface ItemsManagerProps {
+  items: Item[]
+  modalTitle: string
+  modalContent?: (id: string) => React.ReactNode
+  handleChange: (id: string) => void
+  hidden: boolean
+}
+
 function ItemsManager({
   items, modalTitle, modalContent, handleChange, ...attrs
-}) {
-  const [id, setId] = useState(null);
-
+} : ItemsManagerProps) {
+  const [id, setId] = useState<string | null>(null);
   const [infoShow, setInfoShow] = useState(false);
+
   function handleCancelInfo() {
     setId(null);
     setInfoShow(false);
   }
+
   function handleAcceptInfo() {
+    if(id == null) return
+
     handleChange(id);
     setId(null);
     setInfoShow(false);
   }
 
-  function handleClick(event, itemId) {
+  function handleClick(event: React.MouseEvent<Element, MouseEvent>, itemId: string) {
     event.preventDefault();
     setId(itemId);
     setInfoShow(true);
@@ -62,26 +73,14 @@ function ItemsManager({
         acceptHandler={handleAcceptInfo}
         cancelHandler={handleCancelInfo}
       >
-        {modalContent(id)}
+        {
+          (id != null && modalContent != null) && (
+            modalContent(id)
+          )
+        }
       </InfoModal>
     </ListGroup>
   );
 }
-
-ItemsManager.propTypes = {
-  items: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    created_at: PropTypes.string.isRequired,
-  })).isRequired,
-  modalTitle: PropTypes.string.isRequired,
-  modalContent: PropTypes.func,
-  handleChange: PropTypes.func.isRequired,
-};
-
-ItemsManager.defaultProps = {
-  modalContent: null,
-};
 
 export default ItemsManager;

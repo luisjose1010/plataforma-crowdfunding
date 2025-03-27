@@ -36,7 +36,7 @@ function UserManagerPage() {
     projects: [],
   });
   const [avatar, setAvatar] = useState('');
-  const [avatarForm, setAvatarForm] = useState('');
+  const [avatarForm, setAvatarForm] = useState<any>(null);
   const [loading, setLoading] = useState(true);
 
   const [editModes] = useState({
@@ -49,8 +49,8 @@ function UserManagerPage() {
   const [changeAvatarShow, setChangeAvatarShow] = useState(false);
 
   const [errorShow, setErrorShow] = useState(false);
-  const [errorTitle, setErrorTitle] = useState(null);
-  const [errorDescription, setErrorDescription] = useState(null);
+  const [errorTitle, setErrorTitle] = useState<string | null>(null);
+  const [errorDescription, setErrorDescription] = useState<string | null>(null);
   function handleCloseError() {
     setErrorShow(false);
     setErrorTitle(null);
@@ -58,8 +58,8 @@ function UserManagerPage() {
   }
 
   const [infoShow, setInfoShow] = useState(false);
-  const [infoTitle, setInfoTitle] = useState(null);
-  const [infoDescription, setInfoDescription] = useState(null);
+  const [infoTitle, setInfoTitle] = useState<string | null>(null);
+  const [infoDescription, setInfoDescription] = useState<string | null>(null);
   function handleCloseInfo() {
     setInfoShow(false);
     setInfoTitle(null);
@@ -141,7 +141,7 @@ function UserManagerPage() {
   }
   function uploadAvatar() {
     const data = new FormData();
-    data.append('file', avatarForm.files[0]);
+    data.append('file', avatarForm?.files[0]);
 
     api.post(`/images/users/${user.id}`, data, {
       headers: {
@@ -178,13 +178,13 @@ function UserManagerPage() {
     navigate('/');
   }
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     const userModified = { ...user };
     userModified[event.target.name] = event.target.value;
     setUser(userModified);
   }
 
-  function handleChangeAvatar(event) {
+  function handleChangeAvatar(event: React.ChangeEvent<HTMLInputElement>) {
     setAvatarForm(event.target);
   }
 
@@ -342,7 +342,7 @@ function UserManagerPage() {
                       </Nav>
                       <Tab.Content className="tab-content pt-3">
                         <main className="tab-pane active">
-                          <Form noValidate="">
+                          <Form noValidate={true}>
                             <Row id="overview" hidden={editMode !== editModes.overview && editMode !== editModes.edit}>
                               <Col>
                                 <Row>
@@ -535,7 +535,7 @@ function UserManagerPage() {
               <Card.Body>
                 <h6 className="card-title font-weight-bold">Crear proyecto</h6>
                 <p className="card-text">Todos en algún momento necesitamos ayuda.</p>
-                <Button as={Link} to="/proyectos/crear">Nuevo proyecto</Button>
+                <Button as={Link as any} to="/proyectos/crear">Nuevo proyecto</Button>
               </Card.Body>
             </Card>
           </Col>

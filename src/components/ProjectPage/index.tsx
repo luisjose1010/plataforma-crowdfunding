@@ -19,7 +19,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 
 function ProjectPage() {
   const navigate = useNavigate();
-  const [project, setProject] = useState({
+  const [project, setProject] = useState<any>({
     id: -1,
     is_verified: true, // Avoid render danger badge
   });
@@ -178,7 +178,7 @@ function ProjectPage() {
               <Button onClick={handleDonateClick} hidden={!project.is_verified} className="mt-2 mx-2 btn-success">
                 ¡Dona a este proyecto!
               </Button>
-              <Button as={Link} to={`/proyectos/${id}/editar`} hidden={!user.is_superuser && project.user_id !== user.id} className="mt-2 mx-2">
+              <Button as={Link as any} to={`/proyectos/${id}/editar`} hidden={!user.is_superuser && project.user_id !== user.id} className="mt-2 mx-2">
                 Editar proyecto
               </Button>
             </>

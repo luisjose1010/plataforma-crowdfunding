@@ -4,10 +4,18 @@ import {
 } from 'react-bootstrap';
 import styled from 'styled-components';
 
+interface DonatoneProps {
+  goal: number;
+  donated: number;
+  mini?: boolean;
+  className?: string;
+  hidden?: boolean;
+}
+
 function Donatone({
-  goal, donated, mini, className, ...attrs
-}) {
-  let progress = 100;
+  goal, donated, mini = false, className = '', ...attrs
+}: DonatoneProps) {
+  let progress: any = 100;
 
   if (goal > 0) {
     progress = (donated / goal) * 100;

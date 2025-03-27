@@ -56,7 +56,7 @@ function ProjectsList({ categoryUrl }) {
       fetchCategory();
     } else {
       setCategory(null);
-      fetchProjects();
+      fetchProjects(undefined);
     }
   }, [categoryUrl]);
 

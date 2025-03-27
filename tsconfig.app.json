@@ -16,7 +16,7 @@
     "jsx": "react-jsx",
 
     /* Linting */
-    "strict": true,
+    "strict": false, // TODO: Change to `true`, only for migration purposes
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
@@ -30,7 +30,8 @@
       ],
     },
 
-    "allowJs": true // TODO: Remove, only for migration purposes
+    "allowJs": true, // TODO: Remove, only for migration purposes
+    "noEmitOnError": false, // TODO: Remove, only for migration purposes
   },
   "include": ["src"]
 }

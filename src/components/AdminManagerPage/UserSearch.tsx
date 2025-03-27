@@ -37,7 +37,7 @@ function UserSearch({ ...attrs }) {
 
         let title = '';
         let message = '';
-        let description = '';
+        let description = null;
 
         if (userData.is_superuser) {
           title = 'Anular permisos de administrador';

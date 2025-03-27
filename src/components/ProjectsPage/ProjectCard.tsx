@@ -47,7 +47,7 @@ function ProjectCard({ project }) {
             {project.description}
           </span>
         </Card.Text>
-        <Button variant="primary" as={Link} to={`/proyectos-sociales/${project.id}`}>Ir al proyecto</Button>
+        <Button variant="primary" as={Link as any} to={`/proyectos-sociales/${project.id}`}>Ir al proyecto</Button>
       </Card.Body>
     </CardStyled>
   );

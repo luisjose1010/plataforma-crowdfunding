@@ -26,7 +26,7 @@ function ProjectManagerPage() {
     id: null,
     is_superuser: false,
   });
-  const [project, setProject] = useState({
+  const [project, setProject] = useState<any>({
     title: '',
     description: '',
     goal: 0,
@@ -36,7 +36,7 @@ function ProjectManagerPage() {
     updated_at: '',
     category_id: 1,
   });
-  const [imageForm, setImageForm] = useState('');
+  const [imageForm, setImageForm] = useState<any>('');
   const [categories, setCategories] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -51,8 +51,8 @@ function ProjectManagerPage() {
   const [changeImagesShow, setChangeImagesShow] = useState(false);
 
   const [errorShow, setErrorShow] = useState(false);
-  const [errorTitle, setErrorTitle] = useState(null);
-  const [errorDescription, setErrorDescription] = useState(null);
+  const [errorTitle, setErrorTitle] = useState<string | null>(null);
+  const [errorDescription, setErrorDescription] = useState<string | null>(null);
   function handleCloseError() {
     setErrorShow(false);
     setErrorTitle(null);
@@ -60,8 +60,8 @@ function ProjectManagerPage() {
   }
 
   const [infoShow, setInfoShow] = useState(false);
-  const [infoTitle, setInfoTitle] = useState(null);
-  const [infoDescription, setInfoDescription] = useState(null);
+  const [infoTitle, setInfoTitle] = useState<string | null>(null);
+  const [infoDescription, setInfoDescription] = useState<string | null>(null);
   const [infoRoute, setInfoRoute] = useState('/');
   function handleCloseInfo() {
     setInfoShow(false);
@@ -363,7 +363,7 @@ function ProjectManagerPage() {
               <Card.Body>
                 <h6 className="card-title fw-bolder">Ver proyecto</h6>
                 <p className="card-text">Proyecto en el portal.</p>
-                <Button as={Link} to={`/proyectos-sociales/${project.id}`} className="btn-primary">Ver</Button>
+                <Button as={Link as any} to={`/proyectos-sociales/${project.id}`} className="btn-primary">Ver</Button>
               </Card.Body>
             </Card>
           </Col>
@@ -389,7 +389,7 @@ function ProjectManagerPage() {
                                 {String(project.updated_at).split('T')[0]}
                               </small>
                             </div>
-                            <div hidden={editMode !== editModes.edit && editMode} className="mt-2">
+                            <div hidden={editMode !== editModes.edit && editMode as any} className="mt-2">
                               <Button onClick={() => setChangeImagesShow(true)} className="btn-primary">
                                 <FaCamera />
                                 {' '}
@@ -476,7 +476,7 @@ function ProjectManagerPage() {
                       </Nav>
                       <Tab.Content className="tab-content pt-3">
                         <main className="tab-pane active">
-                          <Form noValidate="">
+                          <Form noValidate={true}>
                             <Row id="overview">
                               <Col>
                                 <Row>
@@ -515,7 +515,7 @@ function ProjectManagerPage() {
                                     </FormGroup>
                                   </Col>
                                 </Row>
-                                <Row hidden={editMode !== editModes.create && editMode}>
+                                <Row hidden={editMode !== editModes.create && editMode as any}>
                                   <Col>
                                     <FormGroup>
                                       <Form.Label>Objetivo (Bs. )</Form.Label>
@@ -550,7 +550,7 @@ function ProjectManagerPage() {
                                 <Button className="btn-primary m-2" onClick={updateProject}>Guardar cambios</Button>
                               </Col>
                             </Row>
-                            <Row hidden={editMode !== editModes.create && editMode}>
+                            <Row hidden={editMode !== editModes.create && editMode as any}>
                               <Col className="d-flex justify-content-end">
                                 <Button className="btn-primary" onClick={createProject}>Crear proyecto</Button>
                               </Col>

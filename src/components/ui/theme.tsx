@@ -20,7 +20,7 @@ ButtonWrapper.defaultProps = {
   children: null,
 };
 
-export const Button = styled(ButtonWrapper)`
+export const Button: any = styled(ButtonWrapper)`
   background-color: #219D80;
   padding: ${(props) => props.padding || '0.75rem 1.5rem'};
   color: white

@@ -9,6 +9,7 @@ import InfoModal from '@/components/InfoModal';
 import Banner from '@/components/layouts/Banner';
 import { Spinner } from '@/components/ui/loaders';
 import { BannerContent, BannerTitle } from '@/components/ui/theme';
+import { editModes, Item, Project, Transaction } from "@/types";
 import { useEffect, useState } from 'react';
 import {
   Button, Card, Col, Container, Form,
@@ -19,31 +20,33 @@ import {
 } from 'react-icons/fa';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
+type ProjectItems = Item & Omit<Project, 'title'>;
+type TransactionItems = Item & Omit<Transaction, 'payment_system' | 'reference_number'>;
+
+type Items = {
+  projects?: ProjectItems[]
+  transactions?: TransactionItems[]
+}
+
 function ProjectManagerPage() {
-  const { editMode } = useParams();
+  const { editMode = editModes.projects } = useParams();
 
   const navigate = useNavigate();
-  const [items, setItems] = useState({
-    projects: null,
-    transactions: null,
+  const [items, setItems] = useState<Items>({
+    projects: undefined,
+    transactions: undefined,
   });
-
-  const [editModes] = useState({
-    projects: 'proyectos',
-    transactions: 'pagos',
-    users: 'usuarios',
-  });
+  const itemKey = getItemKey(editModes, editMode) ?? 'projects';
 
   const [errorShow, setErrorShow] = useState(false);
   const [errorTitle, setErrorTitle] = useState(null);
   const [errorDescription, setErrorDescription] = useState(null);
-  const [errorRoute, setErrorRoute] = useState(null);
+ 
   function handleCloseError() {
     setErrorShow(false);
     setErrorTitle(null);
     setErrorDescription(null);
-    setErrorRoute('/');
-    navigate(errorRoute);
+    navigate('/');
   }
 
   const [infoShow, setInfoShow] = useState(false);
@@ -58,7 +61,7 @@ function ProjectManagerPage() {
   function fetchProjects() {
     api.get('/projects/?is_verified=false')
       .then((response) => {
-        const projectsItems = response.data.map((project) => ({
+        const projectsItems = response.data.map((project: Project) => ({
           id: project.id,
           name: project.title,
           description: project.description,
@@ -77,13 +80,13 @@ function ProjectManagerPage() {
   function fetchTransaction() {
     api.get('/transactions/projects/users/?is_verified=false')
       .then((response) => {
-        const transactionsItems = response.data.map((transactions) => ({
-          id: transactions.id,
-          name: transactions.payment_system,
-          description: transactions.reference_number,
-          project: transactions.project,
-          amount: transactions.amount,
-          created_at: transactions.created_at,
+        const transactionsItems = response.data.map((transaction: Transaction) => ({
+          id: transaction.id,
+          name: transaction.payment_system,
+          description: transaction.reference_number,
+          project: transaction.project,
+          amount: transaction.amount,
+          created_at: transaction.created_at,
         }));
         setItems({ ...items, transactions: transactionsItems });
       })
@@ -97,113 +100,130 @@ function ProjectManagerPage() {
     navigate('/');
   }
 
-  function getKeyByValue(object, value) {
-    return Object.keys(object).find((key) => object[key] === value);
+  // Type guards
+  function isEditModes(editMode: string): editMode is editModes {
+    return Object.values(editModes).includes(editMode as editModes) !== undefined;
+  }
+  function isItemKey(itemKey: string): itemKey is keyof Items {
+    return Object.keys(items).includes(itemKey as keyof Items)
   }
 
-  function itemsModalContent(id) {
+  function getItemKey(object: typeof editModes, value: string | undefined): keyof Items | undefined {
+    if(value == null) return
+    if(items == null) return
+
+    const itemKey = Object.keys(object).find((key) => object[key as keyof Items] === value);
+    if(itemKey == null) return
+    if(!isItemKey(itemKey)) return
+
+    return itemKey
+  }
+
+  function itemsModalContent(id: string) {
     let element = null;
 
-    if (id) {
-      const itemModal = items[getKeyByValue(editModes, editMode)].find((item) => item.id === id);
+    if(id == null) return
+    if(!isEditModes(editMode)) return
 
-      switch (editMode) {
-        case editModes.projects:
-          element = (
-            <>
-              <p>
-                <b>ID: </b>
-                {itemModal.id}
-              </p>
-              <p>
-                <b>Nombre: </b>
-                {itemModal.name}
-              </p>
-              <p>
-                <b>Descripción: </b>
-                {itemModal.description}
-              </p>
-              <p>
-                <b>Creado: </b>
-                {itemModal.created_at}
-              </p>
-              <Row>
-                <Col xs={12} md={6}>
-                  <Button as={Link} to={`/proyectos/${itemModal.id}/editar`}>
-                    Editar proyecto
-                  </Button>
-                </Col>
-                <Col xs={12} md={6}>
-                  <Donatone
-                    mini
-                    donated={itemModal.donated}
-                    goal={itemModal.goal}
-                    className="mt-3"
-                  />
-                </Col>
-              </Row>
-            </>
-          );
-          break;
-        case editModes.transactions:
-          element = (
-            <>
-              <p>
-                <b>ID: </b>
-                {itemModal.id}
-              </p>
-              <p>
-                <b>Plataforma: </b>
-                {itemModal.name}
-              </p>
-              <p>
-                <b>Número de referencia: </b>
-                {itemModal.description}
-              </p>
-              <p>
-                <b>Monto: </b>
-                {itemModal.amount}
-                {' '}
-                Bs.
-              </p>
-              <p>
-                <b>Creado: </b>
-                {itemModal.created_at}
-              </p>
-              <hr />
-              <h3>
-                {itemModal.project.title}
-                {' '}
-                <Button as={Link} to={`/proyectos-sociales/${itemModal.project.id}`} target="_blank" className="mx-2">
-                  Ver proyecto
+    const itemModal: any = items[itemKey].find((item) => item.id === id)
+    if(itemModal == null) return
+
+    switch (editMode) {
+      case editModes.projects:
+        element = (
+          <>
+            <p>
+              <b>ID: </b>
+              {itemModal.id}
+            </p>
+            <p>
+              <b>Nombre: </b>
+              {itemModal.name}
+            </p>
+            <p>
+              <b>Descripción: </b>
+              {itemModal.description}
+            </p>
+            <p>
+              <b>Creado: </b>
+              {itemModal.created_at}
+            </p>
+            <Row>
+              <Col xs={12} md={6}>
+                <Button as={Link as any} to={`/proyectos/${itemModal.id}/editar`}>
+                  Editar proyecto
                 </Button>
-              </h3>
-              <p>
-                <b>Propietario: </b>
-                {itemModal.project.user.name}
-              </p>
-              <p>
-                <b>Cédula: </b>
-                {itemModal.project.user.id_card}
-              </p>
-              <p>
-                <b>Correo electrónico: </b>
-                {itemModal.project.user.email}
-              </p>
-            </>
-          );
-          break;
-        default:
-          break;
-      }
+              </Col>
+              <Col xs={12} md={6}>
+                <Donatone
+                  mini
+                  donated={itemModal.donated}
+                  goal={itemModal.goal}
+                  className="mt-3"
+                />
+              </Col>
+            </Row>
+          </>
+        );
+        break;
+      case editModes.transactions:
+        element = (
+          <>
+            <p>
+              <b>ID: </b>
+              {itemModal.id}
+            </p>
+            <p>
+              <b>Plataforma: </b>
+              {itemModal.name}
+            </p>
+            <p>
+              <b>Número de referencia: </b>
+              {itemModal.description}
+            </p>
+            <p>
+              <b>Monto: </b>
+              {itemModal.amount}
+              {' '}
+              Bs.
+            </p>
+            <p>
+              <b>Creado: </b>
+              {itemModal.created_at}
+            </p>
+            <hr />
+            <h3>
+              {itemModal.project.title}
+              {' '}
+              <Button as={Link as any} to={`/proyectos-sociales/${itemModal.project.id}`} target="_blank" className="mx-2">
+                Ver proyecto
+              </Button>
+            </h3>
+            <p>
+              <b>Propietario: </b>
+              {itemModal.project.user.name}
+            </p>
+            <p>
+              <b>Cédula: </b>
+              {itemModal.project.user.id_card}
+            </p>
+            <p>
+              <b>Correo electrónico: </b>
+              {itemModal.project.user.email}
+            </p>
+          </>
+        );
+        break;
+      default:
+        break;
     }
     return element;
   }
 
-  function handleChange(id) {
-    const itemType = getKeyByValue(editModes, editMode);
+  function handleChange(id: string) {
+    if(!isEditModes(editMode)) return
 
-    api.put(`/${itemType}/${id}`, { is_verified: true })
+    api.put(`/${itemKey}/${id}`, { is_verified: true })
       .then(() => {
         if (editMode === editModes.projects) {
           fetchProjects();
@@ -225,6 +245,8 @@ function ProjectManagerPage() {
       fetchTransaction();
     }
   }, [editMode]);
+
+  console.log(itemKey)
 
   return (
     <>
@@ -317,11 +339,11 @@ function ProjectManagerPage() {
                   </Nav>
                   <Tab.Content className="tab-content pt-3">
                     <main className="tab-pane active">
-                      <Form noValidate="">
+                      <Form noValidate={true}>
                         {
-                          items[getKeyByValue(editModes, editMode)] ? (
+                          itemKey != null ? (
                             <ItemsManager
-                              items={items[getKeyByValue(editModes, editMode)]}
+                              items={items[itemKey] ?? []}
                               modalTitle={`Aprobar ${editMode} como administrador`}
                               modalContent={itemsModalContent}
                               hidden={editMode === editModes.users}

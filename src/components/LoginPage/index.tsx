@@ -158,7 +158,6 @@ function LoginPage() {
               <span>Registrarse</span>
             </h6>
             <input className="checkbox control-form" type="checkbox" id="reg-log" name="reg-log" />
-            {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
             <label htmlFor="reg-log" />
             <div className="card-3d-wrap mx-auto">
               <div className="card-3d-wrapper">

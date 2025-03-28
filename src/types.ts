@@ -1,3 +1,13 @@
+export interface User {
+  id: string
+  name: string
+  email: string
+  id_card: string
+  phone: string
+  created_at: string
+  updated_at: string
+}
+
 export interface Project {
   id: string
   title: string
@@ -8,11 +18,15 @@ export interface Project {
   updated_at: string
 }
 
+export interface ProjectWithUser extends Project {
+  user: User
+}
+
 export interface Transaction {
   id: string
   payment_system: string
   reference_number: string
-  project: string
+  project: ProjectWithUser
   amount: number
   created_at: string
   updated_at: string

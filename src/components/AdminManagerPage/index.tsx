@@ -107,6 +107,12 @@ function ProjectManagerPage() {
   function isItemKey(itemKey: string): itemKey is keyof Items {
     return Object.keys(items).includes(itemKey as keyof Items)
   }
+  function isProjectItems(item: Item): item is ProjectItems {
+    return 'goal' in item
+  }
+  function isTransactionItems(item: Item): item is TransactionItems {
+    return 'amount' in item
+  }
 
   function getItemKey(object: typeof editModes, value: string | undefined): keyof Items | undefined {
     if(value == null) return
@@ -125,11 +131,13 @@ function ProjectManagerPage() {
     if(id == null) return
     if(!isEditModes(editMode)) return
 
-    const itemModal: any = items[itemKey].find((item) => item.id === id)
+    const itemModal = items[itemKey]?.find((item) => item.id === id)
     if(itemModal == null) return
 
     switch (editMode) {
       case editModes.projects:
+        if(!isProjectItems(itemModal)) return
+               
         element = (
           <>
             <p>
@@ -150,9 +158,11 @@ function ProjectManagerPage() {
             </p>
             <Row>
               <Col xs={12} md={6}>
-                <Button as={Link as any} to={`/proyectos/${itemModal.id}/editar`}>
+              <Link to={`/proyectos/${itemModal.id}/editar`}>
+                <Button>
                   Editar proyecto
                 </Button>
+              </Link>
               </Col>
               <Col xs={12} md={6}>
                 <Donatone
@@ -167,6 +177,8 @@ function ProjectManagerPage() {
         );
         break;
       case editModes.transactions:
+        if(!isTransactionItems(itemModal)) return
+
         element = (
           <>
             <p>
@@ -195,9 +207,11 @@ function ProjectManagerPage() {
             <h3>
               {itemModal.project.title}
               {' '}
-              <Button as={Link as any} to={`/proyectos-sociales/${itemModal.project.id}`} target="_blank" className="mx-2">
-                Ver proyecto
-              </Button>
+              <Link to={`/proyectos-sociales/${itemModal.project.id}`} target="_blank" className="mx-2">
+                <Button>
+                  Ver proyecto
+                </Button>
+              </Link>
             </h3>
             <p>
               <b>Propietario: </b>
@@ -245,8 +259,6 @@ function ProjectManagerPage() {
       fetchTransaction();
     }
   }, [editMode]);
-
-  console.log(itemKey)
 
   return (
     <>

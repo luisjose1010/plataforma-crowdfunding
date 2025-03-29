@@ -1,6 +1,7 @@
 import api from '@/api';
 import ErrorModal from '@/components/ErrorModal';
 import InfoModal from '@/components/InfoModal';
+import { User } from "@/types";
 import { useState } from 'react';
 import {
   Button, Container, FormControl, FormLabel,
@@ -9,16 +10,16 @@ import {
 import { FaSearch } from 'react-icons/fa';
 
 function UserSearch({ ...attrs }) {
-  const [user, setUser] = useState(null);
-  const [idCard, setIdCard] = useState(null);
+  const [user, setUser] = useState<User | null>(null);
+  const [idCard, setIdCard] = useState<string | null>(null);
 
   const [errorShow, setErrorShow] = useState(false);
-  const [errorTitle, setErrorTitle] = useState(null);
-  const [errorDescription, setErrorDescription] = useState(null);
+  const [errorTitle, setErrorTitle] = useState<string | null>(null);
+  const [errorDescription, setErrorDescription] = useState<string | null>(null);
 
   const [infoShow, setInfoShow] = useState(false);
-  const [infoTitle, setInfoTitle] = useState(null);
-  const [infoDescription, setInfoDescription] = useState(null);
+  const [infoTitle, setInfoTitle] = useState<string | null>(null);
+  const [infoDescription, setInfoDescription] = useState<React.ReactNode | null>(null);
 
   function fetchUser() {
     api.get(`/users/?id_card=${idCard}`)
@@ -91,6 +92,8 @@ function UserSearch({ ...attrs }) {
   }
 
   function updateUser() {
+    if(user === null) return;
+    
     api.put(`/users/${user.id}`, { is_superuser: !user.is_superuser })
       .then((response) => {
         if (response.data.length > 0) {
@@ -125,7 +128,7 @@ function UserSearch({ ...attrs }) {
     setInfoDescription(null);
   }
 
-  function handleClick(event) {
+  function handleClick(event : React.MouseEvent) {
     event.preventDefault();
     fetchUser();
     setInfoTitle('Buscando usuario...');
@@ -133,7 +136,7 @@ function UserSearch({ ...attrs }) {
     setInfoShow(true);
   }
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setIdCard(event.target.value);
   }
 

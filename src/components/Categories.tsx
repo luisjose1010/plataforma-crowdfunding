@@ -1,12 +1,16 @@
 import api from '@/api';
 import { CategoriesLoader } from '@/components/ui/loaders';
-import PropTypes from 'prop-types';
+import { Category } from "@/types";
 import { useEffect, useState } from 'react';
 import { ListGroup, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-function Categories({ active }) {
-  const [categories, setCategories] = useState(null);
+interface CategoriesProps {
+  active: string;
+}
+
+function Categories({ active }: CategoriesProps) {
+  const [categories, setCategories] = useState<Category[] | null>(null);
 
   function fetchCategory() {
     api.get('/categories/')
@@ -56,9 +60,5 @@ function Categories({ active }) {
     </>
   );
 }
-
-Categories.propTypes = {
-  active: PropTypes.number.isRequired,
-};
 
 export default Categories;

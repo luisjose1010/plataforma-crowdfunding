@@ -3,6 +3,7 @@ import localAPI from '@/api/localAPI';
 import searchIcon from '@/assets/img/searchIcon.svg';
 import { DotSpinner, Spinner } from '@/components/ui/loaders';
 import { Button } from '@/components/ui/theme';
+import { Category, User } from "@/types";
 import { useEffect, useState } from 'react';
 import {
   Container, Nav, Navbar, NavDropdown,
@@ -11,8 +12,8 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
 function NavBar() {
-  const [user, setUser] = useState(null);
-  const [categories, setCategories] = useState([]);
+  const [user, setUser] = useState<User | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [scrolled, setScrolled] = useState(false);
   const [loadingCategories, setLoadingCategories] = useState(true);
   const [loadingUser, setLoadingUser] = useState(true);

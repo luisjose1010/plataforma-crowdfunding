@@ -9,6 +9,14 @@ export interface User {
   updated_at: string
 }
 
+export interface Category {
+  id: string
+  name: string
+  description: string
+  url: string
+  projects_count: number
+}
+
 export interface Project {
   id: string
   title: string

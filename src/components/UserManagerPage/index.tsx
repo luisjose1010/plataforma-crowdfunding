@@ -8,6 +8,7 @@ import InfoModal from '@/components/InfoModal';
 import Banner from '@/components/layouts/Banner';
 import { ManagerLoader } from '@/components/ui/loaders';
 import { BannerContent, BannerTitle } from '@/components/ui/theme';
+import { UserUpdate, UserWithProjects } from "@/types";
 import { useEffect, useState } from 'react';
 import {
   Badge, Button, Card, Col, Container,
@@ -20,23 +21,25 @@ import {
 } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
 
+type UserManaged = UserUpdate & UserWithProjects;
+
 function UserManagerPage() {
   const navigate = useNavigate();
-  const [user, setUser] = useState({
+  const [user, setUser] = useState<UserManaged>({
     id: '',
     id_card: '',
     name: '',
     email: '',
     password: '',
     new_password: '',
-    is_superuser: '',
+    is_superuser: false,
     created_at: '',
     updated_at: '',
 
     projects: [],
   });
   const [avatar, setAvatar] = useState('');
-  const [avatarForm, setAvatarForm] = useState<any>(null);
+  const [avatarForm, setAvatarForm] = useState<HTMLInputElement | null>(null);
   const [loading, setLoading] = useState(true);
 
   const [editModes] = useState({
@@ -141,13 +144,15 @@ function UserManagerPage() {
   }
   function uploadAvatar() {
     const data = new FormData();
-    data.append('file', avatarForm?.files[0]);
+    const selectedFile = avatarForm?.files?.[0] ?? null;
+
+    if (selectedFile == null) return;
+    data.append('file', selectedFile);
 
     api.post(`/images/users/${user.id}`, data, {
       headers: {
         accept: 'application/json',
         'Accept-Language': 'en-US,en;q=0.8',
-        // eslint-disable-next-line no-underscore-dangle
         'Content-Type': 'multipart/form-data',
       },
     })
@@ -179,9 +184,8 @@ function UserManagerPage() {
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const userModified = { ...user };
-    userModified[event.target.name] = event.target.value;
-    setUser(userModified);
+    const newUser = { ...user, [event.target.name]: event.target.value }
+    setUser(newUser);
   }
 
   function handleChangeAvatar(event: React.ChangeEvent<HTMLInputElement>) {
@@ -535,7 +539,9 @@ function UserManagerPage() {
               <Card.Body>
                 <h6 className="card-title font-weight-bold">Crear proyecto</h6>
                 <p className="card-text">Todos en algún momento necesitamos ayuda.</p>
-                <Button as={Link as any} to="/proyectos/crear">Nuevo proyecto</Button>
+                <Link to="/proyectos/crear">
+                  <Button>Nuevo proyecto</Button>
+                </Link>
               </Card.Body>
             </Card>
           </Col>

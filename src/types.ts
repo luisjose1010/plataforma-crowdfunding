@@ -3,10 +3,18 @@ export interface User {
   name: string
   email: string
   id_card: string
-  phone: string
   is_superuser: boolean
   created_at: string
   updated_at: string
+}
+
+export interface UserUpdate extends User {
+  password?: string
+  new_password?: string
+}
+
+export interface UserWithProjects extends User {
+  projects: Project[]
 }
 
 export interface Category {

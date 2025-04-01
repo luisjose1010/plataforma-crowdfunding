@@ -9,12 +9,24 @@ import { FiAtSign } from 'react-icons/fi';
 import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 
+interface LoginData {
+  email: string;
+  password: string;
+}
+
+interface RegisterData {
+  id_card: string;
+  name: string;
+  email: string;
+  password: string;
+}
+
 function LoginPage() {
-  const [loginData, setLoginData] = useState({
+  const [loginData, setLoginData] = useState<LoginData>({
     email: '',
     password: '',
   });
-  const [userData, setUserData] = useState({
+  const [registerData, setRegisterData] = useState<RegisterData>({
     id_card: '',
     name: '',
     email: '',
@@ -34,8 +46,8 @@ function LoginPage() {
   ]);
 
   const [errorShow, setErrorShow] = useState(false);
-  const [errorTitle, setErrorTitle] = useState(null);
-  const [errorDescription, setErrorDescription] = useState(null);
+  const [errorTitle, setErrorTitle] = useState<string | null>(null);
+  const [errorDescription, setErrorDescription] = useState<string | null>(null);
   function handleCloseError() {
     setErrorShow(false);
     setErrorTitle(null);
@@ -43,16 +55,16 @@ function LoginPage() {
   }
 
   const [infoShow, setInfoShow] = useState(false);
-  const [infoTitle, setInfoTitle] = useState(null);
-  const [infoDescription, setInfoDescription] = useState(null);
+  const [infoTitle, setInfoTitle] = useState<string | null>(null);
+  const [infoDescription, setInfoDescription] = useState<string | null>(null);
 
   function goHome() {
     navigate('/');
   }
 
-  function fetchToken(username, password) {
+  function fetchToken({ email, password }: LoginData) {
     const bodyFormData = new FormData();
-    bodyFormData.append('username', username);
+    bodyFormData.append('username', email);
     bodyFormData.append('password', password);
 
     api.post('/token', bodyFormData, { headers: { 'Content-Type': 'multipart/form-data' } })
@@ -75,11 +87,11 @@ function LoginPage() {
   }
 
   function login() {
-    fetchToken(loginData.email, loginData.password);
+    fetchToken(loginData);
   }
 
   function registerUser() {
-    api.post('/users/', userData)
+    api.post('/users/', registerData)
       .then(() => {
         setInfoTitle('Usuario registrado');
         setInfoDescription('¡Usuario registrado correctamente, gracias por unirte!');
@@ -107,7 +119,7 @@ function LoginPage() {
       });
   }
 
-  function validateField(event, errors) {
+  function validateField(event: React.ChangeEvent<HTMLInputElement>, errors: string[]) {
     let errorsModified = [...errors];
 
     if (!event.target.validity.valid) {
@@ -124,20 +136,18 @@ function LoginPage() {
     setInfoShow(false);
     setInfoTitle(null);
     setInfoDescription(null);
-    fetchToken(userData.email, userData.password);
+    fetchToken(registerData);
   }
 
-  function handleChangeLogin(event) {
-    const loginDataModified = { ...loginData };
-    loginDataModified[event.target.name] = event.target.value;
+  function handleChangeLogin(event: React.ChangeEvent<HTMLInputElement>) {
+    const loginDataModified = { ...loginData, [event.target.name]: event.target.value };
     setLoginData(loginDataModified);
     setLoginErrors(validateField(event, loginErrors));
   }
 
-  function handleChangeRegister(event) {
-    const userDataModified = { ...userData };
-    userDataModified[event.target.name] = event.target.value;
-    setUserData(userDataModified);
+  function handleChangeRegister(event: React.ChangeEvent<HTMLInputElement>) {
+    const userDataModified = { ...registerData, [event.target.name]: event.target.value };
+    setRegisterData(userDataModified);
     setRegisterErrors(validateField(event, registerErrors));
   }
 

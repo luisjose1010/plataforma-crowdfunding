@@ -1,9 +1,15 @@
-import PropTypes from 'prop-types';
-import { Button, Modal } from 'react-bootstrap/';
+import { Button, Modal } from 'react-bootstrap';
+
+interface ErrorModalProps {
+  show: boolean;
+  title?: string | null;
+  description?: string | null;
+  onHide: () => void;
+}
 
 function ErrorModal({
-  show, title, description, onHide,
-}) {
+  show, title = '', description = '', onHide,
+}: ErrorModalProps) {
   return (
     <Modal
       show={show}
@@ -28,17 +34,5 @@ function ErrorModal({
     </Modal>
   );
 }
-
-ErrorModal.propTypes = {
-  show: PropTypes.bool.isRequired,
-  title: PropTypes.string,
-  description: PropTypes.string,
-  onHide: PropTypes.func.isRequired,
-};
-
-ErrorModal.defaultProps = {
-  title: '',
-  description: '',
-};
 
 export default ErrorModal;

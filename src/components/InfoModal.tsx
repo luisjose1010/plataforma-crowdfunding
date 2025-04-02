@@ -1,9 +1,17 @@
-import PropTypes from 'prop-types';
-import { Button, Modal } from 'react-bootstrap/';
+import { Button, Modal } from 'react-bootstrap';
+
+interface InfoModalProps {
+  show: boolean;
+  title?: string | null;
+  description?: string | null;
+  acceptHandler: () => void;
+  cancelHandler?: () => void;
+  children?: React.ReactNode;
+}
 
 function InfoModal({
-  show, title, description, acceptHandler, cancelHandler, children,
-}) {
+  show, title = '', description = '', acceptHandler, cancelHandler, children,
+}: InfoModalProps) {
   return (
     <Modal
       show={show}
@@ -32,20 +40,5 @@ function InfoModal({
     </Modal>
   );
 }
-
-InfoModal.propTypes = {
-  show: PropTypes.bool.isRequired,
-  title: PropTypes.string,
-  description: PropTypes.string,
-  acceptHandler: PropTypes.func.isRequired,
-  cancelHandler: PropTypes.func,
-  children: PropTypes.node,
-};
-InfoModal.defaultProps = {
-  title: '',
-  description: '',
-  cancelHandler: null,
-  children: null,
-};
 
 export default InfoModal;

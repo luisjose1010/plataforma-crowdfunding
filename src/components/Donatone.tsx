@@ -1,21 +1,20 @@
-import PropTypes from 'prop-types';
 import {
   Container, ProgressBar,
 } from 'react-bootstrap';
 import styled from 'styled-components';
 
 interface DonatoneProps {
-  goal: number;
-  donated: number;
+  goal?: number;
+  donated?: number;
   mini?: boolean;
   className?: string;
   hidden?: boolean;
 }
 
 function Donatone({
-  goal, donated, mini = false, className = '', ...attrs
+  goal = 0, donated = 0, mini = false, className = '', ...attrs
 }: DonatoneProps) {
-  let progress: any = 100;
+  let progress = 100;
 
   if (goal > 0) {
     progress = (donated / goal) * 100;
@@ -25,7 +24,7 @@ function Donatone({
     progress = 100;
   }
 
-  progress = (Math.round(progress * 100) / 100).toFixed(2);
+  progress = Number((Math.round(progress * 100) / 100).toFixed(2));
 
   return (
     <ContainerStyled className={className} {...attrs}>
@@ -56,20 +55,6 @@ function Donatone({
     </ContainerStyled>
   );
 }
-
-Donatone.propTypes = {
-  goal: PropTypes.number,
-  donated: PropTypes.number,
-  mini: PropTypes.bool,
-  className: PropTypes.string,
-};
-
-Donatone.defaultProps = {
-  goal: 0,
-  donated: 0,
-  mini: false,
-  className: '',
-};
 
 const ContainerStyled = styled(Container)`
   .mini {

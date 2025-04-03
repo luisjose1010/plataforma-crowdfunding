@@ -1,5 +1,5 @@
 import InfoModal from '@/components/InfoModal';
-import { Item } from "@/types";
+import { Item } from "@/lib/types";
 import { useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
 

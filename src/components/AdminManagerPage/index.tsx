@@ -9,7 +9,8 @@ import InfoModal from '@/components/InfoModal';
 import Banner from '@/components/layouts/Banner';
 import { Spinner } from '@/components/ui/loaders';
 import { BannerContent, BannerTitle } from '@/components/ui/theme';
-import { editModes, Item, Project, Transaction } from "@/types";
+import { findKeyByValue, isValueOf } from "@/lib/utils";
+import { editModes, Item, Project, Transaction } from "@/lib/types";
 import { useEffect, useState } from 'react';
 import {
   Button, Card, Col, Container, Form,
@@ -28,7 +29,7 @@ type Items = {
   transactions?: TransactionItems[]
 }
 
-function ProjectManagerPage() {
+function AdminManagerPage() {
   const { editMode = editModes.projects } = useParams();
 
   const navigate = useNavigate();
@@ -36,7 +37,7 @@ function ProjectManagerPage() {
     projects: undefined,
     transactions: undefined,
   });
-  const itemKey = getItemKey(editModes, editMode) ?? 'projects';
+  const itemKey = findKeyByValue(editModes, editMode, items) ?? 'projects';
 
   const [errorShow, setErrorShow] = useState(false);
   const [errorTitle, setErrorTitle] = useState(null);
@@ -60,35 +61,40 @@ function ProjectManagerPage() {
 
   function fetchProjects() {
     api.get('/projects/?is_verified=false')
-      .then((response) => {
-        const projectsItems = response.data.map((project: Project) => ({
-          id: project.id,
-          name: project.title,
-          description: project.description,
-          goal: project.goal,
-          donated: project.donated,
-          created_at: project.created_at,
-          updated_at: project.updated_at,
-        }));
-        setItems({ ...items, projects: projectsItems });
+      .then(({ data }: { data: Project[] }) => {
+        const projects: ProjectItems[] = data?.map(
+          (project) => ({
+            id: project.id,
+            name: project.title,
+            description: project.description,
+            goal: project.goal,
+            donated: project.donated,
+            created_at: project.created_at,
+            updated_at: project.updated_at,
+          })
+        );
+        setItems({ ...items, projects });
       })
       .catch(() => {
         setErrorShow(true);
       });
   }
 
-  function fetchTransaction() {
+  function fetchTransactions() {
     api.get('/transactions/projects/users/?is_verified=false')
-      .then((response) => {
-        const transactionsItems = response.data.map((transaction: Transaction) => ({
-          id: transaction.id,
-          name: transaction.payment_system,
-          description: transaction.reference_number,
-          project: transaction.project,
-          amount: transaction.amount,
-          created_at: transaction.created_at,
-        }));
-        setItems({ ...items, transactions: transactionsItems });
+      .then(({ data }: { data: Transaction[] }) => {
+        const transactions: TransactionItems[] = data?.map(
+          (transaction) => ({
+            id: transaction.id,
+            name: transaction.payment_system,
+            description: transaction.reference_number,
+            project: transaction.project,
+            amount: transaction.amount,
+            created_at: transaction.created_at,
+            updated_at: transaction.updated_at,
+          })
+        );
+        setItems({ ...items, transactions });
       })
       .catch(() => {
         setErrorShow(true);
@@ -101,12 +107,6 @@ function ProjectManagerPage() {
   }
 
   // Type guards
-  function isEditModes(editMode: string): editMode is editModes {
-    return Object.values(editModes).includes(editMode as editModes) !== undefined;
-  }
-  function isItemKey(itemKey: string): itemKey is keyof Items {
-    return Object.keys(items).includes(itemKey as keyof Items)
-  }
   function isProjectItems(item: Item): item is ProjectItems {
     return 'goal' in item
   }
@@ -114,22 +114,11 @@ function ProjectManagerPage() {
     return 'amount' in item
   }
 
-  function getItemKey(object: typeof editModes, value: string | undefined): keyof Items | undefined {
-    if(value == null) return
-    if(items == null) return
-
-    const itemKey = Object.keys(object).find((key) => object[key as keyof Items] === value);
-    if(itemKey == null) return
-    if(!isItemKey(itemKey)) return
-
-    return itemKey
-  }
-
   function itemsModalContent(id: string) {
     let element = null;
 
     if(id == null) return
-    if(!isEditModes(editMode)) return
+    if(!isValueOf(editModes, editMode)) return
 
     const itemModal = items[itemKey]?.find((item) => item.id === id)
     if(itemModal == null) return
@@ -235,7 +224,7 @@ function ProjectManagerPage() {
   }
 
   function handleChange(id: string) {
-    if(!isEditModes(editMode)) return
+    if(!isValueOf(editModes, editMode)) return
 
     api.put(`/${itemKey}/${id}`, { is_verified: true })
       .then(() => {
@@ -243,7 +232,7 @@ function ProjectManagerPage() {
           fetchProjects();
         }
         if (editMode === editModes.transactions) {
-          fetchTransaction();
+          fetchTransactions();
         }
       })
       .catch(() => {
@@ -256,7 +245,7 @@ function ProjectManagerPage() {
       fetchProjects();
     }
     if (editMode === editModes.transactions) {
-      fetchTransaction();
+      fetchTransactions();
     }
   }, [editMode]);
 
@@ -416,4 +405,4 @@ function ProjectManagerPage() {
   );
 }
 
-export default ProjectManagerPage;
+export default AdminManagerPage;

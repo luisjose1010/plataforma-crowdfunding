@@ -1,7 +1,7 @@
 import api from '@/api';
 import ErrorModal from '@/components/ErrorModal';
 import InfoModal from '@/components/InfoModal';
-import { User } from "@/types";
+import { User } from "@/lib/types";
 import { useState } from 'react';
 import {
   Button, Container, FormControl, FormLabel,

@@ -3,7 +3,7 @@ import localAPI from '@/api/localAPI';
 import searchIcon from '@/assets/img/searchIcon.svg';
 import { DotSpinner, Spinner } from '@/components/ui/loaders';
 import { Button } from '@/components/ui/theme';
-import { Category, User } from "@/types";
+import { Category, User } from "@/lib/types";
 import { useEffect, useState } from 'react';
 import {
   Container, Nav, Navbar, NavDropdown,

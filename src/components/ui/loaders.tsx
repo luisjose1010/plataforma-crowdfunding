@@ -1,8 +1,8 @@
-import PropTypes from 'prop-types';
-import ContentLoader from 'react-content-loader';
+import ContentLoader, { IContentLoaderProps } from 'react-content-loader';
+import { JSX } from "react/jsx-runtime";
 import styled from 'styled-components';
 
-export function ImageLoader(props) {
+export function ImageLoader(props: JSX.IntrinsicAttributes & IContentLoaderProps) {
   return (
     <ContentLoader viewBox="0 40 1000 350" height={250} width={800} {...props}>
       <path d="M484.52,64.61H15.65C7.1,64.61.17,71.2.17,79.31V299.82c0,8.12,6.93,14.7,15.48,14.7H484.52c8.55,0,15.48-6.58,15.48-14.7V79.31C500,71.2,493.07,64.61,484.52,64.61Zm-9,204.34c0,11.84-7.14,21.44-15.94,21.44H436.39L359.16,171.52c-7.1-10.92-19.67-11.16-27-.51L258.64,277.94C253.78,285,245.73,286,240,280.2l-79.75-80.62c-6-6.06-14.33-5.7-20,.88L62.34,290.39H40.63c-8.8,0-15.94-9.6-15.94-21.44V110.19c0-11.84,7.14-21.44,15.94-21.44H459.54c8.8,0,15.94,9.6,15.94,21.44Z" />
@@ -10,7 +10,7 @@ export function ImageLoader(props) {
   );
 }
 
-export function ProjectLoader(props) {
+export function ProjectLoader(props: JSX.IntrinsicAttributes & IContentLoaderProps) {
   return (
     <ContentLoader viewBox="150 50 800 600" height={600} width={500} {...props}>
       <path d="M484.52,64.61H15.65C7.1,64.61.17,71.2.17,79.31V299.82c0,8.12,6.93,14.7,15.48,14.7H484.52c8.55,0,15.48-6.58,15.48-14.7V79.31C500,71.2,493.07,64.61,484.52,64.61Zm-9,204.34c0,11.84-7.14,21.44-15.94,21.44H436.39L359.16,171.52c-7.1-10.92-19.67-11.16-27-.51L258.64,277.94C253.78,285,245.73,286,240,280.2l-79.75-80.62c-6-6.06-14.33-5.7-20,.88L62.34,290.39H40.63c-8.8,0-15.94-9.6-15.94-21.44V110.19c0-11.84,7.14-21.44,15.94-21.44H459.54c8.8,0,15.94,9.6,15.94,21.44Z" />
@@ -22,7 +22,7 @@ export function ProjectLoader(props) {
   );
 }
 
-export function ProjectsLoader(props) {
+export function ProjectsLoader(props: JSX.IntrinsicAttributes & IContentLoaderProps) {
   return (
     <ContentLoader speed={1} viewBox="0 0 1360 900" width={1360} {...props}>
       <rect x="30" y="20" rx="8" ry="8" width="200" height="200" />
@@ -65,7 +65,7 @@ export function ProjectsLoader(props) {
   );
 }
 
-export function ProjectsTitleLoader(props) {
+export function ProjectsTitleLoader(props: JSX.IntrinsicAttributes & IContentLoaderProps) {
   return (
     <ContentLoader
       speed={1}
@@ -82,7 +82,7 @@ export function ProjectsTitleLoader(props) {
   );
 }
 
-export function ManagerLoader(props) {
+export function ManagerLoader(props: JSX.IntrinsicAttributes & IContentLoaderProps) {
   return (
     <ContentLoader speed={1} viewBox="0 0 400 200" width={400} {...props}>
       <circle cx="45" cy="45" r="40" />
@@ -98,7 +98,7 @@ export function ManagerLoader(props) {
   );
 }
 
-export function CategoriesLoader(props) {
+export function CategoriesLoader(props: JSX.IntrinsicAttributes & IContentLoaderProps) {
   return (
     <ContentLoader speed={1} viewBox="0 0 300 300" width={800} {...props}>
       <rect x="0" y="10" rx="3" ry="3" width="300" height="25" />
@@ -111,7 +111,14 @@ export function CategoriesLoader(props) {
   );
 }
 
-function SpinnerWrapper(props) {
+interface SpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
+  size?: number;
+  color?: string;
+  speed?: number;
+  stroke?: number;
+}
+
+function SpinnerWrapper(props: SpinnerProps) {
   return (
     <div {...props}>
       <div className="container" />
@@ -119,26 +126,12 @@ function SpinnerWrapper(props) {
   );
 }
 
-SpinnerWrapper.propTypes = {
-  size: PropTypes.number,
-  color: PropTypes.string,
-  speed: PropTypes.number,
-  stroke: PropTypes.number,
-};
-
-SpinnerWrapper.defaultProps = {
-  size: null,
-  color: null,
-  speed: null,
-  stroke: null,
-};
-
 export const Spinner = styled(SpinnerWrapper)`
   .container {
-    --uib-size: ${({ size }) => size ?? '30'}px;
-    --uib-color: ${({ color }) => color ?? '#219D80'};
-    --uib-speed: ${({ speed }) => speed ?? '.9'}s;
-    --uib-stroke: ${({ stroke }) => stroke ?? '6'}px;
+    --uib-size: ${({ size = 30 }) => size}px;
+    --uib-color: ${({ color = '#219D80' }) => color};
+    --uib-speed: ${({ speed = '.9' }) => speed}s;
+    --uib-stroke: ${({ stroke = '6'}) => stroke }px;
     --mask-size: calc(var(--uib-size) / 2 - var(--uib-stroke));
     position: relative;
     display: flex;
@@ -167,7 +160,14 @@ export const Spinner = styled(SpinnerWrapper)`
   }
 `;
 
-function DotSpinnerWrapper(props) {
+interface DotSpinnerProps extends React.HTMLAttributes<HTMLDivElement> {
+  size?: number;
+  color?: string;
+  speed?: number;
+  stroke?: number;
+}
+
+function DotSpinnerWrapper(props: DotSpinnerProps) {
   return (
     <div {...props}>
       <div className="container">
@@ -184,26 +184,12 @@ function DotSpinnerWrapper(props) {
   );
 }
 
-DotSpinnerWrapper.propTypes = {
-  size: PropTypes.number,
-  color: PropTypes.string,
-  speed: PropTypes.number,
-  stroke: PropTypes.number,
-};
-
-DotSpinnerWrapper.defaultProps = {
-  size: null,
-  color: null,
-  speed: null,
-  stroke: null,
-};
-
 export const DotSpinner = styled(DotSpinnerWrapper)`
   .container {
-    --uib-size: ${({ size }) => size ?? '30'}px;
-    --uib-color: ${({ color }) => color ?? '#219D80'};
-    --uib-speed: ${({ speed }) => speed ?? '.9'}s;
-    --uib-stroke: ${({ stroke }) => stroke ?? '6'}px;
+    --uib-size: ${({ size = '30' }) => size}px;
+    --uib-color: ${({ color = '#219D80' }) => color};
+    --uib-speed: ${({ speed = '.9' }) => speed}s;
+    --uib-stroke: ${({ stroke = '6' }) => stroke}px;
     position: relative;
     display: flex;
     align-items: center;

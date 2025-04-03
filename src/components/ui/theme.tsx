@@ -1,28 +1,22 @@
-import PropTypes from 'prop-types';
 import styled from 'styled-components';
+
+interface ButtonProps extends React.HTMLAttributes<HTMLButtonElement> {
+  padding?: string;
+}
 
 function ButtonWrapper({
   className, children, ...props
-}) {
+}: ButtonProps) {
   return (
     <span {...props} className={className}>
       {children}
     </span>
   );
 }
-ButtonWrapper.propTypes = {
-  className: PropTypes.string.isRequired,
-  children: PropTypes.node,
-  padding: PropTypes.string,
-};
-ButtonWrapper.defaultProps = {
-  padding: null,
-  children: null,
-};
 
-export const Button: any = styled(ButtonWrapper)`
+export const Button = styled(ButtonWrapper)`
   background-color: #219D80;
-  padding: ${(props) => props.padding || '0.75rem 1.5rem'};
+  padding: ${({ padding = '0.75rem 1.5rem' }) => padding};
   color: white
 `;
 

@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import React from "react";
 import styled from 'styled-components';
 
@@ -15,11 +14,6 @@ function Banner({ img, children }: BannerProps) {
     </BannerContainer>
   );
 }
-
-Banner.propTypes = {
-  img: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired,
-};
 
 const BannerContainer = styled.div`
   overflow: hidden;

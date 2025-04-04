@@ -1,19 +1,23 @@
 import api from '@/api';
 import ProjectCard from '@/components/ProjectsPage/ProjectCard';
 import { ProjectsLoader, ProjectsTitleLoader } from '@/components/ui/loaders';
-import PropTypes from 'prop-types';
+import { Category, Project } from "@/lib/types";
 import { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-function ProjectsList({ categoryUrl }) {
-  const [projects, setProjects] = useState([]);
-  const [category, setCategory] = useState(null);
+interface ProjectsListProps {
+  categoryUrl?: string;
+}
+
+function ProjectsList({ categoryUrl }: ProjectsListProps) {
+  const [projects, setProjects] = useState<Project[]>([]);
+  const [category, setCategory] = useState<Category | null>(null);
   const [loadingProjects, setLoadingProjects] = useState(true);
   const [loadingCategory, setLoadingCategory] = useState(true);
 
-  function fetchProjects(categoryId) {
+  function fetchProjects(categoryId: string | null) {
     let endpoint = '/projects/?is_verified=true';
 
     if (categoryId) {
@@ -56,7 +60,7 @@ function ProjectsList({ categoryUrl }) {
       fetchCategory();
     } else {
       setCategory(null);
-      fetchProjects(undefined);
+      fetchProjects(null);
     }
   }, [categoryUrl]);
 
@@ -116,14 +120,6 @@ function ProjectsList({ categoryUrl }) {
     </Container>
   );
 }
-
-ProjectsList.propTypes = {
-  categoryUrl: PropTypes.string,
-};
-
-ProjectsList.defaultProps = {
-  categoryUrl: null,
-};
 
 const TextSmall = styled.p`
     // Muestra la linea de al lado del texto

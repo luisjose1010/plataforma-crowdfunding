@@ -69,6 +69,7 @@ function AdminManagerPage() {
             description: project.description,
             goal: project.goal,
             donated: project.donated,
+            is_verified: project.is_verified,
             created_at: project.created_at,
             updated_at: project.updated_at,
           })
@@ -194,9 +195,9 @@ function AdminManagerPage() {
             </p>
             <hr />
             <h3>
-              {itemModal.project.title}
+              {itemModal?.project?.title}
               {' '}
-              <Link to={`/proyectos-sociales/${itemModal.project.id}`} target="_blank" className="mx-2">
+              <Link to={`/proyectos-sociales/${itemModal?.project?.id}`} target="_blank" className="mx-2">
                 <Button>
                   Ver proyecto
                 </Button>
@@ -204,15 +205,15 @@ function AdminManagerPage() {
             </h3>
             <p>
               <b>Propietario: </b>
-              {itemModal.project.user.name}
+              {itemModal?.project?.user?.name}
             </p>
             <p>
               <b>Cédula: </b>
-              {itemModal.project.user.id_card}
+              {itemModal?.project?.user?.id_card}
             </p>
             <p>
               <b>Correo electrónico: </b>
-              {itemModal.project.user.email}
+              {itemModal?.project?.user?.email}
             </p>
           </>
         );

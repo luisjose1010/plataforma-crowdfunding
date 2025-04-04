@@ -10,6 +10,7 @@ import Banner from '@/components/layouts/Banner';
 import DonationForm from '@/components/ProjectPage/DonationForm';
 import { ImageLoader, ProjectLoader } from '@/components/ui/loaders';
 import { BannerContent, BannerTitle } from '@/components/ui/theme';
+import { Project } from "@/lib/types";
 import { useEffect, useState } from 'react';
 import {
   Badge, Button, Col, Container,
@@ -19,11 +20,17 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 
 function ProjectPage() {
   const navigate = useNavigate();
-  const [project, setProject] = useState<any>({
-    id: -1,
+  const [project, setProject] = useState<Project>({
+    id: '-1',
+    title: '',
+    description: '',
+    goal: 0,
+    donated: 0,
     is_verified: true, // Avoid render danger badge
+    created_at: '',
+    updated_at: '',
   });
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState<string | null>(null);
   const [user, setUser] = useState({
     id: null,
     is_superuser: false,
@@ -35,8 +42,8 @@ function ProjectPage() {
   const [accountsShow, setAccountsShow] = useState(false);
 
   const [errorShow, setErrorShow] = useState(false);
-  const [errorTitle, setErrorTitle] = useState(null);
-  const [errorDescription, setErrorDescription] = useState(null);
+  const [errorTitle, setErrorTitle] = useState<string | null>(null);
+  const [errorDescription, setErrorDescription] = useState<string | null>(null);
   function handleCloseError() {
     setErrorShow(false);
     setErrorTitle(null);
@@ -44,8 +51,8 @@ function ProjectPage() {
   }
 
   const [infoShow, setInfoShow] = useState(false);
-  const [infoTitle, setInfoTitle] = useState(null);
-  const [infoDescription, setInfoDescription] = useState(null);
+  const [infoTitle, setInfoTitle] = useState<string | null>(null);
+  const [infoDescription, setInfoDescription] = useState<string | null>(null);
   function handleCloseInfo() {
     setInfoShow(false);
     setInfoTitle(null);
@@ -81,13 +88,13 @@ function ProjectPage() {
     }
   }
 
-  function handleError(title, description) {
+  function handleError({ title, description }: { title: string, description: string }) {
     setErrorTitle(title);
     setErrorDescription(description);
     setErrorShow(true);
   }
 
-  function handleInfo(title, description) {
+  function handleInfo({ title, description }: { title: string, description: string }) {
     setInfoTitle(title);
     setInfoDescription(description);
     setInfoShow(true);
@@ -123,7 +130,7 @@ function ProjectPage() {
   }, [id]);
 
   useEffect(() => {
-    if (project.id > 0) {
+    if (Number(project.id) > 0) {
       fetchImages();
     }
   }, [project]);
@@ -160,7 +167,7 @@ function ProjectPage() {
                 </Col>
 
                 <Col sm="12" md="4">
-                  <Categories active={project.category_id} />
+                  <Categories active={String(project.category_id)} />
                 </Col>
               </Row>
 
@@ -178,9 +185,11 @@ function ProjectPage() {
               <Button onClick={handleDonateClick} hidden={!project.is_verified} className="mt-2 mx-2 btn-success">
                 ¡Dona a este proyecto!
               </Button>
-              <Button as={Link as any} to={`/proyectos/${id}/editar`} hidden={!user.is_superuser && project.user_id !== user.id} className="mt-2 mx-2">
-                Editar proyecto
-              </Button>
+              <Link to={`/proyectos/${id}/editar`} hidden={!user.is_superuser && project.user_id !== user.id} className="mt-2 mx-2">
+                <Button>
+                  Editar proyecto
+                </Button>
+              </Link>
             </>
           ) : (
             <Row>

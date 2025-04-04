@@ -1,13 +1,17 @@
 import api from '@/api';
 import exampleCard from '@/assets/img/exampleCard.jpg';
-import PropTypes from 'prop-types';
+import { Project } from "@/lib/types";
 import { useEffect, useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 
-function ProjectCard({ project }) {
-  const [image, setImage] = useState(null);
+interface ProjectCardProps {
+  project: Project;
+}
+
+function ProjectCard({ project }: ProjectCardProps) {
+  const [image, setImage] = useState<string | null>(null);
 
   function fetchImages() {
     api.get(`/images/projects/${project.id}`, {
@@ -26,7 +30,7 @@ function ProjectCard({ project }) {
   }
 
   useEffect(() => {
-    if (project.id > 0) {
+    if (Number(project.id) > 0) {
       fetchImages();
     }
   }, [project]);
@@ -47,19 +51,13 @@ function ProjectCard({ project }) {
             {project.description}
           </span>
         </Card.Text>
-        <Button variant="primary" as={Link as any} to={`/proyectos-sociales/${project.id}`}>Ir al proyecto</Button>
+        <Link to={`/proyectos-sociales/${project.id}`}>
+          <Button variant="primary">Ir al proyecto</Button>
+        </Link>
       </Card.Body>
     </CardStyled>
   );
 }
-
-ProjectCard.propTypes = {
-  project: PropTypes.shape({
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-  }).isRequired,
-};
 
 const CardStyled = styled(Card)`
   .container-text-truncated {

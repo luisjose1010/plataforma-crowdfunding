@@ -31,8 +31,12 @@ export interface Project {
   description: string
   goal: number
   donated: number
+  is_verified: boolean
   created_at: string
   updated_at: string
+
+  user_id?: string | null, // TODO: number or string?
+  category_id?: number // TODO: number or string?
 }
 
 export interface ProjectWithUser extends Project {
@@ -43,10 +47,13 @@ export interface Transaction {
   id: string
   payment_system: string
   reference_number: string
-  project: ProjectWithUser
   amount: number
   created_at: string
   updated_at: string
+
+  project?: ProjectWithUser
+  user_id?: string | null, // TODO: number or string?
+  project_id?: string | null, // TODO: number or string?
 }
 
 export enum editModes {

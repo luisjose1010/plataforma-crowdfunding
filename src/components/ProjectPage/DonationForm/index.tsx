@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useState } from 'react';
 import {
   Button, Form, FormControl, FormGroup,
@@ -8,17 +7,32 @@ import { useNavigate } from 'react-router-dom';
 
 import api from '@/api';
 import localAPI from '@/api/localAPI';
+import { Transaction } from "@/lib/types";
+
+interface DonationFormProps {
+  projectId: string;
+  acceptHandler: () => void;
+  errorHandler: (
+    { title, description }: { title: string, description: string }
+  ) => void;
+  infoHandler: (
+    { title, description }: { title: string, description: string }
+  ) => void;
+}
 
 function DonationForm({
   projectId, acceptHandler, errorHandler, infoHandler,
-}) {
+}: DonationFormProps) {
   const paymentSystems = ['Binance', 'PayPal'];
   const navigate = useNavigate();
   const [validated, setValidated] = useState(false);
-  const [transaction, setTransaction] = useState({
+  const [transaction, setTransaction] = useState<Transaction>({
+    id: '',
     reference_number: '',
     payment_system: paymentSystems[0],
     amount: 0,
+    created_at: '',
+    updated_at: '',
     user_id: null,
     project_id: null,
   });
@@ -36,8 +50,9 @@ function DonationForm({
         .then((response) => {
           setTransaction(response.data);
 
+          const title = 'Pago enviado para verificar'
           const description = '¡El pago se verificará pronto, te agradecemos enormemente por tu colaboración!';
-          infoHandler('Pago enviado para verificar', description);
+          infoHandler({ title, description });
         })
         .catch((error) => {
           const { status } = error.response;
@@ -47,7 +62,10 @@ function DonationForm({
               navigate('/login');
               break;
             default:
-              errorHandler('Error inesperado', 'Ha ocurrido un error inesperado');
+              errorHandler({
+                title: 'Error inesperado',
+                description: 'Ha ocurrido un error inesperado'
+              });
               break;
           }
         });
@@ -56,13 +74,17 @@ function DonationForm({
     }
   }
 
-  function handleChange(event) {
-    const transactionModified = { ...transaction };
-    transactionModified[event.target.name] = event.target.value;
-    setTransaction(transactionModified);
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const newTransaction = { ...transaction, [event.target.name]: event.target.value };
+    setTransaction(newTransaction);
   }
 
-  function handleSubmit(event) {
+  function handleSelectChange(event: React.ChangeEvent<HTMLSelectElement>) {
+    const newTransaction = { ...transaction, [event.target.name]: event.target.value };
+    setTransaction(newTransaction);
+  }
+
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     const form = event.currentTarget;
 
     event.preventDefault();
@@ -83,7 +105,7 @@ function DonationForm({
           id="payment-system"
           name="payment_system"
           value={transaction.payment_system}
-          onChange={handleChange}
+          onChange={handleSelectChange}
         >
           {
             paymentSystems.map((system) => (
@@ -132,12 +154,5 @@ function DonationForm({
 
   );
 }
-
-DonationForm.propTypes = {
-  projectId: PropTypes.number.isRequired,
-  acceptHandler: PropTypes.func.isRequired,
-  errorHandler: PropTypes.func.isRequired,
-  infoHandler: PropTypes.func.isRequired,
-};
 
 export default DonationForm;

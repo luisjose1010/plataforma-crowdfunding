@@ -7,6 +7,7 @@ import InfoModal from '@/components/InfoModal';
 import Banner from '@/components/layouts/Banner';
 import { ManagerLoader } from '@/components/ui/loaders';
 import { BannerContent, BannerTitle } from '@/components/ui/theme';
+import { Category, Project } from "@/lib/types";
 import { useEffect, useState } from 'react';
 import {
   Badge, Button, Card, Col, Container,
@@ -18,6 +19,8 @@ import {
 } from 'react-icons/fa';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
+type FormControlElement = HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement;
+
 function ProjectManagerPage() {
   const { id, editMode } = useParams();
 
@@ -26,7 +29,8 @@ function ProjectManagerPage() {
     id: null,
     is_superuser: false,
   });
-  const [project, setProject] = useState<any>({
+  const [project, setProject] = useState<Project>({
+    id: '',
     title: '',
     description: '',
     goal: 0,
@@ -36,8 +40,8 @@ function ProjectManagerPage() {
     updated_at: '',
     category_id: 1,
   });
-  const [imageForm, setImageForm] = useState<any>('');
-  const [categories, setCategories] = useState([]);
+  const [imageForm, setImageForm] = useState<EventTarget & HTMLInputElement | null>(null);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
 
   const [editModes] = useState({
@@ -236,7 +240,10 @@ function ProjectManagerPage() {
 
   function uploadImages() {
     const data = new FormData();
-    data.append('file', imageForm.files[0]);
+    const selectedFile = imageForm?.files?.[0] ?? null;
+
+    if (selectedFile == null) return;
+    data.append('file', selectedFile);
 
     api.post(`/images/projects/${user.id}`, data, {
       headers: {
@@ -271,17 +278,17 @@ function ProjectManagerPage() {
     navigate('/');
   }
 
-  function handleChange(event) {
-    const projectModified = { ...project };
-    if (typeof projectModified[event.target.name] === 'number') {
-      projectModified[event.target.name] = Number(event.target.value);
-    } else {
-      projectModified[event.target.name] = event.target.value;
-    }
-    setProject(projectModified);
+  function handleChange(event: React.ChangeEvent<FormControlElement>) {
+    const newProject = {
+      ...project,
+      [event.target.name]: typeof event.target.value === 'number'
+      ? Number(event.target.value)
+      : event.target.value,
+    };
+    setProject(newProject);
   }
 
-  function handleToggle(event) {
+  function handleToggle(event: React.ChangeEvent<HTMLInputElement>) {
     setProject({ ...project, is_verified: event.target.checked });
   }
 
@@ -290,17 +297,19 @@ function ProjectManagerPage() {
     deleteProject();
   }
 
-  function handleChangeImages(event) {
+  function handleChangeImages(event: React.ChangeEvent<HTMLInputElement>) {
     setImageForm(event.target);
   }
 
   useEffect(() => {
     if (editMode === editModes.create) {
       setProject({
+        id: '',
         title: '',
         description: '',
         goal: 0,
         donated: 0,
+        is_verified: false,
         created_at: '',
         updated_at: '',
         category_id: 1,
@@ -363,7 +372,9 @@ function ProjectManagerPage() {
               <Card.Body>
                 <h6 className="card-title fw-bolder">Ver proyecto</h6>
                 <p className="card-text">Proyecto en el portal.</p>
-                <Button as={Link as any} to={`/proyectos-sociales/${project.id}`} className="btn-primary">Ver</Button>
+                <Link to={`/proyectos-sociales/${project.id}`}>
+                  <Button className="btn-primary">Ver</Button>
+                </Link>
               </Card.Body>
             </Card>
           </Col>
@@ -389,7 +400,7 @@ function ProjectManagerPage() {
                                 {String(project.updated_at).split('T')[0]}
                               </small>
                             </div>
-                            <div hidden={editMode !== editModes.edit && editMode as any} className="mt-2">
+                            <div hidden={(editMode !== editModes.edit) && (editMode != null)} className="mt-2">
                               <Button onClick={() => setChangeImagesShow(true)} className="btn-primary">
                                 <FaCamera />
                                 {' '}
@@ -410,7 +421,7 @@ function ProjectManagerPage() {
                           <Form.Select
                             id="category"
                             name="category_id"
-                            value={project.category_id}
+                            value={project.category_id ?? 1}
                             onChange={handleChange}
                             disabled={editMode === editModes.overview}
                           >
@@ -515,7 +526,7 @@ function ProjectManagerPage() {
                                     </FormGroup>
                                   </Col>
                                 </Row>
-                                <Row hidden={editMode !== editModes.create && editMode as any}>
+                                <Row hidden={(editMode !== editModes.create) && (editMode != null)}>
                                   <Col>
                                     <FormGroup>
                                       <Form.Label>Objetivo (Bs. )</Form.Label>
@@ -550,7 +561,7 @@ function ProjectManagerPage() {
                                 <Button className="btn-primary m-2" onClick={updateProject}>Guardar cambios</Button>
                               </Col>
                             </Row>
-                            <Row hidden={editMode !== editModes.create && editMode as any}>
+                            <Row hidden={(editMode !== editModes.create) && (editMode != null)}>
                               <Col className="d-flex justify-content-end">
                                 <Button className="btn-primary" onClick={createProject}>Crear proyecto</Button>
                               </Col>

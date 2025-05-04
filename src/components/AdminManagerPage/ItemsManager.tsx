@@ -1,19 +1,19 @@
 import InfoModal from '@/components/InfoModal';
-import { Item } from "@/lib/types";
+import { Item } from '@/lib/types';
 import { useState } from 'react';
 import { ListGroup } from 'react-bootstrap';
 
 interface ItemsManagerProps {
-  items: Item[]
-  modalTitle: string
-  modalContent?: (id: string) => React.ReactNode
-  handleChange: (id: string) => void
-  hidden: boolean
+  items: Item[];
+  modalTitle: string;
+  modalContent?: (id: string) => React.ReactNode;
+  handleChange: (id: string) => void;
+  hidden: boolean;
 }
 
 function ItemsManager({
   items, modalTitle, modalContent, handleChange, ...attrs
-} : ItemsManagerProps) {
+}: ItemsManagerProps) {
   const [id, setId] = useState<string | null>(null);
   const [infoShow, setInfoShow] = useState(false);
 
@@ -23,7 +23,7 @@ function ItemsManager({
   }
 
   function handleAcceptInfo() {
-    if(id == null) return
+    if (id == null) return;
 
     handleChange(id);
     setId(null);

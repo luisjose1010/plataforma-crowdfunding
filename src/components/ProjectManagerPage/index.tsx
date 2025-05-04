@@ -7,7 +7,7 @@ import InfoModal from '@/components/InfoModal';
 import Banner from '@/components/layouts/Banner';
 import { ManagerLoader } from '@/components/ui/loaders';
 import { BannerContent, BannerTitle } from '@/components/ui/theme';
-import { Category, Project } from "@/lib/types";
+import { Category, Project } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import {
   Badge, Button, Card, Col, Container,
@@ -282,8 +282,8 @@ function ProjectManagerPage() {
     const newProject = {
       ...project,
       [event.target.name]: typeof event.target.value === 'number'
-      ? Number(event.target.value)
-      : event.target.value,
+        ? Number(event.target.value)
+        : event.target.value,
     };
     setProject(newProject);
   }

@@ -9,8 +9,8 @@ import InfoModal from '@/components/InfoModal';
 import Banner from '@/components/layouts/Banner';
 import { Spinner } from '@/components/ui/loaders';
 import { BannerContent, BannerTitle } from '@/components/ui/theme';
-import { findKeyByValue, isValueOf } from "@/lib/utils";
-import { editModes, Item, Project, Transaction } from "@/lib/types";
+import { findKeyByValue, isValueOf } from '@/lib/utils';
+import { editModes, Item, Project, Transaction } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import {
   Button, Card, Col, Container, Form,
@@ -25,9 +25,9 @@ type ProjectItems = Item & Omit<Project, 'title'>;
 type TransactionItems = Item & Omit<Transaction, 'payment_system' | 'reference_number'>;
 
 type Items = {
-  projects?: ProjectItems[]
-  transactions?: TransactionItems[]
-}
+  projects?: ProjectItems[];
+  transactions?: TransactionItems[];
+};
 
 function AdminManagerPage() {
   const { editMode = editModes.projects } = useParams();
@@ -42,7 +42,7 @@ function AdminManagerPage() {
   const [errorShow, setErrorShow] = useState(false);
   const [errorTitle, setErrorTitle] = useState(null);
   const [errorDescription, setErrorDescription] = useState(null);
- 
+
   function handleCloseError() {
     setErrorShow(false);
     setErrorTitle(null);
@@ -72,7 +72,7 @@ function AdminManagerPage() {
             is_verified: project.is_verified,
             created_at: project.created_at,
             updated_at: project.updated_at,
-          })
+          }),
         );
         setItems({ ...items, projects });
       })
@@ -93,7 +93,7 @@ function AdminManagerPage() {
             amount: transaction.amount,
             created_at: transaction.created_at,
             updated_at: transaction.updated_at,
-          })
+          }),
         );
         setItems({ ...items, transactions });
       })
@@ -109,25 +109,25 @@ function AdminManagerPage() {
 
   // Type guards
   function isProjectItems(item: Item): item is ProjectItems {
-    return 'goal' in item
+    return 'goal' in item;
   }
   function isTransactionItems(item: Item): item is TransactionItems {
-    return 'amount' in item
+    return 'amount' in item;
   }
 
   function itemsModalContent(id: string) {
     let element = null;
 
-    if(id == null) return
-    if(!isValueOf(editModes, editMode)) return
+    if (id == null) return;
+    if (!isValueOf(editModes, editMode)) return;
 
-    const itemModal = items[itemKey]?.find((item) => item.id === id)
-    if(itemModal == null) return
+    const itemModal = items[itemKey]?.find((item) => item.id === id);
+    if (itemModal == null) return;
 
     switch (editMode) {
       case editModes.projects:
-        if(!isProjectItems(itemModal)) return
-               
+        if (!isProjectItems(itemModal)) return;
+
         element = (
           <>
             <p>
@@ -148,11 +148,11 @@ function AdminManagerPage() {
             </p>
             <Row>
               <Col xs={12} md={6}>
-              <Link to={`/proyectos/${itemModal.id}/editar`}>
-                <Button>
-                  Editar proyecto
-                </Button>
-              </Link>
+                <Link to={`/proyectos/${itemModal.id}/editar`}>
+                  <Button>
+                    Editar proyecto
+                  </Button>
+                </Link>
               </Col>
               <Col xs={12} md={6}>
                 <Donatone
@@ -167,7 +167,7 @@ function AdminManagerPage() {
         );
         break;
       case editModes.transactions:
-        if(!isTransactionItems(itemModal)) return
+        if (!isTransactionItems(itemModal)) return;
 
         element = (
           <>
@@ -225,7 +225,7 @@ function AdminManagerPage() {
   }
 
   function handleChange(id: string) {
-    if(!isValueOf(editModes, editMode)) return
+    if (!isValueOf(editModes, editMode)) return;
 
     api.put(`/${itemKey}/${id}`, { is_verified: true })
       .then(() => {

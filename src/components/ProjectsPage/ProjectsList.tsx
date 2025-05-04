@@ -1,7 +1,7 @@
 import api from '@/api';
 import ProjectCard from '@/components/ProjectsPage/ProjectCard';
 import { ProjectsLoader, ProjectsTitleLoader } from '@/components/ui/loaders';
-import { Category, Project } from "@/lib/types";
+import { Category, Project } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';

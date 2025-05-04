@@ -7,16 +7,16 @@ import { useNavigate } from 'react-router-dom';
 
 import api from '@/api';
 import localAPI from '@/api/localAPI';
-import { Transaction } from "@/lib/types";
+import { Transaction } from '@/lib/types';
 
 interface DonationFormProps {
   projectId: string;
   acceptHandler: () => void;
   errorHandler: (
-    { title, description }: { title: string, description: string }
+    { title, description }: { title: string; description: string }
   ) => void;
   infoHandler: (
-    { title, description }: { title: string, description: string }
+    { title, description }: { title: string; description: string }
   ) => void;
 }
 
@@ -50,7 +50,7 @@ function DonationForm({
         .then((response) => {
           setTransaction(response.data);
 
-          const title = 'Pago enviado para verificar'
+          const title = 'Pago enviado para verificar';
           const description = '¡El pago se verificará pronto, te agradecemos enormemente por tu colaboración!';
           infoHandler({ title, description });
         })
@@ -64,7 +64,7 @@ function DonationForm({
             default:
               errorHandler({
                 title: 'Error inesperado',
-                description: 'Ha ocurrido un error inesperado'
+                description: 'Ha ocurrido un error inesperado',
               });
               break;
           }

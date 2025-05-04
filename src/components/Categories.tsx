@@ -1,6 +1,6 @@
 import api from '@/api';
 import { CategoriesLoader } from '@/components/ui/loaders';
-import { Category } from "@/lib/types";
+import { Category } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import { ListGroup, Row } from 'react-bootstrap';
 import { Link } from 'react-router-dom';

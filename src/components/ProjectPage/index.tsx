@@ -10,7 +10,7 @@ import Banner from '@/components/layouts/Banner';
 import DonationForm from '@/components/ProjectPage/DonationForm';
 import { ImageLoader, ProjectLoader } from '@/components/ui/loaders';
 import { BannerContent, BannerTitle } from '@/components/ui/theme';
-import { Project } from "@/lib/types";
+import { Project } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import {
   Badge, Button, Col, Container,
@@ -88,13 +88,13 @@ function ProjectPage() {
     }
   }
 
-  function handleError({ title, description }: { title: string, description: string }) {
+  function handleError({ title, description }: { title: string; description: string }) {
     setErrorTitle(title);
     setErrorDescription(description);
     setErrorShow(true);
   }
 
-  function handleInfo({ title, description }: { title: string, description: string }) {
+  function handleInfo({ title, description }: { title: string; description: string }) {
     setInfoTitle(title);
     setInfoDescription(description);
     setInfoShow(true);

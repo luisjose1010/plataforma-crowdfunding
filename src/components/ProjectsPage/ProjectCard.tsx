@@ -1,6 +1,6 @@
 import api from '@/api';
 import exampleCard from '@/assets/img/exampleCard.jpg';
-import { Project } from "@/lib/types";
+import { Project } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import { Button, Card } from 'react-bootstrap';
 import { Link } from 'react-router-dom';

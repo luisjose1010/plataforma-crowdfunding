@@ -1,5 +1,5 @@
 import ContentLoader, { IContentLoaderProps } from 'react-content-loader';
-import { JSX } from "react/jsx-runtime";
+import { JSX } from 'react/jsx-runtime';
 import styled from 'styled-components';
 
 export function ImageLoader(props: JSX.IntrinsicAttributes & IContentLoaderProps) {
@@ -131,7 +131,7 @@ export const Spinner = styled(SpinnerWrapper)`
     --uib-size: ${({ size = 30 }) => size}px;
     --uib-color: ${({ color = '#219D80' }) => color};
     --uib-speed: ${({ speed = '.9' }) => speed}s;
-    --uib-stroke: ${({ stroke = '6'}) => stroke }px;
+    --uib-stroke: ${({ stroke = '6' }) => stroke}px;
     --mask-size: calc(var(--uib-size) / 2 - var(--uib-stroke));
     position: relative;
     display: flex;

@@ -1,7 +1,7 @@
 import api from '@/api';
 import ErrorModal from '@/components/ErrorModal';
 import InfoModal from '@/components/InfoModal';
-import { User } from "@/lib/types";
+import { User } from '@/lib/types';
 import { useState } from 'react';
 import {
   Button, Container, FormControl, FormLabel,
@@ -92,8 +92,8 @@ function UserSearch({ ...attrs }) {
   }
 
   function updateUser() {
-    if(user === null) return;
-    
+    if (user === null) return;
+
     api.put(`/users/${user.id}`, { is_superuser: !user.is_superuser })
       .then((response) => {
         if (response.data.length > 0) {
@@ -128,7 +128,7 @@ function UserSearch({ ...attrs }) {
     setInfoDescription(null);
   }
 
-  function handleClick(event : React.MouseEvent) {
+  function handleClick(event: React.MouseEvent) {
     event.preventDefault();
     fetchUser();
     setInfoTitle('Buscando usuario...');

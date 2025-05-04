@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 import styled from 'styled-components';
 
 interface BannerProps {
-  img: string
-  children: React.ReactNode
+  img: string;
+  children: React.ReactNode;
 }
 
 function Banner({ img, children }: BannerProps) {

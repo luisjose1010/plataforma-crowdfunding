@@ -8,7 +8,7 @@ import InfoModal from '@/components/InfoModal';
 import Banner from '@/components/layouts/Banner';
 import { ManagerLoader } from '@/components/ui/loaders';
 import { BannerContent, BannerTitle } from '@/components/ui/theme';
-import { UserUpdate, UserWithProjects } from "@/lib/types";
+import { UserUpdate, UserWithProjects } from '@/lib/types';
 import { useEffect, useState } from 'react';
 import {
   Badge, Button, Card, Col, Container,
@@ -184,7 +184,7 @@ function UserManagerPage() {
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const newUser = { ...user, [event.target.name]: event.target.value }
+    const newUser = { ...user, [event.target.name]: event.target.value };
     setUser(newUser);
   }
 
